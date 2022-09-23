@@ -19,22 +19,24 @@ $LatestSophiaScriptTag = (Invoke-RestMethod @Parameters).tag_name
 
 $Parameters = @{
 	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($LatestSophiaScriptTag)/Sophia.Script.for.Windows.11.v$($LatestSophiaScriptTag).zip"
-	OutFile         = "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
+	OutFile         = "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag).zip"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-		Path            = "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
-		DestinationPath = "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag)"
+		Path            = "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag).zip"
+		DestinationPath = "$DownloadsFolder\"
 		Force           = $true
 	}
 Expand-Archive @Parameters
 
-Remove-Item -Path "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
+Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag).zip"
 
-# Remove-Item -Path "$DownloadsFolder\Sophia Script v.6.1.4" -Recurse
+Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows 11 v6.1.4\Sophia.ps1`"" -Verb Runas -Wait
+
+Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag)" -Recurse
 
 # Downloading the latest Telegram Desktop x64
 # https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest
@@ -470,7 +472,7 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 }
 
 # Downloading the latest Office
-Start-Process -FilePath "$DownloadsFolder\Stuff-main\Office\Start_Download_Office.cmd" -Wait
+Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download_Office.ps1`"" -Verb Runas -Wait
 
 # Configuring Office
 if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
