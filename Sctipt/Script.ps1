@@ -2,6 +2,38 @@
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
+# Downloading the latest Sophia Script
+# https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest
+$Parameters = @{
+	Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+$LatestSophiaScriptTag = (Invoke-RestMethod @Parameters).tag_name.replace("v", "")
+
+$Parameters = @{
+	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($LatestSophiaScriptTag)/Sophia.Script.for.Windows.11.v$($LatestSophiaScriptTag).zip"
+	OutFile         = "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+$Parameters = @{
+		Path            = "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
+		DestinationPath = "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag)"
+		Force           = $true
+	}
+Expand-Archive @Parameters
+
+Remove-Item -Path "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
+
+Copy-Item "$DownloadsFolder\Stuff-main\Sctipt\Sophia_Script_Start.cmd" -Destination "$DownloadsFolder\Sophia Script v.6.1.4\Sophia Script for Windows 11 v6.1.4"
+
+Start-Process -FilePath "" -Wait 
+
+Remove-Item -Path "$DownloadsFolder\Sophia Script v.6.1.4"
+
 # Downloading the latest Telegram Desktop x64
 # https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest
 $Parameters = @{
