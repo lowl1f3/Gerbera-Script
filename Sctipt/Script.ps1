@@ -1,3 +1,9 @@
+$IsAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")
+if (-not $IsAdmin)
+{
+	Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$PSCommandPath`"" -Verb Runas
+	exit
+}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -9,7 +15,7 @@ $Parameters = @{
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-$LatestSophiaScriptTag = (Invoke-RestMethod @Parameters).tag_name.replace("v", "")
+$LatestSophiaScriptTag = (Invoke-RestMethod @Parameters).tag_name
 
 $Parameters = @{
 	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($LatestSophiaScriptTag)/Sophia.Script.for.Windows.11.v$($LatestSophiaScriptTag).zip"
@@ -28,11 +34,7 @@ Expand-Archive @Parameters
 
 Remove-Item -Path "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zip"
 
-Copy-Item "$DownloadsFolder\Stuff-main\Sctipt\Sophia_Script_Start.cmd" -Destination "$DownloadsFolder\Sophia Script v.6.1.4\Sophia Script for Windows 11 v6.1.4"
-
-Start-Process -FilePath "$DownloadsFolder\Sophia Script v.6.1.4\Sophia Script for Windows 11 v6.1.4\Sophia_Script_Start.cmd" -Wait 
-
-Remove-Item -Path "$DownloadsFolder\Sophia Script v.6.1.4"
+# Remove-Item -Path "$DownloadsFolder\Sophia Script v.6.1.4" -Recurse
 
 # Downloading the latest Telegram Desktop x64
 # https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest
@@ -355,19 +357,19 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 
 # Downloading the latest qBittorent x64
 $Parameters = @{
-    Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
-    UseBasicParsing = $true
-    Verbose         = $true
+	Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 $bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
 # Downloading the latest approved by maintainer qBittorent x64
 # 4.4.3 e.g., not 4.4.3.1 as being the latest provided version
 $Parameters = @{
-  Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
-  OutFile         = "$DownloadsFolder\qbittorrent_setup.exe"
-  UseBasicParsing = $true
-  Verbose         = $true
+	Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
+	OutFile         = "$DownloadsFolder\qbittorrent_setup.exe"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
@@ -479,25 +481,25 @@ if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 # Downloading the KMS
 # https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip
 $Parameters = @{
-  Uri             = "https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip"
-  UseBasicParsing = $true
-  Verbose         = $true
+	  Uri             = "https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 $URL = ((Invoke-Webrequest @Parameters).Links | Where-Object -FilterScript {$_.id -eq "downloadButton"}).href
 
 $Parameters = @{
-  Uri             = $URL
-  OutFile         = "$DownloadsFolder\KMS.zip"
-  UseBasicParsing = $true
-  Verbose         = $true
+	Uri             = $URL
+	OutFile         = "$DownloadsFolder\KMS.zip"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-  Path            = "$DownloadsFolder\KMS.zip"
-  DestinationPath = "$DownloadsFolder"
-  Force           = $true
-  Verbose         = $true
+	  Path            = "$DownloadsFolder\KMS.zip"
+	DestinationPath = "$DownloadsFolder"
+	Force           = $true
+	Verbose         = $true
 }
 Expand-Archive @Parameters
 
@@ -510,7 +512,7 @@ $Parameters = @{
 	Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
 	OutFile         = "$DownloadsFolder\CreativeCloudSetUp.exe"
 	UseBasicParsing = $true
-    Verbose         = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
@@ -521,25 +523,25 @@ Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe"
 # Downloading the Adobe Gen-P 2.7
 # https://www.mediafire.com/file/3lpsrxiz47mlhu2/Adobe-GenP-2.7.zip
 $Parameters = @{
-  Uri             = "https://www.mediafire.com/file/3lpsrxiz47mlhu2/Adobe-GenP-2.7.zip"
-  UseBasicParsing = $true
-  Verbose         = $true
+	Uri             = "https://www.mediafire.com/file/3lpsrxiz47mlhu2/Adobe-GenP-2.7.zip"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 $URL = ((Invoke-Webrequest @Parameters).Links | Where-Object -FilterScript {$_.id -eq "downloadButton"}).href
 
 $Parameters = @{
-  Uri             = $URL
-  OutFile         = "$DownloadsFolder\AdobeGenP.zip"
-  UseBasicParsing = $true
-  Verbose         = $true
+	Uri             = $URL
+	OutFile         = "$DownloadsFolder\AdobeGenP.zip"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-  Path            = "$DownloadsFolder\AdobeGenP.zip"
-  DestinationPath = "$DownloadsFolder\AdobeGenP"
-  Force           = $true
-  Verbose         = $true
+	Path            = "$DownloadsFolder\AdobeGenP.zip"
+	DestinationPath = "$DownloadsFolder\AdobeGenP"
+	Force           = $true
+	Verbose         = $true
 }
 Expand-Archive @Parameters
 
@@ -553,7 +555,7 @@ $Parameters = @{
 	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
 	OutFile         = "$DownloadsFolder\Java for Windowsx64.exe"
 	UseBasicParsing = $true
-    Verbose         = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
@@ -566,7 +568,7 @@ $Parameters = @{
 	Uri             = "https://tlauncher.org/installer"
 	OutFile         = "$DownloadsFolder\TlauncherSetup.exe"
 	UseBasicParsing = $true
-    Verbose         = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
