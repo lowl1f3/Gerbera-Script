@@ -30,7 +30,7 @@ Remove-Item -Path "$DownloadsFolder\Sophia Script v.$($LatestSophiaScriptTag).zi
 
 Copy-Item "$DownloadsFolder\Stuff-main\Sctipt\Sophia_Script_Start.cmd" -Destination "$DownloadsFolder\Sophia Script v.6.1.4\Sophia Script for Windows 11 v6.1.4"
 
-Start-Process -FilePath "" -Wait 
+Start-Process -FilePath "$DownloadsFolder\Sophia Script v.6.1.4\Sophia Script for Windows 11 v6.1.4\Sophia_Script_Start.cmd" -Wait 
 
 Remove-Item -Path "$DownloadsFolder\Sophia Script v.6.1.4"
 
