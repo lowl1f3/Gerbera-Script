@@ -436,25 +436,7 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 }
 
 # Downloading the latest Office
-$Parameters = @{
-	Uri             = "https://github.com/lowl1f3/Stuff/blob/main/Office.zip?raw=true"
-	OutFile         = "$DownloadsFolder\Office.zip"
-	UseBasicParsing = $true
-    Verbose         = $true
-}
-Invoke-WebRequest @Parameters
-
-$Parameters = @{
-	Path            = "$DownloadsFolder\Office.zip"
-	DestinationPath = "$DownloadsFolder\Office"
-	Force           = $true
-	Verbose         = $true
-}
-Expand-Archive @Parameters
-
-Start-Process -FilePath "$DownloadsFolder\Office\Office\Download_Office.ps1" -Wait
-
-Remove-Item -Path "$DownloadsFolder\Office.zip", "$DownloadsFolder\Office" -Recurse
+Start-Process -FilePath "$DownloadsFolder\Stuff-main\Office\Start_Download_Office.cmd" -Wait
 
 # Configuring Office
 if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
