@@ -1,0 +1,1 @@
+powershell.exe -Command "& {Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -File "%~dp0Download_Office.ps1"' -Verb RunAs}"
