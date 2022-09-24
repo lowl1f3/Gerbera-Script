@@ -560,15 +560,15 @@ Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\AdobeGenP"
 # https://www.java.com/ru/download/
 $Parameters = @{
 	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
-	OutFile         = "$DownloadsFolder\Java for Windowsx64.exe"
+	OutFile         = "$DownloadsFolder\Java for Windows x64.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\Java for Windowsx64.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\Java for Windowsx64.exe"
+Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
 
 # Downloading the latest Tlauncher
 $Parameters = @{
