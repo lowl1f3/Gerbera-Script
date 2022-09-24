@@ -98,6 +98,7 @@ $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows
 
 # Installing BetterDiscord plugins
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
+# Replacing settings of BetterDiscord
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\JSON\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
 
 # Downloading the latest Teamspeak 3 x64
