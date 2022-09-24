@@ -49,15 +49,15 @@ $LatestTelegramTag = (Invoke-RestMethod @Parameters).tag_name.replace("v", "")
 
 $Parameters = @{
 	Uri             = "https://updates.tdesktop.com/tsetup/tsetup.$($LatestTelegramTag).exe"
-	OutFile         = "$DownloadsFolder\tsetup.$($latestTelegramTag).exe"
+	OutFile         = "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\tsetup.$($latestTelegramTag).exe" -ArgumentList "/SILENT /SP" -Wait 
+Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -ArgumentList "/SILENT /SP" -Wait 
 
-Remove-Item -Path "$DownloadsFolder\tsetup.$($latestTelegramTag).exe"
+Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
 
 # Downloading the latest Discord
 # https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86
