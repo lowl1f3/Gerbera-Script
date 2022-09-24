@@ -84,15 +84,15 @@ $LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Obje
 
 $Parameters = @{
 	Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
-	OutFile         = "$DownloadsFolder\BetterDiscord.$($LatestBetterDiscordTag).exe"
+	OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\BetterDiscord.$($LatestBetterDiscordTag).exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\BetterDiscord.$($LatestBetterDiscordTag).exe"
+Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
 
 # Installing BetterDiscord plugins
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
