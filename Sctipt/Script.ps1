@@ -94,6 +94,9 @@ Start-Process -FilePath "$DownloadsFolder\BetterDiscord.$($LatestBetterDiscordTa
 
 Remove-Item -Path "$DownloadsFolder\BetterDiscord.$($LatestBetterDiscordTag).exe"
 
+# Installing BetterDiscord plugins
+Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins" -Destination "%Appdata%\Roaming\BetterDiscord\plugins" -Recurse
+
 # Downloading the latest Teamspeak 3 x64
 # https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe
 # https://www.teamspeak.com/ru/downloads/#
