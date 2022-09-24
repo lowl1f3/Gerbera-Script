@@ -488,7 +488,7 @@ if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 # Downloading the KMS
 # https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip
 $Parameters = @{
-	  Uri             = "https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip"
+	  Uri           = "https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
@@ -503,7 +503,7 @@ $Parameters = @{
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-	  Path            = "$DownloadsFolder\KMS.zip"
+	  Path          = "$DownloadsFolder\KMS.zip"
 	DestinationPath = "$DownloadsFolder"
 	Force           = $true
 	Verbose         = $true
