@@ -99,25 +99,10 @@ Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destinati
 # Replacing settings of BetterDiscord
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\JSON\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
 
-# Downloading the latest Teamspeak 3 x64
-# https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe
-# https://www.teamspeak.com/ru/downloads/#
-$Parameters = @{
-	Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
-	OutFile         = "$DownloadsFolder\TeamspeakSetup.exe"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-Invoke-WebRequest @Parameters
-
-Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -Wait
-
-Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
-
 # Downloading the latest Steam
 # https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
 $Parameters = @{
-	Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
+	Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe" /SILENT
 	OutFile         = "$DownloadsFolder\SteamSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
@@ -361,6 +346,21 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Start-Sleep -Seconds 1
 	Stop-Process -Name notepad++ -ErrorAction Ignore
 }
+
+# Downloading the latest Teamspeak 3 x64
+# https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe
+# https://www.teamspeak.com/ru/downloads/#
+$Parameters = @{
+	Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
+	OutFile         = "$DownloadsFolder\TeamspeakSetup.exe"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -Wait
+
+Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
 
 # Downloading the latest qBittorent x64
 $Parameters = @{
