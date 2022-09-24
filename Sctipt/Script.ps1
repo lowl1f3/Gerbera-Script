@@ -374,15 +374,15 @@ $bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filenam
 # 4.4.3 e.g., not 4.4.3.1 as being the latest provided version
 $Parameters = @{
 	Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
-	OutFile         = "$DownloadsFolder\qbittorrent_setup.exe"
+	OutFile         = "$DownloadsFolder\QbitTorrentSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\qbittorrent_setup.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\QbitTorrentSetup.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\qbittorrent_setup.exe"
+Remove-Item -Path "$DownloadsFolder\QbitTorrentSetup.exe"
 
 # Configuring qBittorent
 if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
