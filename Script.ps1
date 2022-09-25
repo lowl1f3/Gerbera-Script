@@ -140,6 +140,7 @@ $Parameters = @{
 Expand-Archive @Parameters
 
 Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
+
 Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows 10 v5.13.4\Sophia.ps1`"" -Verb Runas
 
 # Downloading the latest Telegram Desktop x64
