@@ -18,37 +18,6 @@ $LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-if ($Wrapper)
-{
-	$Parameters = @{
-		Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-		UseBasicParsing  = $true
-	}
-	$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
-	$Parameters = @{
-		Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.Wrapper.v$LatestRelease.zip"
-		OutFile         = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
-
-	$Version = "Wrapper"
-
-	$Parameters = @{
-		Path            = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
-		DestinationPath = "$DownloadsFolder"
-		Force           = $true
-	}
-	Expand-Archive @Parameters
-
-	Remove-Item -Path "$DownloadsFolder\Sophia.Script.Wrapper.zip" -Force
-
-	Start-Sleep -Second 1
-
-	Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestRelease"
-}
-
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 {
 	"17763"
@@ -194,8 +163,6 @@ Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).ex
 
 Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
 
-$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
 # Downloading the latest Discord
 # https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86
 $Parameters = @{
@@ -233,8 +200,6 @@ Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
 
 # Installing BetterDiscord plugins
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
-# Replacing settings of BetterDiscord
-Copy-Item -Path "$DownloadsFolder\Stuff-main\JSON BD\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
 
 # Downloading the latest Steam
 # https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
