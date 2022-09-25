@@ -97,19 +97,19 @@ Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
 # Installing BetterDiscord plugins
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
 # Replacing settings of BetterDiscord
-Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\JSON\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
+Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\JSON BD\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
 
 # Downloading the latest Steam
 # https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
 $Parameters = @{
-	Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe" /SILENT
+	Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
 	OutFile         = "$DownloadsFolder\SteamSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -Wait /SILENT
 
 Remove-Item -Path "$DownloadsFolder\SteamSetup.exe"
 
@@ -374,15 +374,15 @@ $bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filenam
 # 4.4.3 e.g., not 4.4.3.1 as being the latest provided version
 $Parameters = @{
 	Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
-	OutFile         = "$DownloadsFolder\QbitTorrentSetup.exe"
+	OutFile         = "$DownloadsFolder\qBitTorrentSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\QbitTorrentSetup.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\qBitTorrentSetup.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\QbitTorrentSetup.exe"
+Remove-Item -Path "$DownloadsFolder\qBitTorrentSetup.exe"
 
 # Configuring qBittorent
 if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
