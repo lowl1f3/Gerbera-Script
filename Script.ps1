@@ -11,32 +11,168 @@ $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows
 # Downloading the latest Sophia Script
 # https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest
 $Parameters = @{
-	Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
-	UseBasicParsing = $true
-	Verbose         = $true
+	Uri              = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
+	UseBasicParsing   = $true
 }
-$LatestSophiaScriptTag = (Invoke-RestMethod @Parameters).tag_name
+$LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
 
-$Parameters = @{
-	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($LatestSophiaScriptTag)/Sophia.Script.for.Windows.11.v$($LatestSophiaScriptTag).zip"
-	OutFile         = "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag).zip"
-	UseBasicParsing = $true
-	Verbose         = $true
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+if ($Wrapper)
+{
+	$Parameters = @{
+		Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+		UseBasicParsing  = $true
+	}
+	$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
+	$Parameters = @{
+		Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.Wrapper.v$LatestRelease.zip"
+		OutFile         = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters
+
+	$Version = "Wrapper"
+
+	$Parameters = @{
+		Path            = "$DownloadsFolder\Sophia.Script.Wrapper.zip"
+		DestinationPath = "$DownloadsFolder"
+		Force           = $true
+	}
+	Expand-Archive @Parameters
+
+	Remove-Item -Path "$DownloadsFolder\Sophia.Script.Wrapper.zip" -Force
+
+	Start-Sleep -Second 1
+
+	Invoke-Item -Path "$DownloadsFolder\Sophia Script Wrapper v$LatestRelease"
+}
+
+switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
+{
+	"17763"
+	{
+		$Parameters = @{
+			Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+			UseBasicParsing  = $true
+		}
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
+		$Parameters = @{
+			Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
+			OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+
+		$Version = "LTSC2019"
+
+		break
+	}
+	{($_ -ge 19041) -and ($_ -le 19048)}
+	{
+		if ($PSVersionTable.PSVersion.Major -eq 5)
+		{
+			# Check if Windows 10 is an LTSC 2021
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -eq "Windows 10 Enterprise LTSC 2021")
+			{
+				$Parameters = @{
+					Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+					UseBasicParsing  = $true
+				}
+				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
+				$Parameters = @{
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
+					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+
+				$Version = "LTSC2021"
+			}
+			else
+			{
+				$Parameters = @{
+					Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+					UseBasicParsing  = $true
+				}
+				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
+				$Parameters = @{
+					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
+					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+
+				$Version = "Windows_10_PowerShell_5.1"
+			}
+		}
+		else
+		{
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+				UseBasicParsing  = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+
+			$Version = "Windows_10_PowerShell_7"
+		}
+
+	}
+	{$_ -ge 22000}
+	{
+		if ($PSVersionTable.PSVersion.Major -eq 5)
+		{
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+				UseBasicParsing  = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+
+			$Version = "Windows_11_PowerShell_5.1"
+		}
+		else
+		{
+			$Parameters = @{
+				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
+				UseBasicParsing  = $true
+			}
+			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
+			$Parameters = @{
+				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
+				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+
+			$Version = "Windows_11_PowerShell_7"
+		}
+	}
 }
 Invoke-WebRequest @Parameters
 
 $Parameters = @{
-		Path            = "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag).zip"
-		DestinationPath = "$DownloadsFolder\"
-		Force           = $true
-	}
+	Path            = "$DownloadsFolder\Sophia.Script.zip"
+	DestinationPath = "$DownloadsFolder"
+	Force           = $true
+}
 Expand-Archive @Parameters
 
-Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag).zip"
+Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
 
-Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows 11 v6.1.4\Sophia.ps1`"" -Verb Runas -Wait
-
-Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows 11 v$($LatestSophiaScriptTag)" -Recurse
+Start-Process -FilePath "$DownloadsFolder\Sophia Script for Windows 10 v5.13.4\Sophia.ps1"
 
 # Downloading the latest Telegram Desktop x64
 # https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest
@@ -55,9 +191,11 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -ArgumentList "/SILENT /SP" -Wait 
+Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -ArgumentList "/VERYSILENT" -Wait 
 
 Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
+
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 # Downloading the latest Discord
 # https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86
@@ -97,7 +235,7 @@ Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
 # Installing BetterDiscord plugins
 Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
 # Replacing settings of BetterDiscord
-Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\JSON BD\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
+Copy-Item -Path "$DownloadsFolder\Stuff-main\JSON BD\*" -Destination "$env:APPDATA\BetterDiscord\data\stable" -Recurse
 
 # Downloading the latest Steam
 # https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
@@ -109,7 +247,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -Wait /SILENT
+Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\SteamSetup.exe"
 
@@ -156,7 +294,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Wait
+Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
 
 Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi"
 
@@ -169,7 +307,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\7z2102-x64.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\7z2102-x64.exe" -ArgumentList "/S" -Wait
 
 # Configuring 7Zip
 if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip File Manager.lnk"))
@@ -277,7 +415,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe"
 
@@ -296,15 +434,7 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
 
-	if ((Get-WinSystemLocale).Name -eq "ru-RU")
-	{
-		if ($Host.Version.Major -eq 5)
-		{
-			$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-			$OutputEncoding
-			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "Открыть с помощью &Notepad++" -Force
-		}
-	}
+	New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "РћС‚Р�СЂС‹С‚СЊ СЃ РїРѕРјРѕС‰СЊСЋ &Notepad++" -Force
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
 	cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
@@ -316,7 +446,10 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	cmd.exe --% /c assoc .xml=txtfile
 	cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
 
-	# It is needed to use -Wait to make Notepad++ apply written settings
+	[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
+	$config.Save("$env:APPDATA\Notepad++\config.xml")
+
+	# It is needed to use -wait to make Notepad++ apply written settings
 	Write-Warning -Message "Close Notepad++' window manually"
 	Start-Process -FilePath "$env:APPDATA\Notepad++\config.xml" -Wait
 
@@ -363,7 +496,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
 
@@ -385,7 +518,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\qBitTorrentSetup.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\qBitTorrentSetup.exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\qBitTorrentSetup.exe"
 
@@ -528,7 +661,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT" -Wait
 
 Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe"
 
@@ -571,7 +704,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -Wait
+Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
 Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
 
@@ -587,3 +720,4 @@ Invoke-WebRequest @Parameters
 Start-Process -FilePath "$DownloadsFolder\TlauncherSetup.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\TlauncherSetup.exe"
+    
