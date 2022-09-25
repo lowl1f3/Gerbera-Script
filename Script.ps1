@@ -4,144 +4,10 @@ if (-not $IsAdmin)
 	Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$PSCommandPath`"" -Verb Runas
 	exit
 }
+
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-# Downloading the latest Sophia Script
-# https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest
-$Parameters = @{
-	Uri              = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
-	UseBasicParsing   = $true
-}
-$LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
-
-$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
-{
-	"17763"
-	{
-		$Parameters = @{
-			Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-			UseBasicParsing  = $true
-		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
-		$Parameters = @{
-			Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
-			OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-
-		$Version = "LTSC2019"
-
-		break
-	}
-	{($_ -ge 19041) -and ($_ -le 19048)}
-	{
-		if ($PSVersionTable.PSVersion.Major -eq 5)
-		{
-			# Check if Windows 10 is an LTSC 2021
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -eq "Windows 10 Enterprise LTSC 2021")
-			{
-				$Parameters = @{
-					Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-					UseBasicParsing  = $true
-				}
-				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2021
-				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
-					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-
-				$Version = "LTSC2021"
-			}
-			else
-			{
-				$Parameters = @{
-					Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-					UseBasicParsing  = $true
-				}
-				$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
-				$Parameters = @{
-					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
-					OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-
-				$Version = "Windows_10_PowerShell_5.1"
-			}
-		}
-		else
-		{
-			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-				UseBasicParsing  = $true
-			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
-			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
-				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-
-			$Version = "Windows_10_PowerShell_7"
-		}
-
-	}
-	{$_ -ge 22000}
-	{
-		if ($PSVersionTable.PSVersion.Major -eq 5)
-		{
-			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-				UseBasicParsing  = $true
-			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
-			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
-				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-
-			$Version = "Windows_11_PowerShell_5.1"
-		}
-		else
-		{
-			$Parameters = @{
-				Uri              = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/sophia_script_versions.json"
-				UseBasicParsing  = $true
-			}
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_7
-			$Parameters = @{
-				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
-				OutFile         = "$DownloadsFolder\Sophia.Script.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-
-			$Version = "Windows_11_PowerShell_7"
-		}
-	}
-}
-Invoke-WebRequest @Parameters
-
-$Parameters = @{
-	Path            = "$DownloadsFolder\Sophia.Script.zip"
-	DestinationPath = "$DownloadsFolder"
-	Force           = $true
-}
-Expand-Archive @Parameters
-
-Remove-Item -Path "$DownloadsFolder\Sophia.Script.zip" -Force
-
-Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows 10 v5.13.4\Sophia.ps1`"" -Verb Runas
 
 # Downloading the latest Telegram Desktop x64
 # https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest
@@ -685,4 +551,11 @@ Invoke-WebRequest @Parameters
 Start-Process -FilePath "$DownloadsFolder\TlauncherSetup.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\TlauncherSetup.exe"
-    
+
+# Downloading the latest Sophia Script
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/Download_Sophia.ps1
+Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
+
+Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows *\Sophia.ps1`"" -Verb Runas -Wait
+
+Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse
