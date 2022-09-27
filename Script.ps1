@@ -650,7 +650,7 @@ Start-Process -FilePath "$DownloadsFolder\TlauncherSetup.exe" -Wait
 Remove-Item -Path "$DownloadsFolder\TlauncherSetup.exe"
 
 # Downloading the latest Sophia Script
-# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/Download_Sophia.ps1
+# https://github.com/farag2/Sophia-Script-for-Windows
 Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
 Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows *\Sophia.ps1`"" -Verb Runas -Wait
