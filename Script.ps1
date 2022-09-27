@@ -66,7 +66,7 @@ Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
 
 # Installing BetterDiscord plugins
-Copy-Item -Path "$DownloadsFolder\Stuff-main\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
+Copy-Item -Path "$PSScriptRoot\BetterDiscord plugins\*" -Destination "$env:APPDATA\BetterDiscord\plugins" -Recurse
 
 # Downloading the latest Steam
 # https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
