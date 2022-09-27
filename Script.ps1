@@ -636,19 +636,6 @@ Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -ArgumentLis
 
 Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
 
-# Downloading the latest Tlauncher
-$Parameters = @{
-	Uri             = "https://tlauncher.org/installer"
-	OutFile         = "$DownloadsFolder\TlauncherSetup.exe"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-Invoke-WebRequest @Parameters
-
-Start-Process -FilePath "$DownloadsFolder\TlauncherSetup.exe" -Wait
-
-Remove-Item -Path "$DownloadsFolder\TlauncherSetup.exe"
-
 # Downloading the latest Sophia Script
 # https://github.com/farag2/Sophia-Script-for-Windows
 Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
