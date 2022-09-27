@@ -138,6 +138,18 @@ $Plugins = @(
 
 	# https://github.com/QWERTxD/BetterDiscordPlugins/blob/main/TypingUsersAvatars/TypingUsersAvatars.plugin.js
 	"https://raw.githubusercontent.com/QWERTxD/BetterDiscordPlugins/main/TypingUsersAvatars/TypingUsersAvatars.plugin.js"
+	
+	# https://github.com/TheGreenPig/BetterDiscordPlugins/blob/main/FileViewer/FileViewer.plugin.js
+	"https://raw.githubusercontent.com/TheGreenPig/BetterDiscordPlugins/main/FileViewer/FileViewer.plugin.js"
+	
+	# https://github.com/unknown81311/BetterMediaPlayer/blob/main/BetterMediaPlayer.plugin.js
+	"https://raw.githubusercontent.com/unknown81311/BetterMediaPlayer/main/BetterMediaPlayer.plugin.js"
+	
+	# https://github.com/Arashiryuu/crap/blob/master/ToastIntegrated/MemberCount/MemberCount.plugin.js
+	"https://raw.githubusercontent.com/Arashiryuu/crap/master/ToastIntegrated/MemberCount/MemberCount.plugin.js"
+	
+	# https://github.com/Strencher/BetterDiscordStuff/tree/master/ShowAllActivities
+	"https://raw.githubusercontent.com/Strencher/BetterDiscordStuff/master/ShowAllActivities/ShowAllActivities.plugin.js"
 )
 foreach ($Plugin in $Plugins)
 {
