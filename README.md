@@ -12,7 +12,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
 * Steam
   * Personal config for CS:GO
 * Chrome Enterprise
-* 7Zip
+* 7Zip archiver
 * Custom dark [cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * Notepad++
 * Teamspeak 3
