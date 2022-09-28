@@ -30,6 +30,10 @@ Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).ex
 
 Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
 
+# Adding to the Windows Defender Firewall exclusion list
+New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+
 # Downloading the latest Discord
 # https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86
 $Parameters = @{
@@ -43,6 +47,10 @@ Invoke-WebRequest @Parameters
 Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe"
+
+# Adding to the Windows Defender Firewall exclusion list
+New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
 
 # Downloading the latest BetterDiscord
 # https://api.github.com/repos/BetterDiscord/Installer/releases
@@ -85,19 +93,19 @@ $Plugins = @(
 	# https://github.com/oSumAtrIX/BetterDiscordPlugins/blob/master/NitroEmoteAndScreenShareBypass.plugin.js
 	"https://raw.githubusercontent.com/oSumAtrIX/BetterDiscordPlugins/master/NitroEmoteAndScreenShareBypass.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/BetterFriendList/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterFriendList/BetterFriendList.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterFriendList/BetterFriendList.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/BetterNsfwTag/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterNsfwTag/BetterNsfwTag.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterNsfwTag/BetterNsfwTag.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/BetterSearchPage/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterSearchPage/BetterSearchPage.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterSearchPage/BetterSearchPage.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/CharCounter/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/CharCounter/CharCounter.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CharCounter/CharCounter.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/CreationDate/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/CreationDate/CreationDate.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CreationDate/CreationDate.plugin.js",
 	
 	# https://github.com/An00nymushun/DiscordFreeEmojis/blob/master/DiscordFreeEmojis64px.plugin.js
@@ -106,25 +114,25 @@ $Plugins = @(
 	# https://github.com/Farcrada/DiscordPlugins/blob/master/Double-click-to-edit/DoubleClickToEdit.plugin.js
 	"https://raw.githubusercontent.com/Farcrada/DiscordPlugins/master/Double-click-to-edit/DoubleClickToEdit.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/ImageUtilities/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/ImageUtilities/ImageUtilities.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ImageUtilities/ImageUtilities.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/JoinedAtDate/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/JoinedAtDate/JoinedAtDate.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/JoinedAtDate/JoinedAtDate.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/PluginRepo/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/PluginRepo/PluginRepo.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/PluginRepo/PluginRepo.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/SplitLargeMessages/
+	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/SplitLargeMessages/SplitLargeMessages.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SplitLargeMessages/SplitLargeMessages.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/SpotifyControls/
+	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/SpotifyControls/SpotifyControls.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SpotifyControls/SpotifyControls.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/StaffTag/
+	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/StaffTag/StaffTag.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/StaffTag/StaffTag.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/ThemeRepo/
+	# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/ThemeRepo/ThemeRepo.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ThemeRepo/ThemeRepo.plugin.js",
 	
 	# https://github.com/QWERTxD/BetterDiscordPlugins/blob/main/CallTimeCounter/CallTimeCounter.plugin.js
@@ -148,7 +156,7 @@ $Plugins = @(
 	# https://github.com/Arashiryuu/crap/blob/master/ToastIntegrated/MemberCount/MemberCount.plugin.js
 	"https://raw.githubusercontent.com/Arashiryuu/crap/master/ToastIntegrated/MemberCount/MemberCount.plugin.js",
 	
-	# https://github.com/Strencher/BetterDiscordStuff/tree/master/ShowAllActivities
+	# https://github.com/Strencher/BetterDiscordStuff/blob/master/ShowAllActivities/ShowAllActivities.plugin.js
 	"https://raw.githubusercontent.com/Strencher/BetterDiscordStuff/master/ShowAllActivities/ShowAllActivities.plugin.js"
 )
 foreach ($Plugin in $Plugins)
@@ -179,6 +187,7 @@ Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wa
 
 Remove-Item -Path "$DownloadsFolder\SteamSetup.exe"
 
+# Configuring Steam
 if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 {
 	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam.lnk"))
@@ -190,6 +199,10 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	Remove-Item -Path "$env:PUBLIC\Desktop\Steam.lnk" -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 }
+
+# Adding to the Windows Defender Firewall exclusion list
+New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "$env:ProgramFiles(x86)\Steam\steam.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "$env:ProgramFiles(x86)\Steam\steam.exe" -Action Allow
 
 # Downloading config for CS:GO
 # https://settings.gg/download/403369286
@@ -225,6 +238,10 @@ Invoke-WebRequest @Parameters
 Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
 
 Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi"
+
+# Adding to the Windows Defender Firewall exclusion list
+New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 
 # Downloading the latest 7Zip x64
 # https://www.7-zip.org/a/7z2201-x64.exe
@@ -428,6 +445,10 @@ Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -ArgumentList "/S"
 
 Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
 
+# Adding to the Windows Defender Firewall exclusion list
+New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exee" -Action Allow
+New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+
 # Downloading the latest qBittorent x64
 $Parameters = @{
 	Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
@@ -537,7 +558,7 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 	(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
-	# Add to the Windows Defender Firewall exclusion list
+	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "qBittorent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "qBittorent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 }
@@ -576,6 +597,9 @@ $Parameters = @{
 }
 Expand-Archive @Parameters
 
+Add-MpPreference -ExclusionPath "$DownloadsFolder\KMS\KMSAuto x64.exe"
+Add-MpPreference -ExclusionPath "$DownloadsFolder\KMS\KMSCleaner_x64.exe"
+
 Start-Process -FilePath "$DownloadsFolder\KMS\KMSAuto x64.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\KMS.zip", "$DownloadsFolder\KMS" -Recurse
@@ -612,15 +636,17 @@ Invoke-WebRequest @Parameters
 
 $Parameters = @{
 	Path            = "$DownloadsFolder\AdobeGenP.zip"
-	DestinationPath = "$DownloadsFolder\AdobeGenP"
+	DestinationPath = "$DownloadsFolder\"
 	Force           = $true
 	Verbose         = $true
 }
 Expand-Archive @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\AdobeGenP\Adobe-GenP-2.7\RunMe.exe" -Wait
+Add-MpPreference -ExclusionPath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe"
 
-Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\AdobeGenP" -Recurse
+Start-Process -FilePath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe" -Wait
+
+Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP-2.7" -Recurse
 
 # Downloading the latest Java x64
 # https://www.java.com/ru/download/
@@ -635,6 +661,10 @@ Invoke-WebRequest @Parameters
 Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
 Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
+
+# Configuring Java
+New-NetFirewallRule -DisplayName "Java" -Direction Inbound -Program "$env:Program Files(x86)\Common Files\Oracle\Java\javapath\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java" -Direction Outbound -Program "$env:Program Files(x86)\Common Files\Oracle\Java\javapath\java.exe" -Action Allow
 
 # Downloading the latest Sophia Script
 # https://github.com/farag2/Sophia-Script-for-Windows
