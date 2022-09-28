@@ -18,6 +18,6 @@ A simple script on PowerShell for Windows automating downloading and configuring
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * KMS
 * Adobe Cloud
-  *GenP
+  * GenP
 * Java
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
