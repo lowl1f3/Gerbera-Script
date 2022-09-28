@@ -18,6 +18,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
 * Teamspeak 3
 * qBittorent
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
+  * Word, Excel, PowerPoint, Outlook, Teams
   * KMS
 * Adobe Cloud
   * GenP
