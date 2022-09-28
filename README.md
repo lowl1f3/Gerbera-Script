@@ -1,1 +1,23 @@
-# Stuff
+## About script
+
+A simple script on PowerShell for `Windows 10` & `Windows 11` automating downloading programs and other useful stuff
+
+## Programs
+
+* Telegram
+* Discord
+  * Better Discord and useful plugins
+* Steam
+  * Personal config for CS:GO
+* Chrome Enterprise
+* 7Zip
+* Custom dark [cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
+* Notepad++
+* Teamspeak 3
+* qBittorent
+* [Customizable](https://github.com/farag2/Office) Microsoft Office
+  * KMS
+* Adobe Cloud
+  *GenP
+* Java
+* [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
