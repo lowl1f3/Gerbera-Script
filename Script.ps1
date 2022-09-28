@@ -26,6 +26,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Telegram..."
 Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -ArgumentList "/VERYSILENT" -Wait 
 
 Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
@@ -44,6 +45,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Discord..."
 Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe"
@@ -69,10 +71,12 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Better Discord..."
 Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
 
+Write-Warning -Message "Installing Better Discord plugins..."
 # Installing BetterDiscord plugins
 $Plugins = @(
 	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
@@ -183,6 +187,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Steam..."
 Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\SteamSetup.exe"
@@ -235,6 +240,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Google Chrome..."
 Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
 
 Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi"
@@ -252,6 +258,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing 7Zip..."
 Start-Process -FilePath "$DownloadsFolder\7z2102-x64.exe" -ArgumentList "/S" -Wait
 
 # Configuring 7Zip
@@ -294,6 +301,8 @@ $Parameters = @{
 Expand-Archive @Parameters
 
 Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
+
+Write-Warning -Message "Installing custom cursor..."
 
 New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "Windows 11 Cursors Dark v2 by Jepri Creations" -Force
 New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\Windows_11_dark_v2\working.ani" -Force
@@ -360,6 +369,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Notepad++..."
 Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe"
@@ -441,6 +451,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Teamspeak 3..."
 Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
@@ -449,7 +460,7 @@ Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
 New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exee" -Action Allow
 New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 
-# Downloading the latest qBittorent x64
+# Downloading the latest qBittorrent x64
 $Parameters = @{
 	Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
 	UseBasicParsing = $true
@@ -457,7 +468,7 @@ $Parameters = @{
 }
 $bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
-# Downloading the latest approved by maintainer qBittorent x64
+# Downloading the latest approved by maintainer qBittorrent x64
 # 4.4.3 e.g., not 4.4.3.1 as being the latest provided version
 $Parameters = @{
 	Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
@@ -467,11 +478,12 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing qBittorrent..."
 Start-Process -FilePath "$DownloadsFolder\qBitTorrentSetup.exe" -ArgumentList "/S" -Wait
 
 Remove-Item -Path "$DownloadsFolder\qBitTorrentSetup.exe"
 
-# Configuring qBittorent
+# Configuring qBittorrent
 if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 {
 	Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
@@ -559,10 +571,11 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "qBittorent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "qBittorent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 }
 
+Write-Warning -Message "Installing Office..."
 # Downloading the latest Office
 Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download_Office.ps1`"" -Verb Runas -Wait
 
@@ -572,6 +585,7 @@ if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 }
 
+Write-Warning -Message "Installing KMS..."
 # Downloading the KMS
 # https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip
 $Parameters = @{
@@ -597,6 +611,7 @@ $Parameters = @{
 }
 Expand-Archive @Parameters
 
+# Adding to the Windows Defender exclusion list
 Add-MpPreference -ExclusionPath "$DownloadsFolder\KMS\KMSAuto x64.exe"
 Add-MpPreference -ExclusionPath "$DownloadsFolder\KMS\KMSCleaner_x64.exe"
 
@@ -604,6 +619,7 @@ Start-Process -FilePath "$DownloadsFolder\KMS\KMSAuto x64.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\KMS.zip", "$DownloadsFolder\KMS" -Recurse
 
+Write-Warning -Message "Installing Adobe Cloud..."
 # Downloading the latest Adobe Cloud
 $Parameters = @{
 	Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
@@ -642,13 +658,15 @@ $Parameters = @{
 }
 Expand-Archive @Parameters
 
+# Adding to the Windows Defender exclusion list
 Add-MpPreference -ExclusionPath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe"
 
+Write-Warning -Message "Installing Gen-P..."
 Start-Process -FilePath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP-2.7" -Recurse
 
-# Downloading the latest Java x64
+# Downloading the latest Java(JRE) x64
 # https://www.java.com/ru/download/
 $Parameters = @{
 	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
@@ -658,6 +676,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning -Message "Installing Java(JRE)..."
 Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
 Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
@@ -670,6 +689,9 @@ New-NetFirewallRule -DisplayName "Java" -Direction Outbound -Program "$env:Progr
 # https://github.com/farag2/Sophia-Script-for-Windows
 Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
+Write-Warning -Message "Starting Sophia Script..."
 Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows *\Sophia.ps1`"" -Verb Runas -Wait
 
 Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse
+
+pause
