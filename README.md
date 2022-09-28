@@ -1,6 +1,6 @@
 ## About script
 
-A simple script on PowerShell for `Windows 10` & `Windows 11` automating downloading programs and other useful stuff
+A simple script on PowerShell for Windows 10 & Windows 11 automating downloading and configuring programs and other useful stuff
 
 ## Programs
 
