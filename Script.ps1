@@ -504,7 +504,6 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	Invoke-WebRequest @Parameters
 
 	$LatestVersion = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	$Parameters = @{
 		Uri     = $LatestVersion
 		OutFile = "$DownloadsFolder\qbt-theme.zip"
