@@ -374,6 +374,8 @@ Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPl
 
 Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe"
 
+Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe"
+
 # Configuring Notepad++
 if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 {
