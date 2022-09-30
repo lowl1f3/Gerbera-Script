@@ -350,6 +350,16 @@ if (-not ("WinAPI.SystemParamInfo" -as [type]))
 }
 [WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
 
+Write-Warning -Message "Installing Office..."
+# Downloading the latest Office
+Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download_Office.ps1`"" -Verb Runas -Wait
+
+# Configuring Office
+if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
+{
+	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
+}
+
 Write-Warning -Message "Installing Notepad++..."
 # Downloading the latest Notepad++ x64
 # https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest
@@ -577,16 +587,6 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
-}
-
-Write-Warning -Message "Installing Office..."
-# Downloading the latest Office
-Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download_Office.ps1`"" -Verb Runas -Wait
-
-# Configuring Office
-if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
-{
-	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 }
 
 Write-Warning -Message "Installing KMS..."
