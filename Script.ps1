@@ -616,8 +616,7 @@ $Parameters = @{
 Expand-Archive @Parameters
 
 # Adding to the Windows Defender exclusion list
-Add-MpPreference -ExclusionPath "$DownloadsFolder\KMS\KMSAuto x64.exe"
-Add-MpPreference -ExclusionPath "$DownloadsFolder\KMS\KMSCleaner_x64.exe"
+Set-MpPreference -ExclusionPath "$DownloadsFolder\KMS\"
 
 Start-Process -FilePath "$DownloadsFolder\KMS\KMSAuto x64.exe" -Wait
 
@@ -664,7 +663,7 @@ $Parameters = @{
 Expand-Archive @Parameters
 
 # Adding to the Windows Defender exclusion list
-Add-MpPreference -ExclusionPath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe"
+Set-MpPreference -ExclusionPath "$DownloadsFolder\Adobe-GenP-2.7\"
 
 Start-Process -FilePath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe" -Wait
 
