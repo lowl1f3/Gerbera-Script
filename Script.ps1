@@ -406,11 +406,11 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 
 	[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
 	$config.Save("$env:APPDATA\Notepad++\config.xml")
-    
-    Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
+	
+	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 	# It is needed to use -wait to make Notepad++ apply written settings
 	Write-Warning -Message "Close Notepad++' window manually"
-    # Wait-Process -Name "notepad"
+	# Wait-Process -Name "notepad"
 	Start-Process -FilePath "$env:APPDATA\Notepad++\config.xml" -Wait
 
 	if (-not (Test-Path -Path $env:ProgramFiles\Notepad++\localization))
