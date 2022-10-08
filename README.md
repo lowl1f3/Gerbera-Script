@@ -8,7 +8,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
 
 * Telegram
 * Discord
-  * Better Discord and useful plugins
+  * [Better Discord](https://betterdiscord.app/) and useful plugins
 * Steam
   * Personal config for CS:GO
 * Chrome Enterprise
