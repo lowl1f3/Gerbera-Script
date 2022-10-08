@@ -206,8 +206,8 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 }
 
 # Adding to the Windows Defender Firewall exclusion list
-New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "$env:ProgramFiles(x86)\Steam\steam.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "$env:ProgramFiles(x86)\Steam\steam.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe\Steam\steam.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe\Steam\steam.exe" -Action Allow
 
 Write-Warning -Message "Installing CS:GO config..."
 # Downloading config for CS:GO
@@ -685,8 +685,8 @@ Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -ArgumentLis
 Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
 
 # Configuring Java
-New-NetFirewallRule -DisplayName "Java" -Direction Inbound -Program "$env:Program Files(x86)\Common Files\Oracle\Java\javapath\javaw.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Java" -Direction Outbound -Program "$env:Program Files(x86)\Common Files\Oracle\Java\javapath\java.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe" -Action Allow
 
 Write-Warning -Message "Starting Sophia Script..."
 # Downloading the latest Sophia Script
