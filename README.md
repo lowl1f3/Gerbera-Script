@@ -1,6 +1,6 @@
 ## About script
 
-Script on PowerShell for Windows automating downloading and configuring programs and other useful stuff
+A PowerShell script for Windows that automates program startup and configuration and other useful stuff
 
 ## Programs
 
