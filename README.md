@@ -24,3 +24,8 @@ Script on PowerShell for Windows automating downloading and configuring programs
   * Gen-P
 * Java (JRE)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
+
+## Links
+
+* [Telegram](https://t.me/lowlif3)
+* [Discord](https://discord.com/users/330825971835863042)
