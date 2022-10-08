@@ -4,7 +4,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
 
 ## Programs
 
-> **Note**: Some of them have a silent installing
+> **Note**: Some of them have silent installation
 
 * Telegram
 * Discord
