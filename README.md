@@ -13,7 +13,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
   * Personal config for CS:GO
 * Chrome Enterprise
 * 7Zip archiver
-* Custom dark [cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
+* [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
 * Notepad++
 * Teamspeak 3
 * qBittorent
