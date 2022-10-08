@@ -16,7 +16,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
 * [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
 * Notepad++
 * Teamspeak 3
-* qBittorent
+* qBittorrent
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook, Teams
   * KMS
