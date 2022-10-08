@@ -22,7 +22,7 @@ Script on PowerShell for Windows automating downloading and configuring programs
   * KMS
 * Adobe Cloud
   * Gen-P
-* Java (JRE)
+* Java 8(JRE)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
 
 ## Links
