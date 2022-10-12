@@ -616,8 +616,9 @@ Start-Process -FilePath "$DownloadsFolder\KMS\KMSAuto x64.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\KMS.zip", "$DownloadsFolder\KMS" -Recurse
 
-Write-Warning -Message "Installing Adobe Cloud..."
-# Downloading the latest Adobe Cloud
+Write-Warning -Message "Installing Adobe Creative Cloud..."
+# Downloading the latest Adobe Creative Cloud
+# https://creativecloud.adobe.com/en/apps/download/creative-cloud
 $Parameters = @{
 	Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
 	OutFile         = "$DownloadsFolder\CreativeCloudSetUp.exe"
