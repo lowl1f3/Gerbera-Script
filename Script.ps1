@@ -109,9 +109,6 @@ $Plugins = @(
 	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/CharCounter/CharCounter.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CharCounter/CharCounter.plugin.js",
 	
-	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/CreationDate/CreationDate.plugin.js
-	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CreationDate/CreationDate.plugin.js",
-	
 	# https://github.com/An00nymushun/DiscordFreeEmojis/blob/master/DiscordFreeEmojis64px.plugin.js
 	"https://raw.githubusercontent.com/An00nymushun/DiscordFreeEmojis/master/DiscordFreeEmojis64px.plugin.js",
 	
