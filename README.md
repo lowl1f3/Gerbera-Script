@@ -21,7 +21,7 @@ A PowerShell script for Windows that automates program startup and configuration
   * Word, Excel, PowerPoint, Outlook, Teams
   * KMS
 * Adobe Cloud
-  * Gen-P
+  * GenP
 * Java 8(JRE)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
 
