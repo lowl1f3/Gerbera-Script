@@ -668,7 +668,7 @@ Write-Warning -Message "Installing Java 8(JDK)..."
 # Downloading the latest Java 8(JDK) x64
 # https://www.oracle.com/java/technologies/downloads/#java8-windows
 $Parameters = @{
-	Uri             = "https://download.oracle.com/otn/java/jdk/8u341-b10/424b9da4b48848379167015dcc250d8d/jdk-8u341-windows-x64.exe?AuthParam=1665606236_ba4d042a1a1931a4f7579f560fd22093"
+	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
 	OutFile         = "$DownloadsFolder\Java 8(JDK) for Windows x64.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
