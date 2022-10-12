@@ -22,7 +22,7 @@ A PowerShell script for Windows that automates program startup and configuration
   * KMS
 * Adobe Cloud
   * GenP
-* Java 8(JRE)
+* Java 8(JDK)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
 
 ## Links
