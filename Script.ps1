@@ -200,8 +200,8 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 }
 
 # Adding to the Windows Defender Firewall exclusion list
-New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe\Steam\steam.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe\Steam\steam.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Steam\steam.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Steam\steam.exe" -Action Allow
 
 Write-Warning -Message "Installing CS:GO config..."
 # Downloading config for CS:GO
@@ -630,8 +630,8 @@ Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList 
 
 Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe"
 
-Write-Warning -Message "Installing Gen-P..."
-# Downloading the Adobe Gen-P 2.7
+Write-Warning -Message "Installing GenP..."
+# Downloading the Adobe GenP 2.7
 # https://www.mediafire.com/file/3lpsrxiz47mlhu2/Adobe-GenP-2.7.zip
 $Parameters = @{
 	Uri             = "https://www.mediafire.com/file/3lpsrxiz47mlhu2/Adobe-GenP-2.7.zip"
@@ -663,24 +663,43 @@ Start-Process -FilePath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP-2.7" -Recurse
 
-Write-Warning -Message "Installing Java(JRE)..."
-# Downloading the latest Java(JRE) x64
+Write-Warning -Message "Installing Java 8(JDK)..."
+# Downloading the latest Java 8(JDK) x64
 # https://www.java.com/ru/download/
 $Parameters = @{
 	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
-	OutFile         = "$DownloadsFolder\Java for Windows x64.exe"
+	OutFile         = "$DownloadsFolder\Java 8 for Windows x64.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\Java for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
+Start-Process -FilePath "$DownloadsFolder\Java 8 for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
-Remove-Item -Path "$DownloadsFolder\Java for Windows x64.exe"
+Remove-Item -Path "$DownloadsFolder\Java 8 for Windows x64.exe"
 
-# Configuring Java
-New-NetFirewallRule -DisplayName "Java" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\javaw.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Java" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe" -Action Allow
+# Configuring Java 8(JDK)
+New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe" -Action Allow
+
+Write-Warning -Message "Installing Java 19(JDK)..."
+# Downloading the latest Java 19(JDK) x64
+# https://www.oracle.com/java/technologies/downloads/#jdk19-windows
+$Parameters = @{
+	Uri             = "https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.msi"
+	OutFile         = "$DownloadsFolder\Java 19 for Windows x64.msi"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+Start-Process -FilePath "$DownloadsFolder\Java 19 for Windows x64.msi" -ArgumentList "/passive" -Wait
+
+Remove-Item -Path "$DownloadsFolder\Java 19 for Windows x64.msi"
+
+# Configuring Java 19(JDK)
+New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
 
 Write-Warning -Message "Starting Sophia Script..."
 # Downloading the latest Sophia Script
