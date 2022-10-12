@@ -12,7 +12,7 @@ A PowerShell script for Windows that automates program startup and configuration
 * Steam
   * Personal config for CS:GO
 * Chrome Enterprise
-* 7Zip archiver
+* 7-Zip archiver
 * [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
 * Notepad++
 * Teamspeak 3
