@@ -6,7 +6,7 @@ A PowerShell script for Windows that automates program startup and configuration
 
 > **Note**: Some of them have silent installation
 
-* [Telegram](https://desktop.telegram.org/?setln=en)
+* [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Stuff/blob/main/Script.ps1#L81)
 * [Steam](https://store.steampowered.com/about/)
