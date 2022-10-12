@@ -397,7 +397,7 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
 
 	New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "РћС‚Рѐ¡ЂС‹С‚СЊ СЃ РїРѕРјРѕС‰СЊСЋ &Notepad++" -Force
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
+	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "$env:ProgramFiles\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
 	cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
 	cmd.exe --% /c assoc .cfg=txtfile
@@ -666,22 +666,23 @@ Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP
 
 Write-Warning -Message "Installing Java 8(JDK)..."
 # Downloading the latest Java 8(JDK) x64
-# https://www.java.com/ru/download/
+# https://www.oracle.com/java/technologies/downloads/#java8-windows
 $Parameters = @{
-	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
-	OutFile         = "$DownloadsFolder\Java 8 for Windows x64.exe"
+	Uri             = "https://download.oracle.com/otn/java/jdk/8u341-b10/424b9da4b48848379167015dcc250d8d/jdk-8u341-windows-x64.exe?AuthParam=1665606236_ba4d042a1a1931a4f7579f560fd22093"
+	OutFile         = "$DownloadsFolder\Java 8(JDK) for Windows x64.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\Java 8 for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
+Start-Process -FilePath "$DownloadsFolder\Java 8(JDK) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
-Remove-Item -Path "$DownloadsFolder\Java 8 for Windows x64.exe"
+Remove-Item -Path "$DownloadsFolder\Java 8(JDK) for Windows x64.exe"
+Remove-Item -Path "$env:ProgramFiles\Java\jdk1.8.0_341\javafx-src.zip", "$env:ProgramFiles\Java\jdk1.8.0_341\jmc.txt", "$env:ProgramFiles\Java\jdk1.8.0_341\src.zip"
 
 # Configuring Java 8(JDK)
-New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\javaw.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\javapath\java.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\java.exe" -Action Allow
 
 Write-Warning -Message "Installing Java 19(JDK)..."
 # Downloading the latest Java 19(JDK) x64
