@@ -18,7 +18,7 @@ A PowerShell script for Windows that automates program startup and configuration
 * [Teamspeak 3](https://teamspeak.com/en/)
 * [qBittorrent](https://www.qbittorrent.org/)
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
-  * Word, Excel, PowerPoint, Outlook, Teams
+  * Word, Excel, PowerPoint, Outlook, Teams, OneDrive
   * KMS
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
   * GenP

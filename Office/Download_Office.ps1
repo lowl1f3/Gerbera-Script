@@ -252,7 +252,7 @@ function DownloadOffice
 }
 
 # Download Offce. Firstly, download Office, then install it
-DownloadOffice -Branch O365ProPlusRetail -Channel SemiAnnual -Components Excel, Word, PowerPoint, Outlook, Teams
+DownloadOffice -Branch O365ProPlusRetail -Channel SemiAnnual -Components Excel, Word, PowerPoint, Outlook, Teams, OneDrive
 
 if ($Script:RegionChanged)
 {
