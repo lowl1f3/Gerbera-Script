@@ -8,7 +8,7 @@ A PowerShell script for Windows that automates program startup and configuration
 
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
-  * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Stuff/blob/main/Script.ps1#L81)
+  * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Stuff/blob/main/src/Script.ps1#L81)
 * [Steam](https://store.steampowered.com/about/)
   * Personal config for CS:GO
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
