@@ -10,8 +10,8 @@ if (-not $IsAdmin)
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 Write-Warning -Message "Installing Telegram..."
-# Downloading the latest Telegram Desktop x64
-# https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest
+# Get the latest Telegram Desktop version
+# https://github.com/telegramdesktop/tdesktop/releases
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest"
 	UseBasicParsing = $true
@@ -19,6 +19,7 @@ $Parameters = @{
 }
 $LatestTelegramTag = (Invoke-RestMethod @Parameters).tag_name.replace("v", "")
 
+# Downloading the latest Telegram Desktop
 $Parameters = @{
 	Uri             = "https://updates.tdesktop.com/tsetup/tsetup.$($LatestTelegramTag).exe"
 	OutFile         = "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
@@ -29,7 +30,7 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -ArgumentList "/VERYSILENT" -Wait 
 
-Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe"
+Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -Force
 
 # Adding to the Windows Defender Firewall exclusion list
 New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
@@ -37,7 +38,7 @@ New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:A
 
 Write-Warning -Message "Installing Discord..."
 # Downloading the latest Discord
-# https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86
+# https://discord.com/
 $Parameters = @{
 	Uri             = "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
 	OutFile         = "$DownloadsFolder\DiscordSetup.exe"
@@ -48,7 +49,7 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe"
+Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force
 
 # Adding to the Windows Defender Firewall exclusion list
 New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
@@ -56,7 +57,7 @@ New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:AP
 
 Write-Warning -Message "Installing Better Discord..."
 # Downloading the latest BetterDiscord
-# https://api.github.com/repos/BetterDiscord/Installer/releases
+# https://github.com/BetterDiscord/Installer/releases
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
 	UseBasicParsing = $true
@@ -74,10 +75,10 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe"
+Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force
 
 Write-Warning -Message "Installing Better Discord plugins..."
-# Installing BetterDiscord plugins
+# Installing Better Discord plugins
 $Plugins = @(
 	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
 	"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Library/0BDFDB.plugin.js",
@@ -167,7 +168,7 @@ foreach ($Plugin in $Plugins)
 
 Write-Warning -Message "Installing Steam..."
 # Downloading the latest Steam
-# https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
+# https://store.steampowered.com/about/
 $Parameters = @{
 	Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
 	OutFile         = "$DownloadsFolder\SteamSetup.exe"
@@ -178,7 +179,7 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wait
 
-Remove-Item -Path "$DownloadsFolder\SteamSetup.exe"
+Remove-Item -Path "$DownloadsFolder\SteamSetup.exe" -Force
 
 # Configuring Steam
 if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
@@ -218,7 +219,7 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\403369286\730\local
 	Expand-Archive @Parameters
 }
 
-Remove-Item -Path "$DownloadsFolder\config.zip"
+Remove-Item -Path "$DownloadsFolder\config.zip" -Force
 
 Write-Warning -Message "Installing Google Chrome..."
 # Downloading the latest Chrome Enterprise x64
@@ -232,23 +233,39 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
 
-Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi"
+Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force
 
 # Adding to the Windows Defender Firewall exclusion list
 New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 
 Write-Warning -Message "Installing 7Zip..."
-# Downloading the latest 7Zip x64
-# https://www.7-zip.org/a/7z2201-x64.exe
+# Get the latest 7-Zip download URL
 $Parameters = @{
-	Uri     = "https://www.7-zip.org/a/7z2201-x64.exe"
-	OutFile = "$DownloadsFolder\7z2102-x64.exe"
-	Verbose = $true
+	Uri             = "https://sourceforge.net/projects/sevenzip/best_release.json"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+$bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename.replace("exe", "msi")
+
+# Downloading the latest 7-Zip x64
+$Parameters = @{
+	Uri             = "https://nchc.dl.sourceforge.net/project/sevenzip$($bestRelease)"
+	OutFile         = "$DownloadsFolder\7Zip.msi"
+	UseBasicParsing = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\7z2102-x64.exe" -ArgumentList "/S" -Wait
+# Expand 7-Zip
+$Arguments = @(
+	"/a `"$DownloadsFolder\7Zip.msi`""
+	"TARGETDIR=`"$DownloadsFolder\7zip`""
+	"/qb"
+)
+Start-Process "msiexec" -ArgumentList $Arguments -Wait
+
+Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force
 
 # Configuring 7Zip
 if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip File Manager.lnk"))
@@ -264,7 +281,7 @@ if (-not (Test-Path -Path HKCU:\SOFTWARE\7-Zip\Options))
 New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name ContextMenu -PropertyType DWord -Value 4192 -Force
 New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name MenuIcons -PropertyType DWord -Value 1 -Force
 
-Remove-Item -Path "$DownloadsFolder\7z2102-x64.exe"
+Remove-Item -Path "$DownloadsFolder\7z2102-x64.exe" -Force
 
 Write-Warning -Message "Installing custom cursor..."
 # Installing custom cursor
@@ -349,7 +366,7 @@ if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 }
 
 Write-Warning -Message "Installing Notepad++..."
-# Downloading the latest Notepad++ x64
+# Get the latest Notepad++
 # https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
@@ -359,6 +376,7 @@ $Parameters = @{
 $LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 $LatestVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
 
+# Downloading the latest Notepad++
 # https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/
 $Parameters = @{
 	Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($LatestNotepadPlusPlusTag)/npp.$($LatestVersion).Installer.x64.exe"
@@ -370,7 +388,7 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -ArgumentList "/S" -Wait
 
-Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe"
+Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Force
 
 Write-Warning -Message "Close Notepad++' window manually"
 Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
@@ -445,8 +463,7 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 
 Write-Warning -Message "Installing Teamspeak 3..."
 # Downloading the latest Teamspeak 3 x64
-# https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe
-# https://www.teamspeak.com/ru/downloads/#
+# https://www.teamspeak.com/en/downloads/#
 $Parameters = @{
 	Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
 	OutFile         = "$DownloadsFolder\TeamspeakSetup.exe"
@@ -457,13 +474,14 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -ArgumentList "/S" -Wait
 
-Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe"
+Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe" -Force
 
 # Adding to the Windows Defender Firewall exclusion list
 New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exee" -Action Allow
 New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 
-# Downloading the latest qBittorrent x64
+Write-Warning -Message "Installing qBittorrent..."
+# Get the latest qBittorrent x64
 $Parameters = @{
 	Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
 	UseBasicParsing = $true
@@ -471,20 +489,19 @@ $Parameters = @{
 }
 $bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
-Write-Warning -Message "Installing qBittorrent..."
 # Downloading the latest approved by maintainer qBittorrent x64
 # 4.4.3 e.g., not 4.4.3.1 as being the latest provided version
 $Parameters = @{
 	Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
-	OutFile         = "$DownloadsFolder\qBitTorrentSetup.exe"
+	OutFile         = "$DownloadsFolder\qBittorrentSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\qBitTorrentSetup.exe" -ArgumentList "/S" -Wait
+Start-Process -FilePath "$DownloadsFolder\qBittorrentSetup.exe" -ArgumentList "/S" -Wait
 
-Remove-Item -Path "$DownloadsFolder\qBitTorrentSetup.exe"
+Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force
 
 # Configuring qBittorrent
 if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
@@ -608,7 +625,7 @@ Set-MpPreference -ExclusionPath "$DownloadsFolder\KMS\"
 
 Start-Process -FilePath "$DownloadsFolder\KMS\KMSAuto x64.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\KMS.zip", "$DownloadsFolder\KMS" -Recurse
+Remove-Item -Path "$DownloadsFolder\KMS.zip", "$DownloadsFolder\KMS" -Recurse -Force
 
 Write-Warning -Message "Installing Adobe Creative Cloud..."
 # Downloading the latest Adobe Creative Cloud
@@ -623,7 +640,7 @@ Invoke-WebRequest @Parameters
 
 Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT" -Wait
 
-Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe"
+Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force
 
 Write-Warning -Message "Installing GenP..."
 # Downloading the Adobe GenP 2.7
@@ -656,42 +673,42 @@ Set-MpPreference -ExclusionPath "$DownloadsFolder\Adobe-GenP-2.7\"
 
 Start-Process -FilePath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe" -Wait
 
-Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP-2.7" -Recurse
+Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP-2.7" -Recurse -Force
 
-Write-Warning -Message "Installing Java 8(JDK)..."
-# Downloading the latest Java 8(JDK) x64
-# https://www.oracle.com/java/technologies/downloads/#java8-windows
+Write-Warning -Message "Installing Java 8(JRE)..."
+# Downloading the latest Java 8(JRE) x64
+# https://www.java.com/download/ie_manual.jsp
 $Parameters = @{
-	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=246808_424b9da4b48848379167015dcc250d8d"
-	OutFile         = "$DownloadsFolder\Java 8(JDK) for Windows x64.exe"
+	Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=247106_10e8cce67c7843478f41411b7003171c"
+	OutFile         = "$DownloadsFolder\Java 8(JRE) for Windows x64.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\Java 8(JDK) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
+Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
-Remove-Item -Path "$DownloadsFolder\Java 8(JDK) for Windows x64.exe"
-Remove-Item -Path "$env:ProgramFiles\Java\jdk1.8.0_341\javafx-src.zip", "$env:ProgramFiles\Java\jdk1.8.0_341\jmc.txt", "$env:ProgramFiles\Java\jdk1.8.0_341\src.zip"
+Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force
+Remove-Item -Path "$env:ProgramFiles\Java\jdk1.8.0_341\javafx-src.zip", "$env:ProgramFiles\Java\jdk1.8.0_341\jmc.txt", "$env:ProgramFiles\Java\jdk1.8.0_341\src.zip" -Force -Recurse
 
-# Configuring Java 8(JDK)
-New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\javaw.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Java 8(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\java.exe" -Action Allow
+# Configuring Java 8(JRE)
+New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\java.exe" -Action Allow
 
 Write-Warning -Message "Installing Java 19(JDK)..."
 # Downloading the latest Java 19(JDK) x64
 # https://www.oracle.com/java/technologies/downloads/#jdk19-windows
 $Parameters = @{
 	Uri             = "https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.msi"
-	OutFile         = "$DownloadsFolder\Java 19 for Windows x64.msi"
+	OutFile         = "$DownloadsFolder\Java 19(JDK) for Windows x64.msi"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\Java 19 for Windows x64.msi" -ArgumentList "/passive" -Wait
+Start-Process -FilePath "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -ArgumentList "/passive" -Wait
 
-Remove-Item -Path "$DownloadsFolder\Java 19 for Windows x64.msi"
+Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force
 
 # Configuring Java 19(JDK)
 New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
@@ -704,6 +721,6 @@ Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
 Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows *\Sophia.ps1`"" -Verb Runas -Wait
 
-Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse
+Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse -Force
 
 pause
