@@ -9,7 +9,7 @@ if (-not $IsAdmin)
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-Write-Warning -Message "Installing Telegram..."
+Write-Verbose -Message "Installing Telegram..." -Verbose
 # Get the latest Telegram Desktop version
 # https://github.com/telegramdesktop/tdesktop/releases
 $Parameters = @{
@@ -36,7 +36,7 @@ Remove-Item -Path "$DownloadsFolder\TelegramSetup.$($latestTelegramTag).exe" -Fo
 New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 
-Write-Warning -Message "Installing Discord..."
+Write-Verbose -Message "Installing Discord..." -Verbose
 # Downloading the latest Discord
 # https://discord.com/
 $Parameters = @{
@@ -55,7 +55,7 @@ Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force
 New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
 
-Write-Warning -Message "Installing Better Discord..."
+Write-Verbose -Message "Installing Better Discord..." -Verbose
 # Downloading the latest BetterDiscord
 # https://github.com/BetterDiscord/Installer/releases
 $Parameters = @{
@@ -77,7 +77,7 @@ Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force
 
-Write-Warning -Message "Installing Better Discord plugins..."
+Write-Verbose -Message "Installing Better Discord plugins..." -Verbose
 # Installing Better Discord plugins
 $Plugins = @(
 	# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
@@ -166,7 +166,7 @@ foreach ($Plugin in $Plugins)
 	Invoke-Webrequest @Parameters
 }
 
-Write-Warning -Message "Installing Steam..."
+Write-Verbose -Message "Installing Steam..." -Verbose
 # Downloading the latest Steam
 # https://store.steampowered.com/about/
 $Parameters = @{
@@ -198,7 +198,7 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Steam\steam.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Steam\steam.exe" -Action Allow
 
-Write-Warning -Message "Installing CS:GO config..."
+Write-Verbose -Message "Installing CS:GO config..." -Verbose
 # Downloading config for CS:GO
 # https://settings.gg/download/403369286
 $Parameters = @{
@@ -221,7 +221,7 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\403369286\730\local
 
 Remove-Item -Path "$DownloadsFolder\config.zip" -Force
 
-Write-Warning -Message "Installing Google Chrome..."
+Write-Verbose -Message "Installing Google Chrome Enterprise..." -Verbose
 # Downloading the latest Chrome Enterprise x64
 # https://chromeenterprise.google/browser/download
 $Parameters = @{
@@ -239,7 +239,7 @@ Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -For
 New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 
-Write-Warning -Message "Installing 7Zip..."
+Write-Verbose -Message "Installing 7-Zip..." -Verbose
 # Get the latest 7-Zip download URL
 $Parameters = @{
 	Uri             = "https://sourceforge.net/projects/sevenzip/best_release.json"
@@ -283,7 +283,7 @@ New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name MenuIcons -PropertyTyp
 
 Remove-Item -Path "$DownloadsFolder\7z2102-x64.exe" -Force
 
-Write-Warning -Message "Installing custom cursor..."
+Write-Verbose -Message "Installing custom cursor..." -Verbose
 # Installing custom cursor
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
 $Parameters = @{
@@ -355,7 +355,7 @@ if (-not ("WinAPI.SystemParamInfo" -as [type]))
 }
 [WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
 
-Write-Warning -Message "Installing Office..."
+Write-Verbose -Message "Installing Office..." -Verbose
 # Downloading the latest Office
 Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download_Office.ps1`"" -Verb Runas -Wait
 
@@ -365,7 +365,7 @@ if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 }
 
-Write-Warning -Message "Installing Notepad++..."
+Write-Verbose -Message "Installing Notepad++..." -Verbose
 # Get the latest Notepad++
 # https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest
 $Parameters = @{
@@ -461,26 +461,26 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Stop-Process -Name notepad++ -ErrorAction Ignore
 }
 
-Write-Warning -Message "Installing Teamspeak 3..."
-# Downloading the latest Teamspeak 3 x64
+Write-Verbose -Message "Installing TeamSpeak 3..." -Verbose
+# Downloading the latest TeamSpeak 3 x64
 # https://www.teamspeak.com/en/downloads/#
 $Parameters = @{
 	Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
-	OutFile         = "$DownloadsFolder\TeamspeakSetup.exe"
+	OutFile         = "$DownloadsFolder\TeamSpeakSetup.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\TeamspeakSetup.exe" -ArgumentList "/S" -Wait
+Start-Process -FilePath "$DownloadsFolder\TeamSpeakSetup.exe" -ArgumentList "/S" -Wait
 
-Remove-Item -Path "$DownloadsFolder\TeamspeakSetup.exe" -Force
+Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force
 
 # Adding to the Windows Defender Firewall exclusion list
 New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exee" -Action Allow
 New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 
-Write-Warning -Message "Installing qBittorrent..."
+Write-Verbose -Message "Installing qBittorrent..." -Verbose
 # Get the latest qBittorrent x64
 $Parameters = @{
 	Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
@@ -594,7 +594,7 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 }
 
-Write-Warning -Message "Installing KMS..."
+Write-Verbose -Message "Installing KMS..." -Verbose
 # Downloading the KMS
 # https://www.mediafire.com/file/fhd1e21ghumvx89/KMS.zip
 $Parameters = @{
@@ -627,7 +627,7 @@ Start-Process -FilePath "$DownloadsFolder\KMS\KMSAuto x64.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\KMS.zip", "$DownloadsFolder\KMS" -Recurse -Force
 
-Write-Warning -Message "Installing Adobe Creative Cloud..."
+Write-Verbose -Message "Installing Adobe Creative Cloud..." -Verbose
 # Downloading the latest Adobe Creative Cloud
 # https://creativecloud.adobe.com/en/apps/download/creative-cloud
 $Parameters = @{
@@ -642,7 +642,7 @@ Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList 
 
 Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force
 
-Write-Warning -Message "Installing GenP..."
+Write-Verbose -Message "Installing GenP..." -Verbose
 # Downloading the Adobe GenP 2.7
 # https://www.mediafire.com/file/3lpsrxiz47mlhu2/Adobe-GenP-2.7.zip
 $Parameters = @{
@@ -675,7 +675,7 @@ Start-Process -FilePath "$DownloadsFolder\Adobe-GenP-2.7\RunMe.exe" -Wait
 
 Remove-Item -Path "$DownloadsFolder\AdobeGenP.zip", "$DownloadsFolder\Adobe-GenP-2.7" -Recurse -Force
 
-Write-Warning -Message "Installing Java 8(JRE)..."
+Write-Verbose -Message "Installing latest Java 8(JRE) x64..." -Verbose
 # Downloading the latest Java 8(JRE) x64
 # https://www.java.com/download/ie_manual.jsp
 $Parameters = @{
@@ -695,7 +695,7 @@ Remove-Item -Path "$env:ProgramFiles\Java\jdk1.8.0_341\javafx-src.zip", "$env:Pr
 New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\javaw.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\java.exe" -Action Allow
 
-Write-Warning -Message "Installing Java 19(JDK)..."
+Write-Verbose -Message "Installing latest Java 19(JDK) x64..." -Verbose
 # Downloading the latest Java 19(JDK) x64
 # https://www.oracle.com/java/technologies/downloads/#jdk19-windows
 $Parameters = @{
@@ -714,7 +714,7 @@ Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force
 New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
 
-Write-Warning -Message "Starting Sophia Script..."
+Write-Verbose -Message "Starting Sophia Script..." -Verbose
 # Downloading the latest Sophia Script
 # https://github.com/farag2/Sophia-Script-for-Windows
 Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
