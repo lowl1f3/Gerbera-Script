@@ -47,9 +47,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
-
-Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force
+Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe"
 
 # Adding to the Windows Defender Firewall exclusion list
 New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
@@ -73,9 +71,14 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
+Write-Warning "Close Discord process manually after installing BetterDiscord."
+
 Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
+Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
+
 Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force
+Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force
 
 Write-Verbose -Message "Installing Better Discord plugins..." -Verbose
 # Installing Better Discord plugins
@@ -257,13 +260,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-# Expand 7-Zip
-$Arguments = @(
-	"/a `"$DownloadsFolder\7Zip.msi`""
-	"TARGETDIR=`"$DownloadsFolder\7zip`""
-	"/qb"
-)
-Start-Process "msiexec" -ArgumentList $Arguments -Wait
+Start-Process -FilePath "$DownloadsFolder\7Zip.msi" -ArgumentList "/passive" -Wait
 
 Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force
 
@@ -280,8 +277,6 @@ if (-not (Test-Path -Path HKCU:\SOFTWARE\7-Zip\Options))
 }
 New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name ContextMenu -PropertyType DWord -Value 4192 -Force
 New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name MenuIcons -PropertyType DWord -Value 1 -Force
-
-Remove-Item -Path "$DownloadsFolder\7z2102-x64.exe" -Force
 
 Write-Verbose -Message "Installing custom cursor..." -Verbose
 # Installing custom cursor
@@ -496,92 +491,94 @@ Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force
 # Configuring qBittorrent
 if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 {
-	Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
+	New-Item -Path "$env:APPDATA\" -Name "qBittorrent" -ItemType "directory"
 
-	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent.lnk"))
+	if (Test-Path -Path "$env:APPDATA\qBittorrent")
 	{
-		Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
-	}
-	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
-	Remove-Item -Path "$env:ProgramFiles\qBittorrent\translations" -Exclude qt_ru.qm, qtbase_ru.qm -Recurse -Force -ErrorAction Ignore
 
-	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
-		OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
+		Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
 
-	$LatestVersion = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
-	$Parameters = @{
-		Uri     = $LatestVersion
-		OutFile = "$DownloadsFolder\qbt-theme.zip"
-		Verbose = $true
-	}
-	Invoke-WebRequest @Parameters
+		$Parameters = @{
+			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
+			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
 
-	<#
-		.SYNOPSIS
-		Expand the specific file from ZIP archive. Folder structure will be created recursively
-		.Parameter Source
-		The source ZIP archive
-		.Parameter Destination
-		Where to expand file
-		.Parameter File
-		Assign the file to expand
-		.Example
-		ExtractZIPFile -Source "$DownloadsFolder\Folder\File.zip" -Destination "$DownloadsFolder\Folder" -File "Folder1/Folder2/File.txt"
-	#>
-	function ExtractZIPFile
-	{
-		[CmdletBinding()]
-		param
-		(
-			[string]
-			$Source,
+		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
+		Remove-Item -Path "$env:ProgramFiles\qBittorrent\translations" -Exclude qt_ru.qm, qtbase_ru.qm -Recurse -Force -ErrorAction Ignore
 
-			[string]
-			$Destination,
+		$LatestVersionQbitTheme = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
+		$Parameters = @{
+			Uri     = $LatestVersionQbitTheme
+			OutFile = "$DownloadsFolder\qbt-theme.zip"
+			Verbose = $true
+		}
+		Invoke-WebRequest @Parameters
 
-			[string]
-			$File
-		)
-
-		Add-Type -Assembly System.IO.Compression.FileSystem
-
-		$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
-		$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
-
-		$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
-
-		if (-not (Test-Path -Path $Destination))
+		<#
+			.SYNOPSIS
+			Expand the specific file from ZIP archive. Folder structure will be created recursively
+			.Parameter Source
+			The source ZIP archive
+			.Parameter Destination
+			Where to expand file
+			.Parameter File
+			Assign the file to expand
+			.Example
+			ExtractZIPFile -Source "$DownloadsFolder\Folder\File.zip" -Destination "$DownloadsFolder\Folder" -File "Folder1/Folder2/File.txt"
+		#>
+		function ExtractZIPFile
 		{
-			New-Item -Path $Destination -ItemType Directory -Force
+			[CmdletBinding()]
+			param
+			(
+				[string]
+				$Source,
+
+				[string]
+				$Destination,
+
+				[string]
+				$File
+			)
+
+			Add-Type -Assembly System.IO.Compression.FileSystem
+
+			$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
+			$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
+
+			$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
+
+			if (-not (Test-Path -Path $Destination))
+			{
+				New-Item -Path $Destination -ItemType Directory -Force
+			}
+
+			$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
+
+			$ZIP.Dispose()
 		}
 
-		$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
+		$Parameters = @{
+			Source      = "$DownloadsFolder\qbt-theme.zip"
+			Destination = "$env:APPDATA\qBittorrent"
+			File        = "darkstylesheet.qbtheme"
+		}
+		ExtractZIPFile @Parameters
 
-		$ZIP.Dispose()
+		Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force
+
+		# Enable dark theme
+		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
+		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
+		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
+
+		# Adding to the Windows Defender Firewall exclusion list
+		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 	}
-
-	$Parameters = @{
-		Source      = "$DownloadsFolder\qbt-theme.zip"
-		Destination = "$env:APPDATA\qBittorrent"
-		File        = "darkstylesheet.qbtheme"
-	}
-	ExtractZIPFile @Parameters
-
-	Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force
-
-	# Enable dark theme
-	$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
-	# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
-	(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
-
-	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 }
 
 Write-Verbose -Message "Installing Office..." -Verbose
@@ -689,11 +686,10 @@ Invoke-WebRequest @Parameters
 Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
 Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force
-Remove-Item -Path "$env:ProgramFiles\Java\jdk1.8.0_341\javafx-src.zip", "$env:ProgramFiles\Java\jdk1.8.0_341\jmc.txt", "$env:ProgramFiles\Java\jdk1.8.0_341\src.zip" -Force -Recurse
 
 # Configuring Java 8(JRE)
-New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\javaw.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_341\bin\java.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_351\bin\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_351\bin\java.exe" -Action Allow
 
 Write-Verbose -Message "Installing latest Java 19(JDK) x64..." -Verbose
 # Downloading the latest Java 19(JDK) x64
@@ -713,6 +709,9 @@ Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force
 # Configuring Java 19(JDK)
 New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
+
+Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
+Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
 Write-Verbose -Message "Starting Sophia Script..." -Verbose
 # Downloading the latest Sophia Script
