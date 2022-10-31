@@ -355,16 +355,6 @@ if (-not ("WinAPI.SystemParamInfo" -as [type]))
 }
 [WinAPI.SystemParamInfo]::SystemParametersInfo(0x0057, 0, $null, 0)
 
-Write-Verbose -Message "Installing Office..." -Verbose
-# Downloading the latest Office
-Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download_Office.ps1`"" -Verb Runas -Wait
-
-# Configuring Office
-if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
-{
-	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
-}
-
 Write-Verbose -Message "Installing Notepad++..." -Verbose
 # Get the latest Notepad++
 # https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest
@@ -490,7 +480,7 @@ $Parameters = @{
 $bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
 # Downloading the latest approved by maintainer qBittorrent x64
-# 4.4.3 e.g., not 4.4.3.1 as being the latest provided version
+# For example 4.4.3 e.g., not 4.4.3.1 
 $Parameters = @{
 	Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
 	OutFile         = "$DownloadsFolder\qBittorrentSetup.exe"
@@ -592,6 +582,16 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+}
+
+Write-Verbose -Message "Installing Office..." -Verbose
+# Downloading the latest Office
+Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Stuff-main\Office\Download.ps1`"" -Verb Runas -Wait
+
+# Configuring Office
+if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
+{
+	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 }
 
 Write-Verbose -Message "Installing KMS..." -Verbose
