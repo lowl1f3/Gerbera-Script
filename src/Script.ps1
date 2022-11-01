@@ -583,7 +583,7 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 
 Write-Verbose -Message "Installing Office..." -Verbose
 # Downloading the latest Office
-Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Script-main\Office\Download.ps1`"" -Verb Runas -Wait
+Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Script-main\src\Office\Download.ps1`"" -Verb Runas -Wait
 
 # Configuring Office
 if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
