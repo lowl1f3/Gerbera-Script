@@ -1,12 +1,15 @@
-## About script
+# About script
 
 A PowerShell script for Windows that automates program startup and configuration and other useful stuff
 
 Only for `Windows 10` & `Windows 11`
 
-## Programs
+# Programs
 
 > **Note**: Some of them have silent installation
+
+<details>
+  <summary>List</summary>
 
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
@@ -27,8 +30,9 @@ Only for `Windows 10` & `Windows 11`
 * [Java 8](https://www.java.com/en/download/)(JRE) & [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)(JDK)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
   * [System requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
+</details>
 
-## Links
+# Links
 
 * [Telegram](https://t.me/lowlif3)
 * [Discord](https://discord.com/users/330825971835863042)
