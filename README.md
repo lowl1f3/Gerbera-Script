@@ -24,7 +24,7 @@ Only for `Windows 10` & `Windows 11`
   * KMS
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
   * GenP
-* [Java 8](https://www.java.com/en/download/) & [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)(JDK)
+* [Java 8](https://www.java.com/en/download/)(JRE) & [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)(JDK)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
   * [System requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 
