@@ -381,6 +381,13 @@ Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 # Configuring Notepad++
 if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 {
+	if (-not (Test-Path -Path "$env:APPDATA\Notepad++\config.xml"))
+	{
+		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe"
+		Write-Verbose -Message "`"$env:ProgramFiles\Notepad++\notepad++.exe`" doesn't exist. Re-run the script" -Verbose
+		break
+	}
+
 	Stop-Process -Name notepad++ -Force -ErrorAction Ignore
 
 	$Remove = @(
@@ -393,8 +400,15 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
 
-	New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "РћС‚Рѐ¡ЂС‹С‚СЊ СЃ РїРѕРјРѕС‰СЊСЋ &Notepad++" -Force
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "$env:ProgramFiles\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
+	if ((Get-WinSystemLocale).Name -eq "ru-RU")
+	{
+		if ($Host.Version.Major -eq 5)
+		{
+			$OutputEncoding = [System.Console]::InputEncoding = [System.Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($true)
+			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "Открыть с помощью &Notepad++" -Force
+		}
+	}
+	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
 	cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
 	cmd.exe --% /c assoc .cfg=txtfile
@@ -405,14 +419,9 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	cmd.exe --% /c assoc .xml=txtfile
 	cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
 
-	[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
-	$config.Save("$env:APPDATA\Notepad++\config.xml")
-	
-	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
-	# It is needed to use -wait to make Notepad++ apply written settings
+	# It is needed to use -Wait to make Notepad++ apply written settings
 	Write-Warning -Message "Close Notepad++' window manually"
-	# Wait-Process -Name "notepad"
-	Start-Process -FilePath "$env:APPDATA\Notepad++\config.xml" -Wait
+	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
 
 	if (-not (Test-Path -Path $env:ProgramFiles\Notepad++\localization))
 	{
@@ -441,7 +450,7 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
 	$config.Save("$env:APPDATA\Notepad++\config.xml")
 
-	Start-Process -FilePath "$env:APPDATA\Notepad++\config.xml"
+	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
 	Start-Sleep -Seconds 1
 	Stop-Process -Name notepad++ -ErrorAction Ignore
 }
