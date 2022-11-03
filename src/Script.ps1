@@ -722,6 +722,21 @@ New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$e
 Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
 Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
+Write-Verbose -Message "Installing WireGuard..." -Verbose
+# Downloading the latest WireGuard
+# https://www.wireguard.com/install/
+$Parameters = @{
+	Uri             = "https://download.wireguard.com/windows-client/wireguard-installer.exe"
+	OutFile         = "$DownloadsFolder\WireGuardInstaller.exe"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+Start-Process -FilePath "$DownloadsFolder\WireGuardInstaller.exe" -Wait
+
+Remove-Item -Path "$DownloadsFolder\WireGuardInstaller.exe" -Force
+
 Write-Verbose -Message "Starting Sophia Script..." -Verbose
 # Downloading the latest Sophia Script
 # https://github.com/farag2/Sophia-Script-for-Windows
