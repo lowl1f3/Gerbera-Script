@@ -9,7 +9,7 @@ Only for `Windows 10` & `Windows 11`
 > **Note**: Some of them have silent installation
 
 <details>
-  <summary>List</summary>
+	<summary>List</summary>
 
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
@@ -28,6 +28,7 @@ Only for `Windows 10` & `Windows 11`
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
   * GenP
 * [Java 8](https://www.java.com/en/download/)(JRE) & [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)(JDK)
+* [WireGuard](https://www.wireguard.com/install/)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
   * [System requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 </details>
