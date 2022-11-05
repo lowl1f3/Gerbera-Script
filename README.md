@@ -1,6 +1,6 @@
 # About script
 
-A PowerShell script for Windows that automates program startup and configuration and other useful stuff
+A PowerShell script for Windows that automates program startup and configuration
 
 Only for `Windows 10` & `Windows 11`
 
