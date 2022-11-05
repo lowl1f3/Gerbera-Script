@@ -746,4 +746,4 @@ Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -N
 
 Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse -Force
 
-pause
+Read-Host -Prompt "Press Enter to exit."
