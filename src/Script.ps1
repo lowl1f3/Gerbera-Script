@@ -455,6 +455,21 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Stop-Process -Name notepad++ -ErrorAction Ignore
 }
 
+Write-Verbose -Message "Installing Visual Stutio Code..." -Verbose
+# Downloading the latest Visual Stutio Code
+# https://code.visualstudio.com/download
+$Parameters = @{
+	Uri             = "https://az764295.vo.msecnd.net/stable/8fa188b2b301d36553cbc9ce1b0a146ccb93351f/VSCodeUserSetup-x64-1.73.0.exe"
+	OutFile         = "$DownloadsFolder\VisualStutioCode.exe"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+Start-Process -FilePath "$DownloadsFolder\VisualStutioCode.exe" -ArgumentList "/S" -Wait
+
+Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force
+
 Write-Verbose -Message "Installing TeamSpeak 3..." -Verbose
 # Downloading the latest TeamSpeak 3 x64
 # https://www.teamspeak.com/en/downloads/#
