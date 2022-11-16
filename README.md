@@ -15,13 +15,14 @@ Only for `Windows 10` & `Windows 11`
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L85)
 * [Steam](https://store.steampowered.com/about/)
-  * Personal config for CS:GO
+  * Personal [config](https://settings.gg/player/403369286) for CS:GO
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/) archiver
 * [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
 * [Notepad++](https://notepad-plus-plus.org/)
+* [Visual Stutio Code](https://code.visualstudio.com/Download)
 * [Teamspeak 3](https://teamspeak.com/en/)
-* [qBittorrent](https://www.qbittorrent.org/)
+* [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook, Teams, OneDrive
   * KMS
