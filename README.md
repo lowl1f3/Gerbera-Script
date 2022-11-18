@@ -1,12 +1,12 @@
 # About script
 
-A PowerShell script for Windows that automates program startup and configuration
+A PowerShell script for Windows that automates the installation and configuration of the latest versions of programs
 
 Only for `Windows 10` & `Windows 11`
 
 # Programs
 
-> **Note**: Some of them have silent installation
+> **Note**: Some of them have a silent installation
 
 <details>
 	<summary>List</summary>
@@ -15,7 +15,6 @@ Only for `Windows 10` & `Windows 11`
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L85)
 * [Steam](https://store.steampowered.com/about/)
-  * Personal [config](https://settings.gg/player/403369286) for CS:GO
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/) archiver
 * [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
