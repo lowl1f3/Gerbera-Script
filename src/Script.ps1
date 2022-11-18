@@ -20,7 +20,7 @@
 	https://github.com/farag2/Office
 	https://github.com/farag2/Sophia-Script-for-Windows
 	
-	.LINK Authors
+	.LINK Author
 	https://github.com/lowl1f3
 #>
 
