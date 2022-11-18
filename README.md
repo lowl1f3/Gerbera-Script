@@ -1,8 +1,8 @@
 # About script
 
-A PowerShell script for Windows that automates the installation and configuration of the latest versions of programs
+A PowerShell script for Windows that automates installation and configuration of programs
 
-Only for `Windows 10` & `Windows 11`
+Supports `Windows 10` & `Windows 11`
 
 # Programs
 
