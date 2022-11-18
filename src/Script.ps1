@@ -201,29 +201,6 @@ if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Common Files\Steam\steam.exe" -Action Allow
 New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Common Files\Steam\steam.exe" -Action Allow
 
-Write-Verbose -Message "Installing CS:GO config..." -Verbose
-# Downloading config for CS:GO
-# https://settings.gg/download/403369286
-$Parameters = @{
-	Uri             = "https://settings.gg/download/403369286"
-	OutFile         = "$DownloadsFolder\config.zip"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-Invoke-WebRequest @Parameters
-
-if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\403369286\730\local\cfg")
-{
-	$Parameters = @{
-		Path            = "$DownloadsFolder\config.zip"
-		DestinationPath = "${env:ProgramFiles(x86)}\Steam\userdata\403369286\730\local\cfg"
-		Force           = $true
-	}
-	Expand-Archive @Parameters
-}
-
-Remove-Item -Path "$DownloadsFolder\config.zip" -Force
-
 Write-Verbose -Message "Installing Google Chrome Enterprise..." -Verbose
 # Downloading the latest Chrome Enterprise x64
 # https://chromeenterprise.google/browser/download
