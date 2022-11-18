@@ -1,3 +1,29 @@
+<#
+	.SYNOPSIS
+	A PowerShell script for Windows that automates the installation and configuration of the latest versions of programs
+	
+	Copyright (c) 2022 lowl1f3
+	
+	.NOTES
+	Supported Windows 10&11 versions
+	
+	.LINK GitHub
+	https://github.com/lowl1f3/Script
+	
+	.LINK Telegram
+	https://t.me/lowlif3
+	
+	.LINK Discord
+	https://discord.com/users/330825971835863042
+	
+	.NOTES
+	https://github.com/farag2/Office
+	https://github.com/farag2/Sophia-Script-for-Windows
+	
+	.LINK Authors
+	https://github.com/lowl1f3
+#>
+
 $IsAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")
 if (-not $IsAdmin)
 {
@@ -364,29 +390,25 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 		Write-Verbose -Message "`"$env:ProgramFiles\Notepad++\notepad++.exe`" doesn't exist. Re-run the script" -Verbose
 		break
 	}
-
 	Stop-Process -Name notepad++ -Force -ErrorAction Ignore
-
 	$Remove = @(
 		"$env:ProgramFiles\Notepad++\change.log",
 		"$env:ProgramFiles\Notepad++\LICENSE",
 		"$env:ProgramFiles\Notepad++\readme.txt",
 		"$env:ProgramFiles\Notepad++\autoCompletion",
 		"$env:ProgramFiles\Notepad++\plugins"
+		"$env:ProgramFiles\Notepad++\autoCompletion"
 	)
 	Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
-
 	if ((Get-WinSystemLocale).Name -eq "ru-RU")
 	{
 		if ($Host.Version.Major -eq 5)
 		{
-			$OutputEncoding = [System.Console]::InputEncoding = [System.Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($true)
 			New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "Открыть с помощью &Notepad++" -Force
 		}
 	}
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
-
 	cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
 	cmd.exe --% /c assoc .cfg=txtfile
 	cmd.exe --% /c assoc .ini=txtfile
@@ -395,23 +417,9 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	cmd.exe --% /c assoc .ps1=txtfile
 	cmd.exe --% /c assoc .xml=txtfile
 	cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
-
 	# It is needed to use -Wait to make Notepad++ apply written settings
 	Write-Warning -Message "Close Notepad++' window manually"
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-
-	if (-not (Test-Path -Path $env:ProgramFiles\Notepad++\localization))
-	{
-		New-Item -Path $env:ProgramFiles\Notepad++\localization -ItemType Directory -Force
-	}
-	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Notepad%2B%2B/localization/russian.xml"
-		OutFile         = "$env:ProgramFiles\Notepad++\localization\russian.xml"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
-
 	[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
 	# Fluent UI: large
 	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
@@ -426,7 +434,6 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	# Disable creating backups
 	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
 	$config.Save("$env:APPDATA\Notepad++\config.xml")
-
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
 	Start-Sleep -Seconds 1
 	Stop-Process -Name notepad++ -ErrorAction Ignore
@@ -492,94 +499,85 @@ Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force
 # Configuring qBittorrent
 if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 {
-	New-Item -Path "$env:APPDATA\" -Name "qBittorrent" -ItemType "directory"
-
-	if (Test-Path -Path "$env:APPDATA\qBittorrent")
+	Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
+	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent.lnk"))
 	{
-
-		Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
-
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
-			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path "$env:ProgramFiles\qBittorrent\translations" -Exclude qt_ru.qm, qtbase_ru.qm -Recurse -Force -ErrorAction Ignore
-
-		$LatestVersionQbitTheme = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
-		$Parameters = @{
-			Uri     = $LatestVersionQbitTheme
-			OutFile = "$DownloadsFolder\qbt-theme.zip"
-			Verbose = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		<#
-			.SYNOPSIS
-			Expand the specific file from ZIP archive. Folder structure will be created recursively
-			.Parameter Source
-			The source ZIP archive
-			.Parameter Destination
-			Where to expand file
-			.Parameter File
-			Assign the file to expand
-			.Example
-			ExtractZIPFile -Source "$DownloadsFolder\Folder\File.zip" -Destination "$DownloadsFolder\Folder" -File "Folder1/Folder2/File.txt"
-		#>
-		function ExtractZIPFile
-		{
-			[CmdletBinding()]
-			param
-			(
-				[string]
-				$Source,
-
-				[string]
-				$Destination,
-
-				[string]
-				$File
-			)
-
-			Add-Type -Assembly System.IO.Compression.FileSystem
-
-			$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
-			$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
-
-			$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
-
-			if (-not (Test-Path -Path $Destination))
-			{
-				New-Item -Path $Destination -ItemType Directory -Force
-			}
-
-			$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
-
-			$ZIP.Dispose()
-		}
-
-		$Parameters = @{
-			Source      = "$DownloadsFolder\qbt-theme.zip"
-			Destination = "$env:APPDATA\qBittorrent"
-			File        = "darkstylesheet.qbtheme"
-		}
-		ExtractZIPFile @Parameters
-
-		Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force
-
-		# Enable dark theme
-		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
-		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
-		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
-
-		# Adding to the Windows Defender Firewall exclusion list
-		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+		Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 	}
+	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:ProgramFiles\qBittorrent\translations" -Exclude qt_ru.qm, qtbase_ru.qm -Recurse -Force -ErrorAction Ignore
+	$Parameters = @{
+		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
+		OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters
+
+	$LatestVersion = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
+	$Parameters = @{
+		Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	$LatestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
+
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+	$Parameters = @{
+		Uri     = $LatestVersion
+		OutFile = "$DownloadsFolder\qbt-theme.zip"
+		Verbose = $true
+	}
+	Invoke-WebRequest @Parameters
+	<#
+		.SYNOPSIS
+		Expand the specific file from ZIP archive. Folder structure will be created recursively
+		.Parameter Source
+		The source ZIP archive
+		.Parameter Destination
+		Where to expand file
+		.Parameter File
+		Assign the file to expand
+		.Example
+		ExtractZIPFile -Source "D:\Folder\File.zip" -Destination "D:\Folder" -File "Folder1/Folder2/File.txt"
+	#>
+	function ExtractZIPFile
+	{
+		[CmdletBinding()]
+		param
+		(
+			[string]
+			$Source,
+			[string]
+			$Destination,
+			[string]
+			$File
+		)
+		Add-Type -Assembly System.IO.Compression.FileSystem
+		$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
+		$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
+		$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
+		if (-not (Test-Path -Path $Destination))
+		{
+			New-Item -Path $Destination -ItemType Directory -Force
+		}
+		$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
+		$ZIP.Dispose()
+	}
+	$Parameters = @{
+		Source      = "$DownloadsFolder\qbt-theme.zip"
+		Destination = "$env:APPDATA\qBittorrent"
+		File        = "darkstylesheet.qbtheme"
+	}
+	ExtractZIPFile @Parameters
+	Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force
+	# Enable dark theme
+	$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
+	# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
+	(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
+	# Add to the Windows Defender Firewall exclusion list
+	New-NetFirewallRule -DisplayName "qBittorent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "qBittorent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 }
 
 Write-Verbose -Message "Installing Office..." -Verbose
