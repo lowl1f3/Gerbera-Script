@@ -43,9 +43,9 @@ Supports `Windows 10` & `Windows 11`
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/) archiver
 * [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
-* [Notepad++](https://notepad-plus-plus.org/)
+* [Notepad++](https://notepad-plus-plus.org/downloads/)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
-* [Teamspeak 3](https://teamspeak.com/en/)
+* [Teamspeak 3](https://teamspeak.com/en/downloads/)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook, Teams, OneDrive
