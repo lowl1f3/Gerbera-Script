@@ -1,3 +1,9 @@
+<div align="right">
+  This page also in:
+  <a title="Русский" href="README_ru-ru.md"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/>
+  <a title="Українська" href="README_uk-ua.md"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/></a>
+</div>
+
 ## About script
 
 A PowerShell script for Windows that automates installation and configuration of programs
