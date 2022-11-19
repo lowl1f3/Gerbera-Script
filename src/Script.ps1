@@ -5,7 +5,7 @@
 	Copyright (c) 2022 lowl1f3
 	
 	.NOTES
-	Supported Windows 10&11 versions
+	Supported Windows 10 & 11 versions
 	
 	.LINK GitHub
 	https://github.com/lowl1f3/Script
