@@ -1,14 +1,35 @@
-# About script
+## About script
 
 A PowerShell script for Windows that automates installation and configuration of programs
 
 Supports `Windows 10` & `Windows 11`
 
+## How to use
+
+* Download [ZIP file](https://github.com/lowl1f3/Script/archive/refs/heads/main.zip);
+* Expand the archive;
+* Open folder with the expanded archive;
+* On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
+* On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`. 
+* Then change the current location
+
+  ```powershell
+  Set-Location -Path "Path\To\Script\Folder"
+  ```
+
+* Set execution policy to be able to run scripts only in the current PowerShell session
+
+  ```powershell
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+  ```
+
+* Type `.\Script.ps1` <kbd>Enter</kbd> to run the script.
+
 ## Donations
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
 
-# Programs
+## Programs
 
 > **Note**: Some of them have a silent installation
 
@@ -37,7 +58,7 @@ Supports `Windows 10` & `Windows 11`
   * [System requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 </details>
 
-# Links
+## Links
 
 * [Telegram](https://t.me/lowlif3)
 * [Discord](https://discord.com/users/330825971835863042)
