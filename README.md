@@ -4,6 +4,10 @@ A PowerShell script for Windows that automates installation and configuration of
 
 Supports `Windows 10` & `Windows 11`
 
+## Donations
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
+
 # Programs
 
 > **Note**: Some of them have a silent installation
