@@ -26,6 +26,7 @@
 	.LINK
 	https://docs.microsoft.com/en-us/deployoffice/vlactivation/gvlks
 #>
+
 function DownloadOffice
 {
 	[CmdletBinding()]
