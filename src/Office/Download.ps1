@@ -1,20 +1,28 @@
 <#
 	.SYNOPSIS
 	Download Office 2019, 2021, and 365
+	
 	.PARAMETER Branch
 	Choose Office branch: 2019, 2021, and 365
+	
 	.PARAMETER Channel
 	Choose Office channel: 2019, 2021, and 365
+	
 	.PARAMETER Components
 	Choose Office components: Access, OneDrive, Outlook, Word, Excel, PowerPoint, Teams
+	
 	.EXAMPLE Download Office 2019 with the Word, Excel, PowerPoint components
 	DownloadOffice -Branch ProPlus2019Retail -Channel Current -Components Word, Excel, PowerPoint
+	
 	.EXAMPLE Download Office 2021 with the Excel, Word components
 	DownloadOffice -Branch ProPlus2021Volume -Channel PerpetualVL2021 -Components Excel, Word
+	
 	.EXAMPLE Download Office 365 with the Excel, Word, PowerPoint components
 	DownloadOffice -Branch O365ProPlusRetail -Channel SemiAnnual -Components Excel, OneDrive, Outlook, PowerPoint, Teams, Word
+	
 	.LINK
 	https://config.office.com/deploymentsettings
+	
 	.LINK
 	https://docs.microsoft.com/en-us/deployoffice/vlactivation/gvlks
 #>
