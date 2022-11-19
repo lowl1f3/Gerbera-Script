@@ -4,6 +4,10 @@ A PowerShell script for Windows that automates installation and configuration of
 
 Supports `Windows 10` & `Windows 11`
 
+## Donations
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
+
 ## How to use
 
 * Download [ZIP file](https://github.com/lowl1f3/Script/archive/refs/heads/main.zip);
@@ -24,10 +28,6 @@ Supports `Windows 10` & `Windows 11`
   ```
 
 * Type `.\Script.ps1` <kbd>Enter</kbd> to run the script.
-
-## Donations
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
 
 ## Programs
 
