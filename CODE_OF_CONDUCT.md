@@ -61,7 +61,6 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-[INSERT CONTACT METHOD].
 [Telegram](https://t.me/lowlif3) account.
 All complaints will be reviewed and investigated promptly and fairly.
 
