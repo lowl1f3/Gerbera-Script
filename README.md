@@ -10,7 +10,7 @@ Supports `Windows 10` & `Windows 11`
 * Expand the archive;
 * Open folder with the expanded archive;
 * On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
-* On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`. 
+* On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`;
 * Then change the current location
 
   ```powershell
