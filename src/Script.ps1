@@ -3,7 +3,9 @@
 	A PowerShell script for Windows that automates installation and configuration of programs
 
 	Copyright (c) 2022 lowl1f3
-
+	
+	Big thanks directly to farag2
+	
 	.NOTES
 	Supported Windows 10 & 11 versions
 
