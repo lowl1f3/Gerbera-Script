@@ -1,6 +1,6 @@
 <#
 	.SYNOPSIS
-	A PowerShell script for Windows that automates the installation and configuration of the latest versions of programs
+	A PowerShell script for Windows that automates installation and configuration of programs
 
 	Copyright (c) 2022 lowl1f3
 
@@ -29,6 +29,30 @@ if (-not $IsAdmin)
 {
 	Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$PSCommandPath`"" -Verb Runas
 	exit
+}
+
+Clear-Host
+
+$Host.UI.RawUI.WindowTitle = "Script for Windows 10&11 | Made with $([char]::ConvertFromUtf32(0x1F497)) by lowlif3"
+
+# Startup confirmation
+$Title = "Do you want to run the script?"
+$Message       = ""
+$Yes           = "Yes"
+$No            = "No"	
+$Options       = "&$No", "&$Yes"
+$DefaultChoice = 0
+$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+
+switch ($Result)
+{
+	"0" {
+		Clear-Host
+		exit
+	}
+	"1" {
+		continue
+	}
 }
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -522,7 +546,6 @@ if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	}
 	$LatestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
 
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	$Parameters = @{
 		Uri     = $LatestVersion
 		OutFile = "$DownloadsFolder\qbt-theme.zip"
