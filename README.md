@@ -16,7 +16,6 @@ Supports `Windows 10` & `Windows 11`
 
 ## How to use
 
-* Download [ZIP file](https://github.com/lowl1f3/Script/archive/refs/heads/main.zip);
 * Expand the archive;
 * Open folder with the expanded archive;
 * On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
@@ -41,7 +40,6 @@ Supports `Windows 10` & `Windows 11`
 
 <details>
 	<summary>List</summary>
-
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L111)

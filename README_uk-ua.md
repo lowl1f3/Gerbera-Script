@@ -16,11 +16,10 @@
 
 ## Як використовувати
 
-* Завантажте [ZIP file](https://github.com/lowl1f3/Script/archive/refs/heads/main.zip);
+* <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge"/></a>
 * Розпакуйте архів;
 * Відкрийте папку розпакованого архіву;
 * В `Windows 10` натисніть `Файл` у Провіднику, наведіть курсор на `Запустити Windows PowerShell`, і виберіть `Запустити Windows PowerShell від імені адміністратора` [(як це зробити зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
-
 * В `Windows 11` натисніть правою кнопкою миші на <kbd>Windows</kbd> іконку і виберіть `Термінал (Адміністратор)`;
 * Потім змініть поточне розташування
 
@@ -42,7 +41,6 @@
 
 <details>
 	<summary>Перелік</summary>
-
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) і корисні [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L111)
