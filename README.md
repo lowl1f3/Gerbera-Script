@@ -41,6 +41,7 @@ Supports `Windows 10` & `Windows 11`
 
 <details>
 	<summary>List</summary>
+
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L111)
