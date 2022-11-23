@@ -50,6 +50,7 @@
 * [7-Zip](https://www.7-zip.org/) архиватор
 * [Кастомный](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) тёмный курсор
 * [Notepad++](https://notepad-plus-plus.org/downloads/)
+* [GitHub Desktop](https://desktop.github.com/)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
 * [Teamspeak 3](https://teamspeak.com/en/downloads/)
 * [qBittorrent](https://www.qbittorrent.org/download.php)

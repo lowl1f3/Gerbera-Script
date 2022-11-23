@@ -465,18 +465,33 @@ if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	Stop-Process -Name notepad++ -ErrorAction Ignore
 }
 
+Write-Verbose -Message "Installing GitHub Desktop..." -Verbose
+# Downloading the latest GitHub Desktop
+# https://desktop.github.com/
+$Parameters = @{
+	Uri             = "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi"
+	OutFile         = "$DownloadsFolder\GitHubDesktop.msi"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+Invoke-WebRequest @Parameters
+
+Start-Process -FilePath "$DownloadsFolder\GitHubDesktop.msi" -ArgumentList "/passive" -Wait
+
+Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force
+
 Write-Verbose -Message "Installing Visual Stutio Code..." -Verbose
 # Downloading the latest Visual Stutio Code
 # https://code.visualstudio.com/download
 $Parameters = @{
-	Uri             = "https://az764295.vo.msecnd.net/stable/8fa188b2b301d36553cbc9ce1b0a146ccb93351f/VSCodeUserSetup-x64-1.73.0.exe"
+	Uri             = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
 	OutFile         = "$DownloadsFolder\VisualStutioCode.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-Start-Process -FilePath "$DownloadsFolder\VisualStutioCode.exe" -ArgumentList "/S" -Wait
+Start-Process -FilePath "$DownloadsFolder\VisualStutioCode.exe" -ArgumentList "/silent" -Wait
 
 Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force
 

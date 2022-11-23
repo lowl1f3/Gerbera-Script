@@ -50,6 +50,7 @@ Supports `Windows 10` & `Windows 11`
 * [7-Zip](https://www.7-zip.org/) archiver
 * [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) dark cursor
 * [Notepad++](https://notepad-plus-plus.org/downloads/)
+* [GitHub Desktop](https://desktop.github.com/)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
 * [Teamspeak 3](https://teamspeak.com/en/downloads/)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
