@@ -41,6 +41,7 @@
 
 <details>
 	<summary>Список</summary>
+
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app/) и полезные [плагины](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L111)
