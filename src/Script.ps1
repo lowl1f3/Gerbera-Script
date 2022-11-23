@@ -727,8 +727,8 @@ Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Argu
 Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force
 
 # Configuring Java 8(JRE)
-New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\javaw.exe" -Action Allow
-New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\java.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk1.8.0_351\bin\javaw.exe" -Action Allow
+New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk1.8.0_351\bin\java.exe" -Action Allow
 
 Write-Verbose -Message "Installing latest Java 19(JDK) x64..." -Verbose
 # Downloading the latest Java 19(JDK) x64
