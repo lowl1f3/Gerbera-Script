@@ -26,12 +26,7 @@
 	https://github.com/lowl1f3
 #>
 
-$IsAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")
-if (-not $IsAdmin)
-{
-	Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$PSCommandPath`"" -Verb Runas
-	exit
-}
+#Requires -RunAsAdministrator
 
 Clear-Host
 
