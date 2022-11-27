@@ -47,8 +47,8 @@
   * [Better Discord](https://betterdiscord.app/) и полезные [плагины](https://github.com/lowl1f3/Script/blob/main/src/Script.ps1#L132)
 * [Steam](https://store.steampowered.com/about/)
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
-* [7-Zip](https://www.7-zip.org/) архиватор
-* [Кастомный](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) тёмный курсор
+* [7-Zip](https://www.7-zip.org/download.html) архиватор
+* [Кастомный](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) курсор
 * [Notepad++](https://notepad-plus-plus.org/downloads/)
 * [GitHub Desktop](https://desktop.github.com/)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
