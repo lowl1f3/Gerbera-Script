@@ -56,9 +56,7 @@ Supports `Windows 10` & `Windows 11`
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook, Teams, OneDrive
-  * KMS
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-  * GenP
 * [Java 8](https://www.java.com/en/download/)(JRE) & [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)(JDK)
 * [WireGuard](https://www.wireguard.com/install/)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
