@@ -1,30 +1,36 @@
 <#
 	.SYNOPSIS
 	Download Office 2019, 2021, and 365
-	
+
 	.PARAMETER Branch
 	Choose Office branch: 2019, 2021, and 365
-	
+
 	.PARAMETER Channel
 	Choose Office channel: 2019, 2021, and 365
-	
+
 	.PARAMETER Components
 	Choose Office components: Access, OneDrive, Outlook, Word, Excel, PowerPoint, Teams
-	
+
 	.EXAMPLE Download Office 2019 with the Word, Excel, PowerPoint components
 	DownloadOffice -Branch ProPlus2019Retail -Channel Current -Components Word, Excel, PowerPoint
-	
+
 	.EXAMPLE Download Office 2021 with the Excel, Word components
 	DownloadOffice -Branch ProPlus2021Volume -Channel PerpetualVL2021 -Components Excel, Word
-	
+
 	.EXAMPLE Download Office 365 with the Excel, Word, PowerPoint components
 	DownloadOffice -Branch O365ProPlusRetail -Channel SemiAnnual -Components Excel, OneDrive, Outlook, PowerPoint, Teams, Word
-	
+
+	.EXAMPLE Download Office 365 with the Excel, Word components using Beta channel
+	DownloadOffice -Branch O365ProPlusRetail -Channel BetaChannel -Components Excel, Word
+
 	.LINK
 	https://config.office.com/deploymentsettings
-	
+
 	.LINK
 	https://docs.microsoft.com/en-us/deployoffice/vlactivation/gvlks
+
+	.NOTES
+	Run as non-admin
 #>
 
 function DownloadOffice
@@ -144,7 +150,7 @@ function DownloadOffice
 								# Parse XML to get the URL
 								# https://go.microsoft.com/fwlink/p/?LinkID=844652
 								$Parameters = @{
-									Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProduction"
+									Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
 									UseBasicParsing = $true
 									Verbose         = $true
 								}
@@ -241,4 +247,11 @@ function DownloadOffice
 DownloadOffice -Branch O365ProPlusRetail -Channel SemiAnnual -Components Excel, Word, PowerPoint, Outlook, Teams, OneDrive
 
 # Install
-Start-Process -FilePath "$PSScriptRoot\setup.exe" -ArgumentList "/configure `"$PSScriptRoot\Config.xml`"" -Wait
+if (Test-Path $PSScriptRoot\Office\Data\*\stream.x64.x-none.dat)
+{
+	Start-Process -FilePath "$PSScriptRoot\setup.exe" -ArgumentList "/configure `"$PSScriptRoot\Config.xml`"" -Wait
+}
+else
+{
+	Write-Verbose -Message "There aren't neccessary Office files to install" -Verbose
+}
