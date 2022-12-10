@@ -110,7 +110,6 @@ function BetterDiscord
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
 			UseBasicParsing = $true
-			Verbose         = $true
 		}
 		$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 
@@ -301,7 +300,6 @@ function 7Zip
 	$Parameters = @{
 		Uri             = "https://sourceforge.net/projects/sevenzip/best_release.json"
 		UseBasicParsing = $true
-		Verbose         = $true
 	}
 	$best7ZipRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename.replace("exe", "msi")
 
@@ -418,7 +416,6 @@ function Notepad
 	$Parameters = @{
 		Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
 		UseBasicParsing = $true
-		Verbose         = $true
 	}
 	$LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 	$LatestNotepadPlusPlusVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
@@ -578,7 +575,6 @@ function qBittorent
 	$Parameters = @{
 		Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
 		UseBasicParsing = $true
-		Verbose         = $true
 	}
 	$bestqBittorrentRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
@@ -618,7 +614,6 @@ function qBittorent
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
 			UseBasicParsing = $true
-			Verbose         = $true
 		}
 		$LatestqBittorrentThemeVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
 
