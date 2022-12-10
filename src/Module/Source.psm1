@@ -48,7 +48,8 @@ switch ($Result)
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+$Script:DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+$Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 
 function Telegram
 {
@@ -65,7 +66,8 @@ function Telegram
 
 	Start-Process -FilePath "$DownloadsFolder\TelegramSetup.exe" -ArgumentList "/VERYSILENT" -Wait 
 
-	Remove-Item -Path "$DownloadsFolder\TelegramSetup.exe" -Force
+	Remove-Item -Path "$DownloadsFolder\TelegramSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DesktopFolder\Telegram.lnk" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
@@ -86,91 +88,98 @@ function Discord
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe"
+	Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
+	Remove-Item -Path "$DesktopFolder\Discord.lnk" -Force -ErrorAction Ignore
+
+	# Remove Discord from autostart
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:APPDATA\Local\Discord\Update.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
 }
 
 function BetterDiscord
 {
-	Write-Verbose -Message "Installing Better Discord..." -Verbose
+	if (Test-Path -Path "$env:LOCALAPPDATA\Discord")
+	{
+		Write-Verbose -Message "Installing Better Discord..." -Verbose
 
-	# Downloading the latest BetterDiscord
-	# https://github.com/BetterDiscord/Installer/releases
-	$Parameters = @{
-		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
-		UseBasicParsing = $true
-		Verbose         = $true
+		# Downloading the latest BetterDiscord
+		# https://github.com/BetterDiscord/Installer/releases
+		$Parameters = @{
+			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+
+		$Parameters = @{
+			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
+			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+
+		Write-Warning "Close 'Discord' process manually after installing 'BetterDiscord'"
+
+		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
+
+		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
+
+		Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force -ErrorAction Ignore
+		Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force -ErrorAction Ignore
 	}
-	$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-
-	$Parameters = @{
-		Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
-		OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
-
-	Write-Warning "Close Discord process manually after installing BetterDiscord."
-
-	Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
-
-	Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
-
-	Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force
-	Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force
 }
 
 function BetterDiscordPlugins
 {
-	Write-Verbose -Message "Installing Better Discord plugins..." -Verbose
+	if (-not(Test-Path -Path "$env:APPDATA\BetterDiscord\plugins"))
+	{
+		New-Item -Path "$env:APPDATA\BetterDiscord\plugins" -ItemType Directory -Force
+	}
 
 	# Installing Better Discord plugins
 	$Plugins = @(
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Library/0BDFDB.plugin.js",
 
-		# https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js
-		"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js",
-
-		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/ReadAllNotificationsButton/ReadAllNotificationsButton.plugin.js
-		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ReadAllNotificationsButton/ReadAllNotificationsButton.plugin.js",
-
-		# https://github.com/rauenzi/BetterDiscordAddons/blob/master/Plugins/DoNotTrack/DoNotTrack.plugin.js
-		"https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/DoNotTrack/DoNotTrack.plugin.js",
-
-		# https://github.com/rauenzi/BetterDiscordAddons/blob/master/Plugins/HideDisabledEmojis/HideDisabledEmojis.plugin.js
-		"https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/HideDisabledEmojis/HideDisabledEmojis.plugin.js",
-
-		# https://github.com/oSumAtrIX/BetterDiscordPlugins/blob/master/NitroEmoteAndScreenShareBypass.plugin.js
-		"https://raw.githubusercontent.com/oSumAtrIX/BetterDiscordPlugins/master/NitroEmoteAndScreenShareBypass.plugin.js",
-
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterFriendList/BetterFriendList.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterFriendList/BetterFriendList.plugin.js",
 
-		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterNsfwTag/BetterNsfwTag.plugin.js
-		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterNsfwTag/BetterNsfwTag.plugin.js",
+		# https://github.com/unknown81311/BetterMediaPlayer/blob/main/BetterMediaPlayer.plugin.js
+		"https://raw.githubusercontent.com/unknown81311/BetterMediaPlayer/main/BetterMediaPlayer.plugin.js",
 
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterSearchPage/BetterSearchPage.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterSearchPage/BetterSearchPage.plugin.js",
 
+		# https://github.com/QWERTxD/BetterDiscordPlugins/blob/main/CallTimeCounter/CallTimeCounter.plugin.js
+		"https://raw.githubusercontent.com/QWERTxD/BetterDiscordPlugins/main/CallTimeCounter/CallTimeCounter.plugin.js",
+
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/CharCounter/CharCounter.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CharCounter/CharCounter.plugin.js",
 
-		# https://github.com/An00nymushun/DiscordFreeEmojis/blob/master/DiscordFreeEmojis64px.plugin.js
-		"https://raw.githubusercontent.com/An00nymushun/DiscordFreeEmojis/master/DiscordFreeEmojis64px.plugin.js",
+		# https://github.com/rauenzi/BetterDiscordAddons/blob/master/Plugins/DoNotTrack/DoNotTrack.plugin.js
+		"https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/DoNotTrack/DoNotTrack.plugin.js",
 
-		# https://github.com/Farcrada/DiscordPlugins/blob/master/Double-click-to-edit/DoubleClickToEdit.plugin.js
-		"https://raw.githubusercontent.com/Farcrada/DiscordPlugins/master/Double-click-to-edit/DoubleClickToEdit.plugin.js",
+		# https://github.com/TheGreenPig/BetterDiscordPlugins/blob/main/FileViewer/FileViewer.plugin.js
+		"https://raw.githubusercontent.com/TheGreenPig/BetterDiscordPlugins/main/FileViewer/FileViewer.plugin.js",
 
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/ImageUtilities/ImageUtilities.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ImageUtilities/ImageUtilities.plugin.js",
 
+		# https://github.com/oSumAtrIX/BetterDiscordPlugins/blob/master/NitroEmoteAndScreenShareBypass.plugin.js
+		"https://raw.githubusercontent.com/oSumAtrIX/BetterDiscordPlugins/master/NitroEmoteAndScreenShareBypass.plugin.js",
+
+		# https://github.com/bepvte/bd-addons/blob/main/plugins/NoSpotifyPause.plugin.js
+		"https://raw.githubusercontent.com/bepvte/bd-addons/main/plugins/NoSpotifyPause.plugin.js",
+
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/PluginRepo/PluginRepo.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/PluginRepo/PluginRepo.plugin.js",
+
+		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/ReadAllNotificationsButton/ReadAllNotificationsButton.plugin.js
+		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ReadAllNotificationsButton/ReadAllNotificationsButton.plugin.js",
 
 		# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/SplitLargeMessages/SplitLargeMessages.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SplitLargeMessages/SplitLargeMessages.plugin.js",
@@ -181,36 +190,26 @@ function BetterDiscordPlugins
 		# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/StaffTag/StaffTag.plugin.js
 		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/StaffTag/StaffTag.plugin.js",
 
-		# https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/ThemeRepo/ThemeRepo.plugin.js
-		"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ThemeRepo/ThemeRepo.plugin.js",
-
-		# https://github.com/QWERTxD/BetterDiscordPlugins/blob/main/CallTimeCounter/CallTimeCounter.plugin.js
-		"https://raw.githubusercontent.com/QWERTxD/BetterDiscordPlugins/main/CallTimeCounter/CallTimeCounter.plugin.js",
-
-		# https://github.com/bepvte/bd-addons/blob/main/plugins/NoSpotifyPause.plugin.js
-		"https://raw.githubusercontent.com/bepvte/bd-addons/main/plugins/NoSpotifyPause.plugin.js",
-
 		# https://github.com/l0c4lh057/BetterDiscordStuff/blob/master/Plugins/TypingIndicator/TypingIndicator.plugin.js
 		"https://raw.githubusercontent.com/l0c4lh057/BetterDiscordStuff/master/Plugins/TypingIndicator/TypingIndicator.plugin.js",
 
 		# https://github.com/QWERTxD/BetterDiscordPlugins/blob/main/TypingUsersAvatars/TypingUsersAvatars.plugin.js
 		"https://raw.githubusercontent.com/QWERTxD/BetterDiscordPlugins/main/TypingUsersAvatars/TypingUsersAvatars.plugin.js",
 
-		# https://github.com/TheGreenPig/BetterDiscordPlugins/blob/main/FileViewer/FileViewer.plugin.js
-		"https://raw.githubusercontent.com/TheGreenPig/BetterDiscordPlugins/main/FileViewer/FileViewer.plugin.js",
-
-		# https://github.com/unknown81311/BetterMediaPlayer/blob/main/BetterMediaPlayer.plugin.js
-		"https://raw.githubusercontent.com/unknown81311/BetterMediaPlayer/main/BetterMediaPlayer.plugin.js"	
+		# https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js
+		"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"
 	)
 	foreach ($Plugin in $Plugins)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $(Split-Path -Path $Plugin -Leaf) -Verbose
+
 		if ($(Split-Path -Path $Plugin -Leaf))
 		{
 			$Parameters = @{
 				Uri             = $Plugin
 				OutFile         = "$env:APPDATA\BetterDiscord\plugins\$(Split-Path -Path $Plugin -Leaf)"
 				UseBasicParsing = $true
-				Verbose         = $true
 			}
 		}
 		Invoke-Webrequest @Parameters
@@ -233,7 +232,7 @@ function Steam
 
 	Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\SteamSetup.exe" -Force
+	Remove-Item -Path "$DownloadsFolder\SteamSetup.exe" -Force -ErrorAction Ignore
 
 	# Configuring Steam
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
@@ -286,7 +285,8 @@ function GoogleChromeEnterprise
 
 	Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force
+	Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:PUBLIC\Desktop\Google Chrome.lnk" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
@@ -303,11 +303,11 @@ function 7Zip
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
-	$bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename.replace("exe", "msi")
+	$best7ZipRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename.replace("exe", "msi")
 
 	# Downloading the latest 7-Zip x64
 	$Parameters = @{
-		Uri             = "https://nchc.dl.sourceforge.net/project/sevenzip$($bestRelease)"
+		Uri             = "https://nchc.dl.sourceforge.net/project/sevenzip$($best7ZipRelease)"
 		OutFile         = "$DownloadsFolder\7Zip.msi"
 		UseBasicParsing = $true
 		Verbose         = $true
@@ -316,13 +316,13 @@ function 7Zip
 
 	Start-Process -FilePath "$DownloadsFolder\7Zip.msi" -ArgumentList "/passive" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force
+	Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force -ErrorAction Ignore
 
 	# Configuring 7Zip
 	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip File Manager.lnk"))
 	{
 		Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip\7-Zip File Manager.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
-		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip" -Recurse -Force
+		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip" -Recurse -Force -ErrorAction Ignore
 	}
 
 	if (-not (Test-Path -Path HKCU:\SOFTWARE\7-Zip\Options))
@@ -360,7 +360,7 @@ function CustomCursor
 	}
 	Expand-Archive @Parameters
 
-	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force
+	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force -ErrorAction Ignore
 
 	New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "Windows 11 Cursors Dark v2 by Jepri Creations" -Force
 	New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\Windows_11_dark_v2\working.ani" -Force
@@ -421,12 +421,12 @@ function Notepad
 		Verbose         = $true
 	}
 	$LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-	$LatestVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
+	$LatestNotepadPlusPlusVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
 
 	# Downloading the latest Notepad++
 	# https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/
 	$Parameters = @{
-		Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($LatestNotepadPlusPlusTag)/npp.$($LatestVersion).Installer.x64.exe"
+		Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($LatestNotepadPlusPlusTag)/npp.$($LatestNotepadPlusPlusVersion).Installer.x64.exe"
 		OutFile         = "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe"
 		UseBasicParsing = $true
 		Verbose         = $true
@@ -435,9 +435,9 @@ function Notepad
 
 	Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -ArgumentList "/S" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Force
+	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Force -ErrorAction Ignore
 
-	Write-Warning -Message "Close Notepad++' window manually"
+	Write-Warning -Message "Close 'Notepad++' window manually"
 	
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 
@@ -479,7 +479,7 @@ function Notepad
 		cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
 
 		# It is needed to use -Wait to make Notepad++ apply written settings
-		Write-Warning -Message "Close Notepad++' window manually"
+		Write-Warning -Message "Close 'Notepad++' window manually"
 
 		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
 
@@ -522,7 +522,7 @@ function GitHubDesktop
 
 	Start-Process -FilePath "$DownloadsFolder\GitHubDesktop.msi" -ArgumentList "/passive" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force
+	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force -ErrorAction Ignore
 }
 
 function VSCode
@@ -541,7 +541,9 @@ function VSCode
 
 	Start-Process -FilePath "$DownloadsFolder\VisualStutioCode.exe" -ArgumentList "/silent" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force
+	Write-Warning -Message "Close 'Visual Studio Code' window manually"
+
+	Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force -ErrorAction Ignore
 }
 
 function TeamSpeak
@@ -560,7 +562,8 @@ function TeamSpeak
 
 	Start-Process -FilePath "$DownloadsFolder\TeamSpeakSetup.exe" -ArgumentList "/S" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force
+	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
@@ -577,12 +580,12 @@ function qBittorent
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
-	$bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
+	$bestqBittorrentRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
 	# Downloading the latest approved by maintainer qBittorrent x64
 	# For example 4.4.3 e.g., not 4.4.3.1 
 	$Parameters = @{
-		Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
+		Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestqBittorrentRelease)"
 		OutFile         = "$DownloadsFolder\qBittorrentSetup.exe"
 		UseBasicParsing = $true
 		Verbose         = $true
@@ -591,7 +594,7 @@ function qBittorent
 
 	Start-Process -FilePath "$DownloadsFolder\qBittorrentSetup.exe" -ArgumentList "/S" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force
+	Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force -ErrorAction Ignore
 
 	# Configuring qBittorrent
 	if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
@@ -611,16 +614,16 @@ function qBittorent
 		}
 		Invoke-WebRequest @Parameters
 
-		$LatestVersion = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
+		$LatestqBittorrentThemeVersion = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
-		$LatestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
+		$LatestqBittorrentThemeVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
 
 		$Parameters = @{
-			Uri     = $LatestVersion
+			Uri     = $LatestqBittorrentThemeVersion
 			OutFile = "$DownloadsFolder\qbt-theme.zip"
 			Verbose = $true
 		}
@@ -674,15 +677,15 @@ function qBittorent
 		}
 		ExtractZIPFile @Parameters
 
-		Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force
+		Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force -ErrorAction Ignore
 
 		# Enable dark theme
-		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
+		$qbtTheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
 
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
-		# Add to the Windows Defender Firewall exclusion list
+		# Adding to the Windows Defender Firewall exclusion list
 		New-NetFirewallRule -DisplayName "qBittorent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "qBittorent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 	}
@@ -718,7 +721,7 @@ function AdobeCreativeCloud
 
 	Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force
+	Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force -ErrorAction Ignore
 }
 
 function Java8
@@ -737,9 +740,9 @@ function Java8
 
 	Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force
+	Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force -ErrorAction Ignore
 
-	# Configuring Java 8(JRE)
+	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\javaw.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\java.exe" -Action Allow
 }
@@ -760,9 +763,9 @@ function Java19
 
 	Start-Process -FilePath "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -ArgumentList "/passive" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force
+	Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force -ErrorAction Ignore
 
-	# Configuring Java 19(JDK)
+	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
 
@@ -786,10 +789,13 @@ function WireGuard
 
 	Start-Process -FilePath "$DownloadsFolder\WireGuardInstaller.exe" -Wait
 
+	Stop-Process -Name WireGuard -Force -ErrorAction Ignore
+
+	Remove-Item -Path "$DownloadsFolder\WireGuardInstaller.exe" -Force -ErrorAction Ignore
+
+	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Wire Guard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "Wire Guard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
-	
-	Remove-Item -Path "$DownloadsFolder\WireGuardInstaller.exe" -Force
 }
 
 function SophiaScript
@@ -802,5 +808,5 @@ function SophiaScript
 
 	Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Sophia Script for Windows *\Sophia.ps1`"" -Verb Runas -Wait
 
-	Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse -Force
+	Remove-Item -Path "$DownloadsFolder\Sophia Script for Windows *" -Recurse -Force -ErrorAction Ignore
 }
