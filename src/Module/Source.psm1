@@ -425,20 +425,20 @@ function Notepad
 		Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
 		UseBasicParsing = $true
 	}
-	$Script:LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+	LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 	$LatestNotepadPlusPlusVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
 
 	# Downloading the latest Notepad++
 	# https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/
 	$Parameters = @{
-		Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($Script:LatestNotepadPlusPlusTag)/npp.$($LatestNotepadPlusPlusVersion).Installer.x64.exe"
-		OutFile         = "$DownloadsFolder\NotepadPlusPlus.$($Script:LatestNotepadPlusPlusTag).exe"
+		Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($LatestNotepadPlusPlusTag)/npp.$($LatestNotepadPlusPlusVersion).Installer.x64.exe"
+		OutFile         = "$DownloadsFolder\NotepadPlusPlusSetup.exe"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($Script:LatestNotepadPlusPlusTag).exe" -ArgumentList "/S" -Wait
+	Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlusSetup.exe" -ArgumentList "/S" -Wait
 
 	Write-Warning -Message "Close 'Notepad++' window manually"
 	
@@ -791,7 +791,7 @@ function DeleteInstallationFiles
 	Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force -ErrorAction Ignore
-	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($Script:LatestNotepadPlusPlusTag).exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlusSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\VisualStutioCodeSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force -ErrorAction Ignore
