@@ -128,5 +128,8 @@ Java19
 # Download WireGuard
 WireGuard
 
+# Delete Installation Files
+DeleteInstallationFiles
+
 # Launch Sophia Script
 SophiaScript

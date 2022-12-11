@@ -66,7 +66,6 @@ function Telegram
 
 	Start-Process -FilePath "$DownloadsFolder\TelegramSetup.exe" -ArgumentList "/VERYSILENT" -Wait 
 
-	Remove-Item -Path "$DownloadsFolder\TelegramSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DesktopFolder\Telegram.lnk" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -89,8 +88,10 @@ function Discord
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
-	Remove-Item -Path "$DesktopFolder\Discord.lnk" -Force -ErrorAction Ignore
 
+	Stop-Process -Name Discord -Force -ErrorAction Ignore
+
+	Remove-Item -Path "$DesktopFolder\Discord.lnk" -Force -ErrorAction Ignore
 	# Remove Discord from autostart
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
 
@@ -101,35 +102,29 @@ function Discord
 
 function BetterDiscord
 {
-	if (Test-Path -Path "$env:LOCALAPPDATA\Discord")
-	{
-		Write-Verbose -Message "Installing Better Discord..." -Verbose
+	Write-Verbose -Message "Installing Better Discord..." -Verbose
 
-		# Downloading the latest BetterDiscord
-		# https://github.com/BetterDiscord/Installer/releases
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
-			UseBasicParsing = $true
-		}
-		$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-
-		$Parameters = @{
-			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
-			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Write-Warning "Close 'Discord' process manually after installing 'BetterDiscord'"
-
-		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
-
-		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
-
-		Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force -ErrorAction Ignore
-		Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force -ErrorAction Ignore
+	# Downloading the latest BetterDiscord
+	# https://github.com/BetterDiscord/Installer/releases
+	$Parameters = @{
+		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
+		UseBasicParsing = $true
 	}
+	$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+
+	$Parameters = @{
+		Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
+		OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters
+
+	Write-Warning "Close 'Discord' process manually after installing 'BetterDiscord'"
+
+	Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
+
+	Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
 }
 
 function BetterDiscordPlugins
@@ -250,8 +245,6 @@ function Steam
 
 	Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\SteamSetup.exe" -Force -ErrorAction Ignore
-
 	# Configuring Steam
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
@@ -303,7 +296,6 @@ function GoogleChromeEnterprise
 
 	Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:PUBLIC\Desktop\Google Chrome.lnk" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -332,8 +324,6 @@ function 7Zip
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\7Zip.msi" -ArgumentList "/passive" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force -ErrorAction Ignore
 
 	# Configuring 7Zip
 	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip File Manager.lnk"))
@@ -376,8 +366,6 @@ function CustomCursor
 		Verbose         = $true
 	}
 	Expand-Archive @Parameters
-
-	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force -ErrorAction Ignore
 
 	New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "Windows 11 Cursors Dark v2 by Jepri Creations" -Force
 	New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SYSTEMROOT%\Cursors\Windows_11_dark_v2\working.ani" -Force
@@ -450,8 +438,6 @@ function Notepad
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -ArgumentList "/S" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Force -ErrorAction Ignore
 
 	Write-Warning -Message "Close 'Notepad++' window manually"
 	
@@ -537,8 +523,6 @@ function GitHubDesktop
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\GitHubDesktop.msi" -ArgumentList "/passive" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force -ErrorAction Ignore
 }
 
 function VSCode
@@ -558,8 +542,6 @@ function VSCode
 	Start-Process -FilePath "$DownloadsFolder\VisualStutioCode.exe" -ArgumentList "/silent" -Wait
 
 	Write-Warning -Message "Close 'Visual Studio Code' window manually"
-
-	Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force -ErrorAction Ignore
 }
 
 function TeamSpeak
@@ -578,7 +560,6 @@ function TeamSpeak
 
 	Start-Process -FilePath "$DownloadsFolder\TeamSpeakSetup.exe" -ArgumentList "/S" -Wait
 
-	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -608,8 +589,6 @@ function qBittorent
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\qBittorrentSetup.exe" -ArgumentList "/S" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force -ErrorAction Ignore
 
 	# Configuring qBittorrent
 	if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
@@ -691,8 +670,6 @@ function qBittorent
 		}
 		ExtractZIPFile @Parameters
 
-		Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force -ErrorAction Ignore
-
 		# Enable dark theme
 		$qbtTheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
 
@@ -734,8 +711,6 @@ function AdobeCreativeCloud
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force -ErrorAction Ignore
 }
 
 function Java8
@@ -753,8 +728,6 @@ function Java8
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\javaw.exe" -Action Allow
@@ -776,8 +749,6 @@ function Java19
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -ArgumentList "/passive" -Wait
-
-	Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
@@ -805,11 +776,30 @@ function WireGuard
 
 	Stop-Process -Name WireGuard -Force -ErrorAction Ignore
 
-	Remove-Item -Path "$DownloadsFolder\WireGuardInstaller.exe" -Force -ErrorAction Ignore
-
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Wire Guard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 	New-NetFirewallRule -DisplayName "Wire Guard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+}
+
+function DeleteInstallationFiles
+{
+	Remove-Item -Path "$DownloadsFolder\TelegramSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\SteamSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\WireGuardInstaller.exe" -Force -ErrorAction Ignore
 }
 
 function SophiaScript
