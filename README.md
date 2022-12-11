@@ -44,7 +44,7 @@ Supports `Windows 10` & `Windows 11`
 
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
-  * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L143)
+  * [Better Discord](https://betterdiscord.app/) and useful [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L134)
 * [Steam](https://store.steampowered.com/about/)
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/download.html) archiver
