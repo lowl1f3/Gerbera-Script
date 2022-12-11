@@ -89,9 +89,8 @@ function Discord
 
 	Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
 
-	Stop-Process -Name Discord -Force -ErrorAction Ignore
-
 	Remove-Item -Path "$DesktopFolder\Discord.lnk" -Force -ErrorAction Ignore
+
 	# Remove Discord from autostart
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
 
@@ -120,7 +119,7 @@ function BetterDiscord
 	}
 	Invoke-WebRequest @Parameters
 
-	Write-Warning "Close 'Discord' process manually after installing 'BetterDiscord'"
+	Stop-Process -Name Discord -Force -ErrorAction Ignore
 
 	Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
@@ -533,13 +532,13 @@ function VSCode
 	# https://code.visualstudio.com/download
 	$Parameters = @{
 		Uri             = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
-		OutFile         = "$DownloadsFolder\VisualStutioCode.exe"
+		OutFile         = "$DownloadsFolder\VisualStutioCodeSetup.exe"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\VisualStutioCode.exe" -ArgumentList "/silent" -Wait
+	Start-Process -FilePath "$DownloadsFolder\VisualStutioCodeSetup.exe" -ArgumentList "/silent" -Wait
 
 	Write-Warning -Message "Close 'Visual Studio Code' window manually"
 }
@@ -792,7 +791,7 @@ function DeleteInstallationFiles
 	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlus.$($LatestNotepadPlusPlusTag).exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force -ErrorAction Ignore
-	Remove-Item -Path "$DownloadsFolder\VisualStutioCode.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DownloadsFolder\VisualStutioCodeSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force -ErrorAction Ignore
