@@ -26,23 +26,23 @@
 	https://github.com/lowl1f3
 #>
 
-# Startup confirmation
-$Title = "Have you customized the preset file before running Script?"
-$Message       = ""
-$Yes           = "Yes"
-$No            = "No"
-$Options       = "&$No", "&$Yes"
-$DefaultChoice = 0
-$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
+function Confirmation {
+	# Startup confirmation
+	$Title         = "Have you customized the preset file before running Script?"
+	$Message       = ""
+	$Options       = "&No", "&Yes"
+	$DefaultChoice = 0
+	$Result        = $Host.UI.PromptForChoice($Title, $Message, $Options, $DefaultChoice)
 
-switch ($Result)
-{
-	"0" {
-		Clear-Host
-		exit
-	}
-	"1" {
-		continue
+	switch ($Result)
+	{
+		"0" {
+			Invoke-Item -Path "$PSScriptRoot\..\Script.ps1"
+			exit
+		}
+		"1" {
+			continue
+		}
 	}
 }
 
@@ -64,9 +64,7 @@ function Telegram
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\TelegramSetup.exe" -ArgumentList "/VERYSILENT" -Wait 
-
-	Remove-Item -Path "$DesktopFolder\Telegram.lnk" -Force -ErrorAction Ignore
+	Start-Process -FilePath "$DownloadsFolder\TelegramSetup.exe" -ArgumentList "/VERYSILENT"
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
@@ -88,8 +86,6 @@ function Discord
 	Invoke-WebRequest @Parameters
 
 	Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
-
-	Remove-Item -Path "$DesktopFolder\Discord.lnk" -Force -ErrorAction Ignore
 
 	# Remove Discord from autostart
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
@@ -208,6 +204,9 @@ function BetterDiscordPlugins
 			# https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js
 			"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"
 		)
+
+		Write-Verbose -Message "Installing BetterDiscord plugins..." -Verbose
+
 		foreach ($Plugin in $Plugins)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
@@ -255,23 +254,22 @@ function Steam
 		}
 		Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path "$env:PUBLIC\Desktop\Steam.lnk" -Force -ErrorAction Ignore
 		Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 	}
 
-	foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
+	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
-		if (Test-Path -Path $folder.FullName)
+		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
 		{
 			# Do not notify me about additions or changes to my games, new releases, and upcoming releases
 			(Get-Content -Path "$($folder.FullName)\config\localconfig.vdf" -Encoding UTF8) | ForEach-Object -Process {
 				$_ -replace "`"NotifyAvailableGames`"		`"1`"", "`"NotifyAvailableGames`"		`"0`""
 			} | Set-Content -Path "$($folder.FullName)\config\localconfig.vdf" -Encoding UTF8 -Force
 		}
-		else
-		{
-			Write-Verbose -Message "User folders doesn't exist" -Verbose
-		}
+	}
+	else
+	{
+		Write-Verbose -Message "User folders doesn't exist" -Verbose
 	}
 
 	# Remove Steam from autostart
@@ -295,9 +293,7 @@ function GoogleChromeEnterprise
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive" -Wait
-
-	Remove-Item -Path "$env:PUBLIC\Desktop\Google Chrome.lnk" -Force -ErrorAction Ignore
+	Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive"
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
@@ -364,7 +360,6 @@ function CustomCursor
 		Path            = "$DownloadsFolder\dark.zip"
 		DestinationPath = "$env:SystemRoot\Cursors\Windows_11_dark_v2"
 		Force           = $true
-		Verbose         = $true
 	}
 	Expand-Archive @Parameters
 
@@ -425,7 +420,7 @@ function Notepad
 		Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
 		UseBasicParsing = $true
 	}
-	LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+	$LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 	$LatestNotepadPlusPlusVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
 
 	# Downloading the latest Notepad++
@@ -523,7 +518,7 @@ function GitHubDesktop
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\GitHubDesktop.msi" -ArgumentList "/passive" -Wait
+	Start-Process -FilePath "$DownloadsFolder\GitHubDesktop.msi" -ArgumentList "/passive"
 }
 
 function VSCode
@@ -540,9 +535,9 @@ function VSCode
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\VisualStutioCodeSetup.exe" -ArgumentList "/silent" -Wait
+	Write-Warning -Message "Close 'Visual Studio Code' window manually after installation"
 
-	Write-Warning -Message "Close 'Visual Studio Code' window manually"
+	Start-Process -FilePath "$DownloadsFolder\VisualStutioCodeSetup.exe" -ArgumentList "/silent"
 }
 
 function TeamSpeak
@@ -559,9 +554,7 @@ function TeamSpeak
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\TeamSpeakSetup.exe" -ArgumentList "/S" -Wait
-
-	Remove-Item -Path "$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk" -Force -ErrorAction Ignore
+	Start-Process -FilePath "$DownloadsFolder\TeamSpeakSetup.exe" -ArgumentList "/S"
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
@@ -601,21 +594,27 @@ function qBittorent
 		}
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramFiles\qBittorrent\translations" -Exclude qt_ru.qm, qtbase_ru.qm -Recurse -Force -ErrorAction Ignore
+
+		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\"))
+		{
+			New-Item -Path "$env:APPDATA\qBittorrent\" -ItemType Directory -Force
+		}
+		# Installing the settings file
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
 			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
 			UseBasicParsing = $true
-			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
-
-		$LatestqBittorrentThemeVersion = (Invoke-RestMethod -Uri "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest").assets.browser_download_url
+		
+		# Get the latest qBittorrent dark theme version
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
 			UseBasicParsing = $true
 		}
 		$LatestqBittorrentThemeVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
 
+		# Installing dark theme
 		$Parameters = @{
 			Uri     = $LatestqBittorrentThemeVersion
 			OutFile = "$DownloadsFolder\qbt-theme.zip"
@@ -672,7 +671,7 @@ function qBittorent
 		ExtractZIPFile @Parameters
 
 		# Enable dark theme
-		$qbtTheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
+		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
 
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
@@ -688,7 +687,8 @@ function Office
 	Write-Verbose -Message "Installing Office..." -Verbose
 
 	# Downloading the latest Office
-	Start-Process -FilePath powershell.exe -ArgumentList "-ExecutionPolicy Bypass -NoProfile -NoLogo -File `"$DownloadsFolder\Script-main\src\Office\Download.ps1`"" -Verb Runas -Wait
+	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
+	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
 
 	# Configuring Office
 	if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
@@ -711,7 +711,7 @@ function AdobeCreativeCloud
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT" -Wait
+	Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT"
 }
 
 function Java8
@@ -728,7 +728,7 @@ function Java8
 	}
 	Invoke-WebRequest @Parameters
 
-	Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
+	Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1"
 
 	# Adding to the Windows Defender Firewall exclusion list
 	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\javaw.exe" -Action Allow
@@ -783,21 +783,28 @@ function WireGuard
 }
 
 function DeleteInstallationFiles
+# Remove Installation Files and shortcuts from Desktop
 {
 	Remove-Item -Path "$DownloadsFolder\TelegramSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$DesktopFolder\Telegram.lnk" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\DiscordSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:USERPROFILE\Desktop\Discord.lnk" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\BetterDiscordSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\SteamSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:PUBLIC\Desktop\Steam.lnk" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:PUBLIC\Desktop\Google Chrome.lnk" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\7Zip.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\dark.zip" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\NotepadPlusPlusSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\GitHubDesktop.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\VisualStutioCodeSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\TeamSpeakSetup.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\qBittorrentSetup.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\qbt-theme.zip" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\CreativeCloudSetUp.exe" -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -Force -ErrorAction Ignore
 	Remove-Item -Path "$DownloadsFolder\WireGuardInstaller.exe" -Force -ErrorAction Ignore

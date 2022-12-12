@@ -48,7 +48,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Script for Windows 10 & 11 | Made with $([char]::ConvertFromUtf32(0x1F497)) by lowlif3"
+$Host.UI.RawUI.WindowTitle = "Made with $([char]::ConvertFromUtf32(0x1F497)) by lowlif3"
 
 Remove-Module -Name Manifest -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Manifest.psd1 -PassThru -Force
@@ -70,9 +70,10 @@ if ($Functions)
 	{
 		Invoke-Expression -Command $Function
 	}
-
 	exit
 }
+
+Confirmation
 
 # Download Telegram
 Telegram
@@ -96,7 +97,7 @@ GoogleChromeEnterprise
 7Zip
 
 # Download Custom Cursor
-# CustomCursor
+CustomCursor
 
 # Download Notepad
 Notepad
@@ -105,7 +106,7 @@ Notepad
 GitHubDesktop
 
 # Download Visual Studio Code
-# VSCode
+VSCode
 
 # Download TeamSpeak 3
 TeamSpeak
