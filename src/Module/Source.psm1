@@ -229,6 +229,49 @@ function BetterDiscordPlugins
 	}
 }
 
+function BetterDiscordThemes
+{
+	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
+	{
+		# Installing Better Discord themes
+		$Themes = @(
+			# EmojiReplace
+			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/EmojiReplace/EmojiReplace.theme.css
+			"https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/EmojiReplace/EmojiReplace.theme.css",
+
+			# RadialStatus
+			# https://github.com/DiscordStyles/RadialStatus/blob/deploy/RadialStatus.theme.css
+			"https://github.com/DiscordStyles/RadialStatus/blob/deploy/RadialStatus.theme.css",
+
+			# SettingsModal
+			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/SettingsModal/SettingsModal.theme.css
+			"https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/SettingsModal/SettingsModal.theme.css"
+		)
+
+		Write-Verbose -Message "Installing BetterDiscord themes..." -Verbose
+
+		foreach ($Theme in $Themes)
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $(Split-Path -Path $Theme -Leaf) -Verbose
+
+			if ($(Split-Path -Path $Theme -Leaf))
+			{
+				$Parameters = @{
+					Uri             = $Theme
+					OutFile         = "$env:APPDATA\BetterDiscord\themes\$(Split-Path -Path $Theme -Leaf)"
+					UseBasicParsing = $true
+				}
+			}
+			Invoke-Webrequest @Parameters
+		}
+	}
+	else
+	{
+		Write-Verbose -Message "BetterDiscord isn't installed" -Verbose
+	}
+}
+
 function Steam
 {
 	Write-Verbose -Message "Installing Steam..." -Verbose
