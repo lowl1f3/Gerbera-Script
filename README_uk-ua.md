@@ -44,7 +44,7 @@
 
 * [Telegram](https://desktop.telegram.org)
 * [Discord](https://discord.com/download)
-  * [Better Discord](https://betterdiscord.app/), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L130) & [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L237)
+  * [Better Discord](https://betterdiscord.app/), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L130) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L237)
 * [Steam](https://store.steampowered.com/about/)
 * [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/download.html) архіватор
