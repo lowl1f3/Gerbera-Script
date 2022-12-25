@@ -237,15 +237,15 @@ function BetterDiscordThemes
 		$Themes = @(
 			# EmojiReplace
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/EmojiReplace/EmojiReplace.theme.css
-			"https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/EmojiReplace/EmojiReplace.theme.css",
+			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Themes/EmojiReplace/EmojiReplace.theme.css",
 
 			# RadialStatus
 			# https://github.com/DiscordStyles/RadialStatus/blob/deploy/RadialStatus.theme.css
-			"https://github.com/DiscordStyles/RadialStatus/blob/deploy/RadialStatus.theme.css",
+			"https://raw.githubusercontent.com/DiscordStyles/RadialStatus/deploy/RadialStatus.theme.css",
 
 			# SettingsModal
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/SettingsModal/SettingsModal.theme.css
-			"https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/SettingsModal/SettingsModal.theme.css"
+			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Themes/SettingsModal/SettingsModal.theme.css"
 		)
 
 		Write-Verbose -Message "Installing BetterDiscord themes..." -Verbose
