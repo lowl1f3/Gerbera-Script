@@ -467,7 +467,7 @@ function Notepad
 	$LatestNotepadPlusPlusVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
 
 	# Downloading the latest Notepad++
-	# https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/
+	# https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest
 	$Parameters = @{
 		Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($LatestNotepadPlusPlusTag)/npp.$($LatestNotepadPlusPlusVersion).Installer.x64.exe"
 		OutFile         = "$DownloadsFolder\NotepadPlusPlusSetup.exe"
