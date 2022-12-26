@@ -76,7 +76,7 @@ function Discord
 	Write-Verbose -Message "Installing Discord..." -Verbose
 
 	# Downloading the latest Discord
-	# https://discord.com/
+	# https://discord.com/download
 	$Parameters = @{
 		Uri             = "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
 		OutFile         = "$DownloadsFolder\DiscordSetup.exe"
@@ -100,7 +100,7 @@ function BetterDiscord
 	Write-Verbose -Message "Installing Better Discord..." -Verbose
 
 	# Downloading the latest BetterDiscord
-	# https://github.com/BetterDiscord/Installer/releases
+	# https://github.com/BetterDiscord/Installer/releases/latest
 	$Parameters = @{
 		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
 		UseBasicParsing = $true
@@ -355,6 +355,7 @@ function 7Zip
 	$best7ZipRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename.replace("exe", "msi")
 
 	# Downloading the latest 7-Zip x64
+	# https://www.7-zip.org/download.html
 	$Parameters = @{
 		Uri             = "https://nchc.dl.sourceforge.net/project/sevenzip$($best7ZipRelease)"
 		OutFile         = "$DownloadsFolder\7Zip.msi"
@@ -588,7 +589,7 @@ function TeamSpeak
 	Write-Verbose -Message "Installing TeamSpeak 3..." -Verbose
 
 	# Downloading the latest TeamSpeak 3 x64
-	# https://www.teamspeak.com/en/downloads/#
+	# https://www.teamspeak.com/en/downloads/
 	$Parameters = @{
 		Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
 		OutFile         = "$DownloadsFolder\TeamSpeakSetup.exe"
@@ -762,7 +763,7 @@ function Java8
 	Write-Verbose -Message "Installing latest Java 8(JRE) x64..." -Verbose
 
 	# Downloading the latest Java 8(JRE) x64
-	# https://www.java.com/download/ie_manual.jsp
+	# https://www.java.com/en/download/
 	$Parameters = @{
 		Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=247106_10e8cce67c7843478f41411b7003171c"
 		OutFile         = "$DownloadsFolder\Java 8(JRE) for Windows x64.exe"
