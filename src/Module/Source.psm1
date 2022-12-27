@@ -383,6 +383,7 @@ function 7Zip
 
 function CustomCursor
 {
+	# https://github.com/farag2/Utilities/blob/master/Download/Cursor/Install_Cursor.ps1
 	Write-Verbose -Message "Installing custom cursor..." -Verbose
 
 	# Installing custom cursor
