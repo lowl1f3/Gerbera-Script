@@ -109,7 +109,7 @@ Notepad
 GitHubDesktop
 
 # Download Visual Studio Code
-VSCode
+# VSCode
 
 # Download TeamSpeak 3
 TeamSpeak
