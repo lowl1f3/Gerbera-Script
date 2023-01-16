@@ -300,19 +300,28 @@ function Steam
 		Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 	}
 
-	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
+	foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
 	{
-		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
+		if (Test-Path -Path $folder.FullName)
 		{
-			# Do not notify me about additions or changes to my games, new releases, and upcoming releases
-			(Get-Content -Path "$($folder.FullName)\config\localconfig.vdf" -Encoding UTF8) | ForEach-Object -Process {
-				$_ -replace "`"NotifyAvailableGames`"		`"1`"", "`"NotifyAvailableGames`"		`"0`""
-			} | Set-Content -Path "$($folder.FullName)\config\localconfig.vdf" -Encoding UTF8 -Force
+			(Get-Content -Path "$($folder.PSPath)\config\localconfig.vdf" -Encoding UTF8) | ForEach-Object -Process {
+				$_.replace(
+					# Do not notify me about additions or changes to my games, new releases, and upcoming releases
+					"`"NotifyAvailableGames`"		`"1`"", "`"NotifyAvailableGames`"		`"0`"").replace(
+					# Display Steam URL address bar when available
+					"`"NavUrlBar`"		`"0`"", "`"NavUrlBar`"		`"1`""
+				)
+			} | Set-Content -Path "$($folder.PSPath)\config\localconfig.vdf" -Encoding UTF8 -Force
+
+			# Select which Steam window appears when the program starts: Library
+			(Get-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8) | ForEach-Object -Process {
+				$_.replace("`"SteamDefaultDialog`"		`"#app_store`"", "`"SteamDefaultDialog`"		`"#app_games`"")
+			} | Set-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8 -Force
 		}
-	}
-	else
-	{
-		Write-Verbose -Message "User folders doesn't exist" -Verbose
+		else
+		{
+			Write-Verbose -Message "User folders doesn't exist" -Verbose
+		}
 	}
 
 	# Remove Steam from autostart
