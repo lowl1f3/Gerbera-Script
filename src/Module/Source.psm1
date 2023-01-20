@@ -71,6 +71,29 @@ function Telegram
 	New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 }
 
+function Spotify
+{
+	# Downloading the latest Spotify
+	# https://www.spotify.com/download/windows
+	
+	Write-Verbose -Message "Installing Spotify..." -Verbose
+
+	# Downloading the latest Spotify
+	$Parameters = @{
+		Uri             = "https://download.scdn.co/SpotifySetup.exe"
+		OutFile         = "$DownloadsFolder\SpotifySetup.exe"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters
+
+	Start-Process -FilePath "$DownloadsFolder\SpotifySetup.exe"
+
+	# Adding to the Windows Defender Firewall exclusion list
+	New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
+}
+
 function Discord
 {
 	Write-Verbose -Message "Installing Discord..." -Verbose

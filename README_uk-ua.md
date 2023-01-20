@@ -43,6 +43,7 @@
 	<summary>Перелік</summary>
 
 * [Telegram](https://desktop.telegram.org)
+* [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L130) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L237)
 * [Steam](https://store.steampowered.com/about)

@@ -78,6 +78,9 @@ Confirmation
 # Download Telegram
 Telegram
 
+# Download Spotify
+Spotify
+
 # Download Discord
 Discord
 
