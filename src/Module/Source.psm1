@@ -141,36 +141,29 @@ function Discord
 
 function BetterDiscord
 {
-	if (Test-Path -Path "$env:LOCALAPPDATA\Discord\Update.exe")
-	{
-		Write-Verbose -Message "Installing BetterDiscord..." -Verbose
+	Write-Verbose -Message "Installing BetterDiscord..." -Verbose
 
-		# Downloading the latest BetterDiscord
-		# https://github.com/BetterDiscord/Installer/releases/latest
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
-			UseBasicParsing = $true
-		}
-		$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-
-		$Parameters = @{
-			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
-			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Stop-Process -Name Discord -Force -ErrorAction Ignore
-
-		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
-
-		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
+	# Downloading the latest BetterDiscord
+	# https://github.com/BetterDiscord/Installer/releases/latest
+	$Parameters = @{
+		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
+		UseBasicParsing = $true
 	}
-	else
-	{
-		Write-Verbose -Message "BetterDiscord couldn't be installed. Discord isn't installed" -Verbose
+	$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+
+	$Parameters = @{
+		Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
+		OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
+		UseBasicParsing = $true
+		Verbose         = $true
 	}
+	Invoke-WebRequest @Parameters
+
+	Stop-Process -Name Discord -Force -ErrorAction Ignore
+
+	Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
+
+	Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
 }
 
 function BetterDiscordPlugins
@@ -942,15 +935,15 @@ function SophiaScript
 		}
 		Invoke-WebRequest @Parameters
 
-		$Path1 = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
-		wt --window 0 new-tab --title DownloadSophia --startingDirectory $Path1 powershell -Command "& {.\Download_Sophia.ps1}"
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
+		wt --window 0 new-tab --title DownloadSophia --startingDirectory $Path powershell -Command "& {.\Download_Sophia.ps1}"
 
 		Start-Sleep -Seconds 5
 
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
-		$Path2 = Join-Path -Path $PSScriptRoot -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
-		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path2 powershell -Command "& {.\Sophia.ps1}"
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
+		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 }
 
