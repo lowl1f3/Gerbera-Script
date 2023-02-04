@@ -21,6 +21,7 @@
 	.NOTES
 	https://github.com/farag2/Office
 	https://github.com/farag2/Sophia-Script-for-Windows
+	https://github.com/farag2/Utilities/blob/master/Download/Cursor
 
 	.LINK Author
 	https://github.com/lowl1f3
@@ -488,7 +489,6 @@ function Notepad
 		Write-Verbose -Message "Installing Notepad++..." -Verbose
 
 		# Get the latest Notepad++
-		# https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
 			UseBasicParsing = $true
@@ -677,7 +677,7 @@ function qBittorent
 		$bestqBittorrentRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
 		# Downloading the latest approved by maintainer qBittorrent x64
-		# For example 4.4.3 e.g., not 4.4.3.1 
+		# For example 4.4.3 e.g., not 4.4.3.1
 		$Parameters = @{
 			Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestqBittorrentRelease)"
 			OutFile         = "$DownloadsFolder\qBittorrentSetup.exe"
@@ -812,19 +812,32 @@ function Java8
 	}
 	else
 	{
-		Write-Verbose -Message "Installing latest Java 8(JRE) x64..." -Verbose
+		# Get the latest Java 8(JRE) x64
+		$Parameters = @{
+			Uri             = "https://javadl-esd-secure.oracle.com/update/1.8.0/map-m-1.8.0.xml"
+			UseBasicParsing = $true
+		}
+		$Versions = (Invoke-RestMethod @Parameters)."java-update-map".mapping
+		$LatestVersion = $Versions.version | Select-Object -Last 1
+		$URL = ($Versions | Where-Object -FilterScript {$_.Version -eq $LatestVersion}).url
 
-		# Downloading the latest Java 8(JRE) x64
+		$Parameters = @{
+			Uri             = $URL
+			UseBasicParsing = $true
+		}
+		$Link = ((Invoke-RestMethod @Parameters)."java-update".information | Where-Object -FilterScript {$_.lang -eq "en"}).url
+
+		# Downloading the latest approved by maintainer Java 8(JRE) x64
 		# https://www.java.com/en/download/
 		$Parameters = @{
-			Uri             = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=247947_0ae14417abb444ebb02b9815e2103550"
-			OutFile         = "$DownloadsFolder\Java 8(JRE) for Windows x64.exe"
+			Uri             = $Link
+			OutFile         = "$DownloadsFolder\Java 8(JRE) x64.exe"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) for Windows x64.exe" -ArgumentList "INSTALL_SILENT=1"
+		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) x64.exe" -ArgumentList "INSTALL_SILENT=1"
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -846,13 +859,13 @@ function Java19
 		# https://www.oracle.com/java/technologies/downloads/#jdk19-windows
 		$Parameters = @{
 			Uri             = "https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.msi"
-			OutFile         = "$DownloadsFolder\Java 19(JDK) for Windows x64.msi"
+			OutFile         = "$DownloadsFolder\Java 19(JDK) x64.msi"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\Java 19(JDK) for Windows x64.msi" -ArgumentList "/passive" -Wait
+		Start-Process -FilePath "$DownloadsFolder\Java 19(JDK) x64.msi" -ArgumentList "/passive" -Wait
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -947,8 +960,8 @@ function SophiaScript
 	}
 }
 
-function DeleteInstallationFiles
 # Remove installation files and shortcuts from Desktop
+function DeleteInstallationFiles
 {
 	$Paths = @(
 		"$DownloadsFolder\TelegramSetup.exe",
@@ -973,8 +986,8 @@ function DeleteInstallationFiles
 		"$DownloadsFolder\qbt-theme.zip",
 		"$DownloadsFolder\CreativeCloudSetUp.exe",
 		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk",
-		"$DownloadsFolder\Java 8(JRE) for Windows x64.exe",
-		"$DownloadsFolder\Java 19(JDK) for Windows x64.msi",
+		"$DownloadsFolder\Java 8(JRE) x64.exe",
+		"$DownloadsFolder\Java 19(JDK) x64.msi",
 		"$DownloadsFolder\WireGuardInstaller.exe",
 		"$PSScriptRoot\Download_Sophia.ps1"
 	)
