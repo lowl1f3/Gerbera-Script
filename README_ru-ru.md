@@ -49,7 +49,7 @@
 * [Steam](https://store.steampowered.com/about)
 * [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/download.html) архиватор
-* Кастомный [курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
+* [Кастомный курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
