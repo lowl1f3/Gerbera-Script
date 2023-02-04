@@ -47,9 +47,9 @@ Supports `Windows 10` & `Windows 11`
 * [Discord](https://discord.com/download)
   * [Better Discord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L181) & [themes](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L288)
 * [Steam](https://store.steampowered.com/about)
-* [Chrome Enterprise](https://chromeenterprise.google/browser/download/#windows-tab)
+* [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
 * [7-Zip](https://www.7-zip.org/download.html) archiver
-* [Custom](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) cursor
+* Custom [Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
