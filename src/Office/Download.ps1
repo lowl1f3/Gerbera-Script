@@ -244,7 +244,7 @@ function DownloadOffice
 }
 
 # Download Offce. Firstly, download Office, then install it
-DownloadOffice -Branch O365ProPlusRetail -Channel SemiAnnual -Components Excel, Word, PowerPoint, Outlook, Teams, OneDrive
+DownloadOffice -Branch ProPlus2021Volume -Channel PerpetualVL2021 -Components Excel, Word, PowerPoint, Outlook
 
 # Install
 if (Test-Path $PSScriptRoot\Office\Data\*\stream.x64.x-none.dat)

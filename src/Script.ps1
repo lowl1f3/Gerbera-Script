@@ -2,7 +2,7 @@
 	.SYNOPSIS
 	Default preset file for "Script"
 
-	Copyright (c) 2022 lowl1f3
+	Copyright (c) 2023 lowl1f3
 
 	Big thanks directly to farag2
 
@@ -17,7 +17,7 @@
 	.\Script.ps1 -Functions Telegram, GitHub, Steam, etc.
 
 	.NOTES
-	Supported Windows 10 & 11 versions
+	Supported Windows 10 & 11 x64 versions
 
 	.LINK GitHub
 	https://github.com/lowl1f3/Script
@@ -72,71 +72,70 @@ if ($Functions)
 	}
 	exit
 }
-
 Confirmation
 
-# Download Telegram
+## Download Telegram
 Telegram
 
-# Download Spotify
-Spotify
+## Download Spotify
+#Spotify
 
-# Download Discord
+## Download Discord
 Discord
 
-# Download BetterDiscord
+## Download BetterDiscord
 BetterDiscord
 
-# Download BetterDiscord Plugins
+## Download BetterDiscord Plugins
 BetterDiscordPlugins
 
-# Download BetterDiscord Themes
+## Download BetterDiscord Themes
 BetterDiscordThemes
 
-# Download Steam
+## Download Steam
 Steam
 
-# Download Google Chrome Enterprise
-GoogleChromeEnterprise
+## Download Google Chrome
+GoogleChrome
 
-# Download 7-Zip
+## Download 7-Zip
 7Zip
 
-# Download Custom Cursor
-CustomCursor
+## Download Custom Cursor
+Cursor
 
-# Download Notepad
+## Download Notepad
 Notepad
 
-# Download GitHub Desktop
+## Download GitHub Desktop
 GitHubDesktop
 
-# Download Visual Studio Code
-# VSCode
+## Download Visual Studio Code
+VSCode
 
-# Download TeamSpeak 3
+## Download TeamSpeak 3
 TeamSpeak
 
-# Download qBittorent
+## Download qBittorent
 qBittorent
 
-# Download Office
-Office
-
-# Download Adobe Creative Cloud
+## Download Adobe Creative Cloud
 AdobeCreativeCloud
 
-# Download Java8
+## Download Java8
 Java8
 
-# Download Java19
+## Download Java19
 Java19
 
-# Download WireGuard
+## Download WireGuard
 WireGuard
 
-# Delete Installation Files
-DeleteInstallationFiles
+## Download Office
+Office
 
-# Launch Sophia Script
+## Launch Sophia Script
 SophiaScript
+
+## Delete Installation Files and Shortcuts
+DeleteInstallationFiles
