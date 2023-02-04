@@ -922,6 +922,13 @@ function SophiaScript
 	try
 	{
 		(Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression)
+
+		Start-Sleep -Seconds 5
+
+		Write-Verbose -Message "Starting Sophia Script..." -Verbose
+
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
+		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 	catch [System.Net.WebException]
 	{
@@ -934,17 +941,17 @@ function SophiaScript
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
+
+		$Path1 = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
+		wt --window 0 new-tab --title DownloadSophia --startingDirectory $Path1 powershell -Command "& {.\Download_Sophia.ps1}"
+
+		Start-Sleep -Seconds 5
+
+		Write-Verbose -Message "Starting Sophia Script..." -Verbose
+
+		$Path2 = Join-Path -Path $PSScriptRoot -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
+		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path2 powershell -Command "& {.\Sophia.ps1}"
 	}
-
-	$Path1 = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
-	wt --window 0 new-tab --title DownloadSophia --startingDirectory $Path1 powershell -Command "& {.\Download_Sophia.ps1}"
-
-	Start-Sleep -Seconds 8
-
-	Write-Verbose -Message "Starting Sophia Script..." -Verbose
-
-	$Path2 = Join-Path -Path $PSScriptRoot -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
-	wt --window 0 new-tab --title SophiaScript --startingDirectory $Path2 powershell -Command "& {.\Sophia.ps1}"
 }
 
 function DeleteInstallationFiles
