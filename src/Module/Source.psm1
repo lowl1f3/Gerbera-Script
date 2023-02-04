@@ -379,11 +379,11 @@ function Steam
 					$_.replace("`"SteamDefaultDialog`"		`"#app_store`"", "`"SteamDefaultDialog`"		`"#app_games`"")
 				} | Set-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8 -Force
 			}
-			else
-			{
-				Write-Verbose -Message "User folders doesn't exist" -Verbose
-			}
 		}
+	}
+	else
+	{
+		Write-Verbose -Message "Unable to configure Steam. User folder doesn't exist" -Verbose
 	}
 
 	# Remove Steam from autostart
