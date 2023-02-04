@@ -835,8 +835,8 @@ function Java8
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\javaw.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_351\bin\java.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_361\bin\java.exe" -Action Allow
 }
 
 function Java19
