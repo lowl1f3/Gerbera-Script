@@ -4,7 +4,7 @@
 	GUID                  = '3553de44-b8df-40df-bc92-c0a63cec30d0'
 	Author                = 'Eugene "lowl1f3"'
 	Copyright             = '(c) 2022 lowl1f3. All rights reserved'
-	Description           = 'Module for Windows that automates installation and configuration of programs'
+	Description           = 'A PowerShell script for Windows that automates installation and configuration of programs'
 	PowerShellVersion     = '5.1'
 	ProcessorArchitecture = 'AMD64'
 	FunctionsToExport     = '*'
