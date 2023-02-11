@@ -40,26 +40,27 @@
 > **Note**: Деякі з них мають тихе встановлення
 
 <details>
-	<summary>Перелік</summary>
+  <summary>Програми</summary>
 
 * [Telegram](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [Better Discord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L175) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L282)
+  * [Better Discord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L178) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L285)
 * [Steam](https://store.steampowered.com/about)
 * [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
-* [7-Zip](https://www.7-zip.org/download.html) архіватор
+* [NanaZip](https://github.com/M2Team/NanaZip)
 * [Кастомний курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
+* [Visual Stutio](https://visualstudio.microsoft.com/#vs-section)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
 * [Teamspeak 3](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
+* [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
+* [Java 8(JRE)](https://www.java.com/en/download) і [Java 19(JDK)](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
+* [WireGuard](https://www.wireguard.com/install)
 * [Настроюваний](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook
-* [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8](https://www.java.com/en/download)(JRE) і [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)(JDK)
-* [WireGuard](https://www.wireguard.com/install)
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
   * [Системні вимоги](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 </details>

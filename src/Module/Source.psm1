@@ -2,6 +2,9 @@
 	.SYNOPSIS
 	A PowerShell script for Windows that automates installation and configuration of programs
 
+	Version: v1.0.0
+	Date: #TBA#
+
 	Copyright (c) 2023 lowl1f3
 
 	Big thanks directly to farag2
@@ -63,7 +66,7 @@ function Telegram
 	{
 		Write-Verbose -Message "Installing Telegram..." -Verbose
 
-		# Downloading the latest Telegram Desktop
+		# Download the latest Telegram Desktop
 		# https://desktop.telegram.org/
 		$Parameters = @{
 			Uri             = "https://telegram.org/dl/desktop/win64"
@@ -91,7 +94,7 @@ function Spotify
 	{
 		Write-Verbose -Message "Installing Spotify..." -Verbose
 
-		# Downloading the latest Spotify
+		# Download the latest Spotify
 		# https://www.spotify.com/download/windows
 		$Parameters = @{
 			Uri             = "https://download.scdn.co/SpotifySetup.exe"
@@ -119,7 +122,7 @@ function Discord
 	{
 		Write-Verbose -Message "Installing Discord..." -Verbose
 
-		# Downloading the latest Discord
+		# Download the latest Discord
 		# https://discord.com/download
 		$Parameters = @{
 			Uri             = "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
@@ -144,16 +147,16 @@ function BetterDiscord
 {
 	Write-Verbose -Message "Installing BetterDiscord..." -Verbose
 
-	# Downloading the latest BetterDiscord
+	# Download the latest BetterDiscord
 	# https://github.com/BetterDiscord/Installer/releases/latest
 	$Parameters = @{
 		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
 		UseBasicParsing = $true
 	}
-	$LatestBetterDiscordTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+	$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 
 	$Parameters = @{
-		Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($LatestBetterDiscordTag)/BetterDiscord-Windows.exe"
+		Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
 		OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
 		UseBasicParsing = $true
 		Verbose         = $true
@@ -171,7 +174,7 @@ function BetterDiscordPlugins
 {
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
 	{
-		# Installing Better Discord plugins
+		# Install Better Discord plugins
 		$Plugins = @(
 			# BDFDB
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
@@ -278,7 +281,7 @@ function BetterDiscordThemes
 {
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
 	{
-		# Installing Better Discord themes
+		# Install Better Discord themes
 		$Themes = @(
 			# EmojiReplace
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/EmojiReplace/EmojiReplace.theme.css
@@ -327,7 +330,7 @@ function Steam
 	{
 		Write-Verbose -Message "Installing Steam..." -Verbose
 
-		# Downloading the latest Steam
+		# Download the latest Steam
 		# https://store.steampowered.com/about/
 		$Parameters = @{
 			Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
@@ -398,7 +401,7 @@ function GoogleChrome
 	{
 		Write-Verbose -Message "Installing Google Chrome..." -Verbose
 
-		# Downloading the latest Google Chrome x64
+		# Download the latest Google Chrome x64
 		# https://chromeenterprise.google/browser/download
 		$Parameters = @{
 			Uri     = "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi"
@@ -415,56 +418,43 @@ function GoogleChrome
 	New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 }
 
-function 7Zip
+function NanaZip
 {
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 	{
-		winget install --id 7zip.7zip --exact --accept-source-agreements
+		winget install --id M2Team.NanaZip --exact --accept-source-agreements
 	}
 	else
 	{
-		Write-Verbose -Message "Installing 7-Zip..." -Verbose
+		Write-Verbose -Message "Installing NanaZip..." -Verbose
 
-		# Get the latest 7-Zip download URL
+		# Get the latest NanaZip
 		$Parameters = @{
-			Uri             = "https://sourceforge.net/projects/sevenzip/best_release.json"
+			Uri             = "https://api.github.com/repos/M2Team/NanaZip/releases"
 			UseBasicParsing = $true
 		}
-		$best7ZipRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename.replace("exe", "msi")
+		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+		$releaseName = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
 
-		# Downloading the latest 7-Zip x64
-		# https://www.7-zip.org/download.html
+		# Download the latest NanaZip
+		# https://github.com/M2Team/NanaZip/releases/latest
 		$Parameters = @{
-			Uri             = "https://nchc.dl.sourceforge.net/project/sevenzip$($best7ZipRelease)"
-			OutFile         = "$DownloadsFolder\7Zip.msi"
+			Uri             = "https://github.com/M2Team/NanaZip/releases/download/$($bestRelease)/$($releaseName)"
+			OutFile         = "$DownloadsFolder\$releaseName"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\7Zip.msi" -ArgumentList "/passive" -Wait
+		Add-AppxPackage -Path "$DownloadsFolder\$releaseName" -Verbose
 	}
-
-	# Configuring 7Zip
-	if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip File Manager.lnk"))
-	{
-		Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip\7-Zip File Manager.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
-		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\7-Zip" -Recurse -Force -ErrorAction Ignore
-	}
-
-	if (-not (Test-Path -Path HKCU:\SOFTWARE\7-Zip\Options))
-	{
-		New-Item -Path HKCU:\SOFTWARE\7-Zip\Options -Force
-	}
-	New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name ContextMenu -PropertyType DWord -Value 4192 -Force
-	New-ItemProperty -Path HKCU:\SOFTWARE\7-Zip\Options -Name MenuIcons -PropertyType DWord -Value 1 -Force
 }
 
 function Cursor
 {
 	Write-Verbose -Message "Installing custom Cursor..." -Verbose
 
-	# Downloading custom Cursor
+	# Download custom Cursor
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Cursor/Install_Cursor.ps1"
@@ -493,13 +483,13 @@ function Notepad
 			Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
 			UseBasicParsing = $true
 		}
-		$LatestNotepadPlusPlusTag = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-		$LatestNotepadPlusPlusVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
+		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+		$bestReleaseVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
 
-		# Downloading the latest Notepad++
+		# Download the latest Notepad++
 		# https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest
 		$Parameters = @{
-			Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($LatestNotepadPlusPlusTag)/npp.$($LatestNotepadPlusPlusVersion).Installer.x64.exe"
+			Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($bestRelease)/npp.$($bestReleaseVersion).Installer.x64.exe"
 			OutFile         = "$DownloadsFolder\NotepadPlusPlusSetup.exe"
 			UseBasicParsing = $true
 			Verbose         = $true
@@ -591,7 +581,7 @@ function GitHubDesktop
 	{
 		Write-Verbose -Message "Installing GitHub Desktop..." -Verbose
 
-		# Downloading the latest GitHub Desktop
+		# Download the latest GitHub Desktop
 		# https://desktop.github.com/
 		$Parameters = @{
 			Uri             = "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi"
@@ -605,7 +595,31 @@ function GitHubDesktop
 	}
 }
 
-function VSCode
+function VisualStudio
+{
+	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
+	{
+	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
+	}
+	else
+	{
+		Write-Verbose -Message "Installing Visual Stutio..." -Verbose
+
+		# Download the latest Visual Stutio
+		# https://visualstudio.microsoft.com/#vs-section
+		$Parameters = @{
+			Uri             = "https://c2rsetup.officeapps.live.com/c2r/downloadVS.aspx?sku=community&channel=Release&version=VS2022&source=VSLandingPage&passive=true&includeRecommended=true&cid=2030"
+			OutFile         = "$DownloadsFolder\VisualStutioSetup.exe"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+
+		Start-Process -FilePath "$DownloadsFolder\VisualStutioSetup.exe" -ArgumentList "/silent"
+	}
+}
+
+function VisualStudioCode
 {
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 	{
@@ -615,7 +629,7 @@ function VSCode
 	{
 		Write-Verbose -Message "Installing Visual Stutio Code..." -Verbose
 
-		# Downloading the latest Visual Stutio Code
+		# Download the latest Visual Stutio Code
 		# https://code.visualstudio.com/download
 		$Parameters = @{
 			Uri             = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
@@ -631,7 +645,7 @@ function VSCode
 	}
 }
 
-function TeamSpeak
+function TeamSpeak3
 {
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 	{
@@ -641,7 +655,7 @@ function TeamSpeak
 	{
 		Write-Verbose -Message "Installing TeamSpeak 3..." -Verbose
 
-		# Downloading the latest TeamSpeak 3 x64
+		# Download the latest TeamSpeak 3 x64
 		# https://www.teamspeak.com/en/downloads/
 		$Parameters = @{
 			Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
@@ -659,7 +673,7 @@ function TeamSpeak
 	New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 }
 
-function qBittorent
+function qBittorrent
 {
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 	{
@@ -674,12 +688,13 @@ function qBittorent
 			Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
 			UseBasicParsing = $true
 		}
-		$bestqBittorrentRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
+		$bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
-		# Downloading the latest approved by maintainer qBittorrent x64
+		# Download the latest approved by maintainer qBittorrent x64
+		# https://www.qbittorrent.org/download.php
 		# For example 4.4.3 e.g., not 4.4.3.1
 		$Parameters = @{
-			Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestqBittorrentRelease)"
+			Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
 			OutFile         = "$DownloadsFolder\qBittorrentSetup.exe"
 			UseBasicParsing = $true
 			Verbose         = $true
@@ -704,7 +719,7 @@ function qBittorent
 		{
 			New-Item -Path "$env:APPDATA\qBittorrent\" -ItemType Directory -Force
 		}
-		# Installing the settings file
+		# Install the settings file
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
 			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
@@ -717,11 +732,11 @@ function qBittorent
 			Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
 			UseBasicParsing = $true
 		}
-		$LatestqBittorrentThemeVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
+		$latestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
 
-		# Installing dark theme
+		# Install dark theme
 		$Parameters = @{
-			Uri     = $LatestqBittorrentThemeVersion
+			Uri     = $latestVersion
 			OutFile = "$DownloadsFolder\qbt-theme.zip"
 			Verbose = $true
 		}
@@ -782,8 +797,8 @@ function qBittorent
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
 		# Adding to the Windows Defender Firewall exclusion list
-		New-NetFirewallRule -DisplayName "qBittorent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "qBittorent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 	}
 }
 
@@ -791,7 +806,7 @@ function AdobeCreativeCloud
 {
 	Write-Verbose -Message "Installing Adobe Creative Cloud..." -Verbose
 
-	# Downloading the latest Adobe Creative Cloud
+	# Download the latest Adobe Creative Cloud
 	# https://creativecloud.adobe.com/en/apps/download/creative-cloud
 	$Parameters = @{
 		Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
@@ -827,7 +842,7 @@ function Java8
 		}
 		$Link = ((Invoke-RestMethod @Parameters)."java-update".information | Where-Object -FilterScript {$_.lang -eq "en"}).url
 
-		# Downloading the latest approved by maintainer Java 8(JRE) x64
+		# Download the latest approved by maintainer Java 8(JRE) x64
 		# https://www.java.com/en/download/
 		$Parameters = @{
 			Uri             = $Link
@@ -837,12 +852,12 @@ function Java8
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) x64.exe" -ArgumentList "INSTALL_SILENT=1"
+		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Java\jre1.8.0_361\bin\java.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
 }
 
 function Java19
@@ -855,7 +870,7 @@ function Java19
 	{
 		Write-Verbose -Message "Installing latest Java 19(JDK) x64..." -Verbose
 
-		# Downloading the latest Java 19(JDK) x64
+		# Download the latest Java 19(JDK) x64
 		# https://www.oracle.com/java/technologies/downloads/#jdk19-windows
 		$Parameters = @{
 			Uri             = "https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.msi"
@@ -886,7 +901,7 @@ function WireGuard
 	{
 		Write-Verbose -Message "Installing WireGuard..." -Verbose
 
-		# Downloading the latest WireGuard
+		# Download the latest WireGuard
 		# https://www.wireguard.com/install/
 		$Parameters = @{
 			Uri             = "https://download.wireguard.com/windows-client/wireguard-installer.exe"
@@ -910,7 +925,7 @@ function Office
 {
 	Write-Verbose -Message "Installing Office..." -Verbose
 
-	# Downloading the latest Office
+	# Download the latest Office
 	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
 	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
 
@@ -927,7 +942,7 @@ function SophiaScript
 
 	try
 	{
-		(Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression)
+		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
 		Start-Sleep -Seconds 5
 
@@ -938,7 +953,7 @@ function SophiaScript
 	}
 	catch [System.Net.WebException]
 	{
-		# Downloading the latest Sophia Script
+		# Download the latest Sophia Script
 		# https://github.com/farag2/Sophia-Script-for-Windows
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/Download_Sophia.ps1"
@@ -973,7 +988,7 @@ function DeleteInstallationFiles
 		"$env:PUBLIC\Desktop\Steam.lnk",
 		"$DownloadsFolder\googlechromestandaloneenterprise64.msi",
 		"$env:PUBLIC\Desktop\Google Chrome.lnk",
-		"$DownloadsFolder\7Zip.msi",
+		"$DownloadsFolder\$releaseName",
 		"$DownloadsFolder\dark.zip",
 		"$PSScriptRoot\Install_Cursor.ps1",
 		"$DownloadsFolder\NotepadPlusPlusSetup.exe",

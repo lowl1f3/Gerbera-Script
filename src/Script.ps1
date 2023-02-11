@@ -2,6 +2,9 @@
 	.SYNOPSIS
 	Default preset file for "Script"
 
+	Version: v1.0.0
+	Date: #TBA#
+
 	Copyright (c) 2023 lowl1f3
 
 	Big thanks directly to farag2
@@ -14,7 +17,7 @@
 	.\Script.ps1
 
 	.EXAMPLE Run the script by specifying the module functions as an argument
-	.\Script.ps1 -Functions Telegram, GitHub, Steam, etc.
+	.\Script.ps1 -Functions Telegram, GitHubDesktop, Steam, etc.
 
 	.NOTES
 	Supported Windows 10 & 11 x64 versions
@@ -31,6 +34,7 @@
 	.NOTES
 	https://github.com/farag2/Office
 	https://github.com/farag2/Sophia-Script-for-Windows
+	https://github.com/farag2/Utilities/blob/master/Download/Cursor
 
 	.LINK Author
 	https://github.com/lowl1f3
@@ -98,8 +102,8 @@ Steam
 ## Download Google Chrome
 GoogleChrome
 
-## Download 7-Zip
-7Zip
+## Download NanaZip
+NanaZip
 
 ## Download Custom Cursor
 Cursor
@@ -110,14 +114,17 @@ Notepad
 ## Download GitHub Desktop
 GitHubDesktop
 
+## Download Visual Studio
+VisualStudio
+
 ## Download Visual Studio Code
-VSCode
+VisualStudioCode
 
 ## Download TeamSpeak 3
-TeamSpeak
+TeamSpeak3
 
-## Download qBittorent
-qBittorent
+## Download qBittorrent
+qBittorrent
 
 ## Download Adobe Creative Cloud
 AdobeCreativeCloud
@@ -134,7 +141,7 @@ WireGuard
 ## Download Office
 Office
 
-## Launch Sophia Script
+## Download Sophia Script
 SophiaScript
 
 ## Delete Installation Files and Shortcuts
