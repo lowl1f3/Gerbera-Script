@@ -503,72 +503,106 @@ function Notepad
 
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 
-	# Configuring Notepad++
+	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L221
+	# Configure Notepad++
 	if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	{
-		if (-not (Test-Path -Path "$env:APPDATA\Notepad++\config.xml"))
-		{
-			Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe"
-			Write-Verbose -Message "`"$env:ProgramFiles\Notepad++\notepad++.exe`" doesn't exist. Re-run function" -Verbose
-		}
 		Stop-Process -Name notepad++ -Force -ErrorAction Ignore
 		$Remove = @(
 			"$env:ProgramFiles\Notepad++\change.log",
 			"$env:ProgramFiles\Notepad++\LICENSE",
 			"$env:ProgramFiles\Notepad++\readme.txt",
-			"$env:ProgramFiles\Notepad++\autoCompletion",
-			"$env:ProgramFiles\Notepad++\plugins"
 			"$env:ProgramFiles\Notepad++\autoCompletion"
 		)
 		Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
-		if ((Get-WinSystemLocale).Name -eq "ru-RU")
-		{
-			if ($Host.Version.Major -eq 5)
-			{
-				New-ItemProperty -Path "Registry::HKEY_CLASSES_ROOT\CLSID\{B298D29A-A6ED-11DE-BA8C-A68E55D89593}\Settings" -Name Title -PropertyType String -Value "Открыть с помощью &Notepad++" -Force
-			}
-		}
-		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
-		cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
-		cmd.exe --% /c assoc .cfg=txtfile
-		cmd.exe --% /c assoc .ini=txtfile
-		cmd.exe --% /c assoc .log=txtfile
-		cmd.exe --% /c assoc .nfo=txtfile
-		cmd.exe --% /c assoc .ps1=txtfile
-		cmd.exe --% /c assoc .psm1=txtfile
-		cmd.exe --% /c assoc .psd1=txtfile
-		cmd.exe --% /c assoc .md=txtfile
-		cmd.exe --% /c assoc .xml=txtfile
-		cmd.exe --% /c assoc .yml=txtfile
-		cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
-
-		# It is needed to use -Wait to make Notepad++ apply written settings
-		Write-Warning -Message "Close 'Notepad++' window manually"
-
-		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-
-		[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
-		# Fluent UI: large
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
-		# Mute all sounds
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
-		# Show White Space and TAB
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
-		# 2 find buttons mode
-		$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
-		# Wrap around
-		$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
-		# Disable creating backups
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
-		$config.Save("$env:APPDATA\Notepad++\config.xml")
-
-		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-
-		Start-Sleep -Seconds 1
-
-		Stop-Process -Name notepad++ -ErrorAction Ignore
 	}
+
+	if ((Get-WinSystemLocale).Name -eq "ru-RU")
+	{
+		if ($Host.Version.Major -eq 5)
+		{
+			# https://gist.github.com/mklement0/209a9506b8ba32246f95d1cc238d564d
+			function ConvertTo-BodyWithEncoding
+			{
+				[CmdletBinding(PositionalBinding = $false)]
+				param
+				(
+					[Parameter(Mandatory, ValueFromPipeline)]
+					[Microsoft.PowerShell.Commands.WebResponseObject]
+					$InputObject,
+
+					# The encoding to use; defaults to UTF-8
+					[Parameter(Position = 0)]
+					$Encoding = [System.Text.Encoding]::Utf8
+				)
+
+				begin
+				{
+					if ($Encoding -isnot [System.Text.Encoding])
+					{
+						try
+						{
+							$Encoding = [System.Text.Encoding]::GetEncoding($Encoding)
+						}
+						catch
+						{
+							throw
+						}
+					}
+				}
+
+				process
+				{
+					$Encoding.GetString($InputObject.RawContentStream.ToArray())
+				}
+			}
+
+			# We cannot invoke an expression with non-latin words to avoid "??????"
+			$Parameters = @{
+				Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Notepad%2B%2B_context_menu.ps1"
+				UseBasicParsing = $true
+				Verbose         = $true
+			}
+			Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
+		}
+	}
+	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
+
+	cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
+	cmd.exe --% /c assoc .cfg=txtfile
+	cmd.exe --% /c assoc .ini=txtfile
+	cmd.exe --% /c assoc .log=txtfile
+	cmd.exe --% /c assoc .nfo=txtfile
+	cmd.exe --% /c assoc .ps1=txtfile
+	cmd.exe --% /c assoc .psm1=txtfile
+	cmd.exe --% /c assoc .psd1=txtfile
+	cmd.exe --% /c assoc .xml=txtfile
+	cmd.exe --% /c assoc .yml=txtfile
+	cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
+
+	# It is needed to use -Wait to make Notepad++ apply written settings
+	Write-Warning -Message "Close Notepad++' window manually"
+	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
+
+	[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
+	# Fluent UI: large
+	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
+	# Mute all sounds
+	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
+	# Show White Space and TAB
+	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
+	# 2 find buttons mode
+	$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
+	# Wrap around
+	$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
+	# Disable creating backups
+	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
+	$config.Save("$env:APPDATA\Notepad++\config.xml")
+
+	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
+	Start-Sleep -Seconds 1
+	Stop-Process -Name notepad++ -ErrorAction Ignore
 }
 
 function GitHubDesktop
