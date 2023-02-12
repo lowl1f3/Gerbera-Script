@@ -503,8 +503,8 @@ function Notepad
 
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 
-	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L221
 	# Configure Notepad++
+	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L221
 	if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	{
 		Stop-Process -Name notepad++ -Force -ErrorAction Ignore
