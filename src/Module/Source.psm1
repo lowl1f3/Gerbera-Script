@@ -504,7 +504,7 @@ function Notepad
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 
 	# Configure Notepad++
-	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L221
+	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L214
 	if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	{
 		Stop-Process -Name notepad++ -Force -ErrorAction Ignore
@@ -515,11 +515,12 @@ function Notepad
 			"$env:ProgramFiles\Notepad++\autoCompletion"
 		)
 		Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
 	}
 
 	if ((Get-WinSystemLocale).Name -eq "ru-RU")
 	{
+		Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
+
 		if ($Host.Version.Major -eq 5)
 		{
 			# https://gist.github.com/mklement0/209a9506b8ba32246f95d1cc238d564d
@@ -598,28 +599,30 @@ function Notepad
 
 	Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
 
-	# It is needed to use -Wait to make Notepad++ apply written settings
-	##Write-Warning -Message "Close Notepad++' window manually"
-	##Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
+	<#
+		# It is needed to use -Wait to make Notepad++ apply written settings
+		Write-Warning -Message "Close Notepad++' window manually"
+		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
 
-	##[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
-	# Fluent UI: large
-	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
-	# Mute all sounds
-	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
-	# Show White Space and TAB
-	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
-	# 2 find buttons mode
-	##$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
-	# Wrap around
-	##$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
-	# Disable creating backups
-	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
-	##$config.Save("$env:APPDATA\Notepad++\config.xml")
+		[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
+		# Fluent UI: large
+		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
+		# Mute all sounds
+		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
+		# Show White Space and TAB
+		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
+		# 2 find buttons mode
+		$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
+		# Wrap around
+		$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
+		# Disable creating backups
+		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
+		$config.Save("$env:APPDATA\Notepad++\config.xml")
 
-	##Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-	##Start-Sleep -Seconds 1
-	##Stop-Process -Name notepad++ -ErrorAction Ignore
+		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
+		Start-Sleep -Seconds 1
+		Stop-Process -Name notepad++ -ErrorAction Ignore
+	#>
 }
 
 function GitHubDesktop
