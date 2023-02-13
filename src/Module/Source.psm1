@@ -569,17 +569,33 @@ function Notepad
 	}
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
-	cmd.exe --% /c ftype txtfile=%ProgramFiles%\Notepad++\notepad++.exe "%1"
-	cmd.exe --% /c assoc .cfg=txtfile
-	cmd.exe --% /c assoc .ini=txtfile
-	cmd.exe --% /c assoc .log=txtfile
-	cmd.exe --% /c assoc .nfo=txtfile
-	cmd.exe --% /c assoc .ps1=txtfile
-	cmd.exe --% /c assoc .psm1=txtfile
-	cmd.exe --% /c assoc .psd1=txtfile
-	cmd.exe --% /c assoc .xml=txtfile
-	cmd.exe --% /c assoc .yml=txtfile
-	cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
+	$Parameters = @{
+		Uri             = "https://raw.githubusercontent.com/lowl1f3/Script/main/src/Module/Source.psm1"
+		Outfile         = "$env:TEMP\Script.ps1"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters
+
+	# Change the line endings from UNIX LF to Windows (CR LF) for downlaoded file to be able to dot-source it
+	# https://en.wikipedia.org/wiki/Newline#Representation
+	(Get-Content -Path "$env:TEMP\Script.ps1" -Force) | Set-Content -Path "$env:TEMP\Script.ps1" -Encoding UTF8 -Force
+
+	# Dot source the Script module to make the function available in the current session
+	. "$env:TEMP\Script.ps1"
+
+	# Register Notepad++, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .cfg -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ini -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .log -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .nfo -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ps1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psm1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psd1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .xml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .yml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+	Remove-Item -Path "$env:TEMP\Script.ps1" -Force
 
 	# It is needed to use -Wait to make Notepad++ apply written settings
 	##Write-Warning -Message "Close Notepad++' window manually"
