@@ -582,27 +582,27 @@ function Notepad
 	cmd.exe --% /c assoc txtfile\DefaultIcon=%ProgramFiles%\Notepad++\notepad++.exe,0
 
 	# It is needed to use -Wait to make Notepad++ apply written settings
-	Write-Warning -Message "Close Notepad++' window manually"
-	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
+	##Write-Warning -Message "Close Notepad++' window manually"
+	##Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
 
-	[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
+	##[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
 	# Fluent UI: large
-	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
+	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
 	# Mute all sounds
-	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
+	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
 	# Show White Space and TAB
-	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
+	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
 	# 2 find buttons mode
-	$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
+	##$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
 	# Wrap around
-	$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
+	##$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
 	# Disable creating backups
-	$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
-	$config.Save("$env:APPDATA\Notepad++\config.xml")
+	##$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
+	##$config.Save("$env:APPDATA\Notepad++\config.xml")
 
-	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-	Start-Sleep -Seconds 1
-	Stop-Process -Name notepad++ -ErrorAction Ignore
+	##Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
+	##Start-Sleep -Seconds 1
+	##Stop-Process -Name notepad++ -ErrorAction Ignore
 }
 
 function GitHubDesktop
