@@ -570,8 +570,8 @@ function Notepad
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
 	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/lowl1f3/Script/main/src/Module/Source.psm1"
-		Outfile         = "$env:TEMP\Script.ps1"
+		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
+		Outfile         = "$env:TEMP\Sophia.ps1"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
@@ -579,10 +579,10 @@ function Notepad
 
 	# Change the line endings from UNIX LF to Windows (CR LF) for downlaoded file to be able to dot-source it
 	# https://en.wikipedia.org/wiki/Newline#Representation
-	(Get-Content -Path "$env:TEMP\Script.ps1" -Force) | Set-Content -Path "$env:TEMP\Script.ps1" -Encoding UTF8 -Force
+	(Get-Content -Path "$env:TEMP\Sophia.ps1" -Force) | Set-Content -Path "$env:TEMP\Sophia.ps1" -Encoding UTF8 -Force
 
-	# Dot source the Script module to make the function available in the current session
-	. "$env:TEMP\Script.ps1"
+	# Dot source the Sophia module to make the function available in the current session
+	. "$env:TEMP\Sophia.ps1"
 
 	# Register Notepad++, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .cfg -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
@@ -595,7 +595,7 @@ function Notepad
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .xml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .yml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
-	Remove-Item -Path "$env:TEMP\Script.ps1" -Force
+	Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
 
 	# It is needed to use -Wait to make Notepad++ apply written settings
 	##Write-Warning -Message "Close Notepad++' window manually"
