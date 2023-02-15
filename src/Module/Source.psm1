@@ -401,7 +401,7 @@ function GoogleChrome
 	{
 		Write-Verbose -Message "Installing Google Chrome..." -Verbose
 
-		# Download the latest Google Chrome x64
+		# Download the latest Google Chrome
 		# https://chromeenterprise.google/browser/download
 		$Parameters = @{
 			Uri     = "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi"
@@ -709,7 +709,7 @@ function TeamSpeak3
 	{
 		Write-Verbose -Message "Installing TeamSpeak 3..." -Verbose
 
-		# Download the latest TeamSpeak 3 x64
+		# Download the latest TeamSpeak 3
 		# https://www.teamspeak.com/en/downloads/
 		$Parameters = @{
 			Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
@@ -737,14 +737,14 @@ function qBittorrent
 	{
 		Write-Verbose -Message "Installing qBittorrent..." -Verbose
 
-		# Get the latest qBittorrent x64
+		# Get the latest qBittorrent
 		$Parameters = @{
 			Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
 			UseBasicParsing = $true
 		}
 		$bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
 
-		# Download the latest approved by maintainer qBittorrent x64
+		# Download the latest approved by maintainer qBittorrent
 		# https://www.qbittorrent.org/download.php
 		# For example 4.4.3 e.g., not 4.4.3.1
 		$Parameters = @{
@@ -881,7 +881,7 @@ function Java8
 	}
 	else
 	{
-		# Get the latest Java 8(JRE) x64
+		# Get the latest Java 8(JRE)
 		$Parameters = @{
 			Uri             = "https://javadl-esd-secure.oracle.com/update/1.8.0/map-m-1.8.0.xml"
 			UseBasicParsing = $true
@@ -896,17 +896,17 @@ function Java8
 		}
 		$Link = ((Invoke-RestMethod @Parameters)."java-update".information | Where-Object -FilterScript {$_.lang -eq "en"}).url
 
-		# Download the latest approved by maintainer Java 8(JRE) x64
+		# Download the latest approved by maintainer Java 8(JRE)
 		# https://www.java.com/en/download/
 		$Parameters = @{
 			Uri             = $Link
-			OutFile         = "$DownloadsFolder\Java 8(JRE) x64.exe"
+			OutFile         = "$DownloadsFolder\Java 8(JRE).exe"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE) x64.exe" -ArgumentList "INSTALL_SILENT=1" -Wait
+		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE).exe" -ArgumentList "INSTALL_SILENT=1" -Wait
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -922,19 +922,19 @@ function Java19
 	}
 	else
 	{
-		Write-Verbose -Message "Installing latest Java 19(JDK) x64..." -Verbose
+		Write-Verbose -Message "Installing latest Java 19(JDK)..." -Verbose
 
-		# Download the latest Java 19(JDK) x64
+		# Download the latest Java 19(JDK)
 		# https://www.oracle.com/java/technologies/downloads/#jdk19-windows
 		$Parameters = @{
 			Uri             = "https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.msi"
-			OutFile         = "$DownloadsFolder\Java 19(JDK) x64.msi"
+			OutFile         = "$DownloadsFolder\Java 19(JDK).msi"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\Java 19(JDK) x64.msi" -ArgumentList "/passive" -Wait
+		Start-Process -FilePath "$DownloadsFolder\Java 19(JDK).msi" -ArgumentList "/passive" -Wait
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -1055,8 +1055,8 @@ function DeleteInstallationFiles
 		"$DownloadsFolder\qbt-theme.zip",
 		"$DownloadsFolder\CreativeCloudSetUp.exe",
 		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk",
-		"$DownloadsFolder\Java 8(JRE) x64.exe",
-		"$DownloadsFolder\Java 19(JDK) x64.msi",
+		"$DownloadsFolder\Java 8(JRE).exe",
+		"$DownloadsFolder\Java 19(JDK).msi",
 		"$DownloadsFolder\WireGuardInstaller.exe",
 		"$PSScriptRoot\Download_Sophia.ps1"
 	)
