@@ -767,7 +767,6 @@ function qBittorrent
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 		}
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
-		Remove-Item -Path "$env:ProgramFiles\qBittorrent\translations" -Exclude qt_ru.qm, qtbase_ru.qm -Recurse -Force -ErrorAction Ignore
 
 		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\"))
 		{
@@ -975,8 +974,8 @@ function WireGuard
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Wire Guard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Wire Guard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+	New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 }
 
 function Office
