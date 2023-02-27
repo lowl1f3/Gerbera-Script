@@ -57,17 +57,6 @@ $Host.UI.RawUI.WindowTitle = "Made with $([char]::ConvertFromUtf32(0x1F497)) by 
 Remove-Module -Name Manifest -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Manifest.psd1 -PassThru -Force
 
-<#
-	.SYNOPSIS
-	Run the script by specifying functions as an argument
-
-	.EXAMPLE
-	.\Script.ps1 -Functions Steam, Discord, Telegram, etc.
-
-	.NOTES
-	Use commas to separate funtions
-#>
-
 if ($Functions)
 {
 	foreach ($Function in $Functions)
