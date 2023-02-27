@@ -6,7 +6,7 @@
 
 ## About script
 
-A PowerShell script for Windows that automates installation and configuration of programs
+A PowerShell script for Windows that automates installing and configuring programs
 
 Supports `Windows 10` & `Windows 11`
 
@@ -19,6 +19,9 @@ Supports `Windows 10` & `Windows 11`
 * <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge"/></a>
 * Expand the archive;
 * Open folder with the expanded archive;
+* Look through the Script.ps1 file to configure functions that you want to be run;
+  * Place the "#" char before function if you don't want it to be run.
+  * Remove the "#" char before function if you want it to be run.
 * On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`;
 * Then change the current location
@@ -33,7 +36,7 @@ Supports `Windows 10` & `Windows 11`
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Type `.\Script.ps1` <kbd>Enter</kbd> to run the script.
+* Type `.\Script.ps1` <kbd>Enter</kbd> to run the whole preset file.
 
 ## Programs
 

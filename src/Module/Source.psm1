@@ -1,6 +1,6 @@
 <#
 	.SYNOPSIS
-	A PowerShell script for Windows that automates installation and configuration of programs
+	A PowerShell script for Windows that automates installing and configuring programs
 
 	Version: v1.0.0
 	Date: #TBA#

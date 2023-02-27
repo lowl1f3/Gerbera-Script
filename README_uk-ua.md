@@ -19,6 +19,9 @@
 * <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge"/></a>
 * Розпакуйте архів;
 * Відкрийте папку розпакованого архіву;
+* Перегляньте файл Script.ps1, щоб налаштувати функції, які ви хочете запустити;
+  * Помістіть символ "#" перед функцією, якщо ви не хочете, щоб вона виконувалася.
+  * Приберіть символ "#" перед функцією, якщо ви хочете, щоб вона виконувалася.
 * В `Windows 10` натисніть `Файл` у Провіднику, наведіть курсор на `Запустити Windows PowerShell`, і виберіть `Запустити Windows PowerShell від імені адміністратора` [(як це зробити зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * В `Windows 11` натисніть правою кнопкою миші на <kbd>Windows</kbd> іконку і виберіть `Термінал (Адміністратор)`;
 * Потім змініть поточне розташування
@@ -33,7 +36,7 @@
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Введіть `.\Script.ps1` <kbd>Enter</kbd>, щоб запустити скрипт.
+* Введіть `.\Script.ps1` <kbd>Enter</kbd> для запуску всього пресету.
 
 ## Програми
 
