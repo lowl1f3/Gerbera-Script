@@ -986,10 +986,20 @@ function Office
 	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
 	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
 
+	Start-Sleep -Seconds 15
+	Wait-Process -Name "setup"
+	Start-Sleep -Seconds 5
+	Wait-Process -Name "OfficeC2RClient"
+
 	# Configuring Office
 	if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 	{
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
+
+		Write-Verbose -Message "Configuring Office..." -Verbose
+
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
+		wt --window 0 new-tab --title Configure --startingDirectory $Path powershell -Command "& {.\Configure.ps1}"
 	}
 }
 
