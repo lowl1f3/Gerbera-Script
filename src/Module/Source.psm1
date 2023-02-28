@@ -150,7 +150,7 @@ function BetterDiscord
 	# Download the latest BetterDiscord
 	# https://github.com/BetterDiscord/Installer/releases/latest
 	$Parameters = @{
-		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases"
+		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases/latest"
 		UseBasicParsing = $true
 	}
 	$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
@@ -430,7 +430,7 @@ function NanaZip
 
 		# Get the latest NanaZip
 		$Parameters = @{
-			Uri             = "https://api.github.com/repos/M2Team/NanaZip/releases"
+			Uri             = "https://api.github.com/repos/M2Team/NanaZip/releases/latest"
 			UseBasicParsing = $true
 		}
 		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
