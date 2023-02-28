@@ -30,7 +30,7 @@ Supports `Windows 10` & `Windows 11`
   Set-Location -Path "Path\To\Script\Folder"
   ```
 
-* Set execution policy to be able to run scripts only in the current PowerShell session
+* Set execution policy to run scripts only in the current PowerShell session
 
   ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
