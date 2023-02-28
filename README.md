@@ -65,7 +65,7 @@ Supports `Windows 10` & `Windows 11`
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
-  * [System requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
+  * [System Requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 </details>
 
 ## Links

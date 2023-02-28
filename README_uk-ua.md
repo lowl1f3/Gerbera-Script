@@ -62,10 +62,10 @@
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
 * [Java 8(JRE)](https://www.java.com/en/download) і [Java 19(JDK)](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
 * [WireGuard](https://www.wireguard.com/install)
-* [Настроюваний](https://github.com/farag2/Office) Microsoft Office
+* [Налаштовуваний](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
-  * [Системні вимоги](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
+  * [Системні Вимоги](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 </details>
 
 ## Посилання
