@@ -57,7 +57,7 @@
 * [GitHub Desktop](https://desktop.github.com)
 * [Visual Stutio](https://visualstudio.microsoft.com/#vs-section)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
-* [Teamspeak 3](https://teamspeak.com/en/downloads)
+* [TeamSpeak 3](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
 * [Java 8(JRE)](https://www.java.com/en/download) и [Java 19(JDK)](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
