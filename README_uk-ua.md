@@ -65,7 +65,7 @@
 * [Налаштовуваний](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
-  * [Системні Вимоги](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
+  * [Системні вимоги](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
 </details>
 
 ## Посилання
