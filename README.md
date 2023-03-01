@@ -19,7 +19,7 @@ Supports `Windows 10` & `Windows 11`
 * <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge"/></a>
 * Expand the archive;
 * Open folder with the expanded archive;
-* Look through the Script.ps1 file to configure functions that you want to be run;
+* Look through the `Script.ps1` file to configure functions that you want to be run;
   * Place the "#" char before function if you don't want it to be run.
   * Remove the "#" char before function if you want it to be run.
 * On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
