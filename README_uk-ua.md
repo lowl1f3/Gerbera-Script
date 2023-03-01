@@ -16,7 +16,7 @@
 
 ## Як використовувати
 
-* <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge"/></a>
+* <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Завантажити-%20ZIP-green&?style=for-the-badge"/></a>
 * Розпакуйте архів;
 * Відкрийте папку розпакованого архіву;
 * Перегляньте файл Script.ps1, щоб налаштувати функції, які ви хочете запустити;

@@ -452,7 +452,7 @@ function NanaZip
 
 function Cursor
 {
-	Write-Verbose -Message "Installing custom Cursor..." -Verbose
+	Write-Verbose -Message "Installing Custom Cursor..." -Verbose
 
 	# Download custom Cursor
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
