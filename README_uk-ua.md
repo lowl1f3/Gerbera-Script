@@ -14,7 +14,7 @@
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
 
-## Як використовувати
+## Як користуватися
 
 * <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Завантажити-%20ZIP-green&?style=for-the-badge"/></a>
 * Розпакуйте архів;
