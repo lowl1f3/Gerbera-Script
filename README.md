@@ -38,7 +38,7 @@ Supports `Windows 10` & `Windows 11`
 
 * Type `.\Script.ps1` <kbd>Enter</kbd> to run the whole preset file.
 
-## Programs
+## List
 
 > **Note**: Some of them have a silent installation
 
