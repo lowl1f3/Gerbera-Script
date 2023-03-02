@@ -165,13 +165,12 @@ function BetterDiscord
 
 	Stop-Process -Name Discord -Force -ErrorAction Ignore
 
+	Write-Warning -Message "Close 'BetterDiscord' window manually after installation"
+
 	Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
 	Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
-}
 
-function BetterDiscordPlugins
-{
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
 	{
 		# Install Better Discord plugins
@@ -219,10 +218,6 @@ function BetterDiscordPlugins
 			# NoSpotifyPause
 			# https://github.com/bepvte/bd-addons/blob/main/plugins/NoSpotifyPause.plugin.js
 			"https://raw.githubusercontent.com/bepvte/bd-addons/main/plugins/NoSpotifyPause.plugin.js",
-
-			# PluginRepo
-			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/PluginRepo/PluginRepo.plugin.js
-			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/PluginRepo/PluginRepo.plugin.js",
 
 			# ReadAllNotificationsButton
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/ReadAllNotificationsButton/ReadAllNotificationsButton.plugin.js
@@ -273,12 +268,9 @@ function BetterDiscordPlugins
 	}
 	else
 	{
-		Write-Verbose -Message "BetterDiscord isn't installed" -Verbose
+		Write-Verbose -Message "Can't install plugins. BetterDiscord isn't installed" -Verbose
 	}
-}
 
-function BetterDiscordThemes
-{
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
 	{
 		# Install Better Discord themes
@@ -316,7 +308,7 @@ function BetterDiscordThemes
 	}
 	else
 	{
-		Write-Verbose -Message "BetterDiscord isn't installed" -Verbose
+		Write-Verbose -Message "Can't install themes. BetterDiscord isn't installed" -Verbose
 	}
 }
 

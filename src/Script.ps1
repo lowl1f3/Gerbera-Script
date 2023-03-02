@@ -79,12 +79,6 @@ Discord
 ## Download BetterDiscord
 BetterDiscord
 
-## Download BetterDiscord Plugins
-BetterDiscordPlugins
-
-## Download BetterDiscord Themes
-BetterDiscordThemes
-
 ## Download Steam
 Steam
 
