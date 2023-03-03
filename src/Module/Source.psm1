@@ -978,9 +978,14 @@ function Office
 	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
 	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
 
-	Start-Sleep -Seconds 15
+	Start-Sleep -Seconds 18
+
 	Wait-Process -Name "setup"
+
 	Start-Sleep -Seconds 5
+
+	Write-Warning -Message "Close 'Office' window manually after installation"
+
 	Wait-Process -Name "OfficeC2RClient"
 
 	# Configuring Office
