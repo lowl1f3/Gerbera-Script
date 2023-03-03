@@ -1003,7 +1003,7 @@ function SophiaScript
 	{
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
-		Start-Sleep -Seconds 5
+		Start-Sleep -Seconds 7
 
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
@@ -1025,7 +1025,7 @@ function SophiaScript
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
 		wt --window 0 new-tab --title DownloadSophia --startingDirectory $Path powershell -Command "& {.\Download_Sophia.ps1}"
 
-		Start-Sleep -Seconds 5
+		Start-Sleep -Seconds 7
 
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
