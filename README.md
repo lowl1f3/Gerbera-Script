@@ -48,7 +48,7 @@ Supports `Windows 10` & `Windows 11`
 * [Telegram](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L177) & [themes](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L277)
+  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L198) & [themes](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L298)
 * [Steam](https://store.steampowered.com/about)
 * [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
 * [NanaZip](https://github.com/M2Team/NanaZip)
