@@ -80,7 +80,7 @@ function Telegram
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Telegram' already exists"
 	}
@@ -115,7 +115,7 @@ function Spotify
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Spotify' already exists"
 	}
@@ -153,7 +153,7 @@ function Discord
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Discord" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Discord" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Discord' already exists"
 	}
@@ -399,7 +399,7 @@ function Steam
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Steam" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Steam" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Steam' already exists"
 	}
@@ -433,7 +433,7 @@ function GoogleChrome
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Google Chrome' already exists"
 	}
@@ -749,7 +749,7 @@ function TeamSpeak3
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'TeamSpeak 3' already exists"
 	}
@@ -883,7 +883,7 @@ function qBittorrent
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
 		# Adding to the Windows Defender Firewall exclusion list
-		if ($(Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore))
+		if (Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore)
 		{
 			Write-Warning -Message "Firewall rule for 'qBittorrent' already exists"
 		}
@@ -949,7 +949,7 @@ function Java8
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Java 8(JRE)' already exists"
 	}
@@ -991,7 +991,7 @@ function Java19
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'Java 19(JDK)' already exists"
 	}
@@ -1028,7 +1028,7 @@ function WireGuard
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	if ($(Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore))
+	if (Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for 'WireGuard' already exists"
 	}
