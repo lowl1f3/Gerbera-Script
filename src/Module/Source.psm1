@@ -80,8 +80,15 @@ function Telegram
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Telegram' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+	}
 }
 
 function Spotify
@@ -108,8 +115,15 @@ function Spotify
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Spotify' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
+	}
 }
 
 function Discord
@@ -139,8 +153,15 @@ function Discord
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "Discord" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Discord' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
+	}
 }
 
 function BetterDiscord
@@ -345,6 +366,8 @@ function Steam
 
 		Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
+
+		# Remove Steam from autostart
 		Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 	}
 
@@ -375,12 +398,16 @@ function Steam
 		Write-Verbose -Message "Unable to configure Steam. User folder doesn't exist" -Verbose
 	}
 
-	# Remove Steam from autostart
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
-
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "Steam" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Steam' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
+	}
 }
 
 function GoogleChrome
@@ -406,8 +433,15 @@ function GoogleChrome
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Google Chrome' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
+	}
 }
 
 function NanaZip
@@ -715,8 +749,15 @@ function TeamSpeak3
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'TeamSpeak 3' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+	}
 }
 
 function qBittorrent
@@ -842,8 +883,15 @@ function qBittorrent
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
 		# Adding to the Windows Defender Firewall exclusion list
-		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+		if ($(Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore))
+		{
+			Write-Warning -Message "Firewall rule for 'qBittorrent' already exists"
+		}
+		else
+		{
+			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+		}
 	}
 }
 
@@ -901,8 +949,15 @@ function Java8
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Java 8(JRE)' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
+	}
 }
 
 function Java19
@@ -928,15 +983,22 @@ function Java19
 		Start-Process -FilePath "$DownloadsFolder\Java 19(JDK).msi" -ArgumentList "/passive" -Wait
 	}
 
-	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
-
 	# Configuring Java 19(JDK)
 	if (Test-Path -Path "$env:ProgramFiles\Java\jdk-19")
 	{
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
+	}
+
+	# Adding to the Windows Defender Firewall exclusion list
+	if ($(Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'Java 19(JDK)' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
 	}
 }
 
@@ -966,8 +1028,15 @@ function WireGuard
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
-	New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
-	New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+	if ($(Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore))
+	{
+		Write-Warning -Message "Firewall rule for 'WireGuard' already exists"
+	}
+	else
+	{
+		New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+	}
 }
 
 function Office
