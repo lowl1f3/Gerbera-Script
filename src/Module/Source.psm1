@@ -60,7 +60,7 @@ function Telegram
 {
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
 	{
-		winget install --id Telegram.TelegramDesktop --exact --accept-source-agreements
+		winget install --id Telegram.TelegramDesktop.Beta --exact --accept-source-agreements
 	}
 	else
 	{
