@@ -66,6 +66,7 @@ if ($Functions)
 	exit
 }
 Confirmation
+Checks
 
 ## Download Telegram
 Telegram

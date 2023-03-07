@@ -56,28 +56,88 @@ function Confirmation
 $Script:DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 
-function Telegram
+function Checks
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
+	# Check if winget is installed or up to date
+	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -lt [System.Version]"1.19")
 	{
-		winget install --id Telegram.TelegramDesktop.Beta --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Telegram..." -Verbose
-
-		# Download the latest Telegram Desktop
-		# https://desktop.telegram.org/
+		# Get the latest winget
 		$Parameters = @{
-			Uri             = "https://telegram.org/dl/desktop/win64"
-			OutFile         = "$DownloadsFolder\TelegramSetup.exe"
+			Uri             = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
+			UseBasicParsing = $true
+		}
+		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+		$winget = (Invoke-RestMethod @Parameters).name | Select-Object -Index 0
+
+		# Download the latest winget
+		#https://github.com/microsoft/winget-cli/releases/latest
+		$Parameters = @{
+			Uri             = "https://github.com/microsoft/winget-cli/releases/download/$bestRelease/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+			OutFile         = "$DownloadsFolder\$winget"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\TelegramSetup.exe" -ArgumentList "/VERYSILENT"
+		Add-AppxPackage -Path "$DownloadsFolder\$winget" -Verbose
 	}
+
+	# Check if Windows Terminal is installed or up to date
+	if ([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal -ErrorAction Ignore).Version -lt [System.Version]"1.16")
+	{
+		switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
+		{
+			{($_ -ge 17763) -and ($_ -le 19048)}
+			{
+				# Get the latest Windows Terminal
+				$Parameters = @{
+					Uri             = "https://api.github.com/repos/microsoft/terminal/releases/latest"
+					UseBasicParsing = $true
+				}
+				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+				$name = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
+
+				# Download the latest Windows Terminal
+				# https://github.com/microsoft/terminal/releases/latest
+				$Parameters = @{
+					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$name"
+					OutFile         = "$DownloadsFolder\$name"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+				Invoke-WebRequest @Parameters
+
+				Add-AppxPackage -Path "$DownloadsFolder\$name" -Verbose
+			}
+			{$_ -ge 22000}
+			{
+				# Get the latest Windows Terminal
+				$Parameters = @{
+					Uri             = "https://api.github.com/repos/microsoft/terminal/releases/latest"
+					UseBasicParsing = $true
+				}
+				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+				$name = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 2
+
+				# Download the latest Windows Terminal
+				# https://github.com/microsoft/terminal/releases/latest
+				$Parameters = @{
+					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$name"
+					OutFile         = "$DownloadsFolder\$name"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+				Invoke-WebRequest @Parameters
+
+				Add-AppxPackage -Path "$DownloadsFolder\$name" -Verbose
+			}
+		}
+	}
+}
+
+function Telegram
+{
+	winget install --id Telegram.TelegramDesktop.Beta --exact --accept-source-agreements
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore)
@@ -93,26 +153,7 @@ function Telegram
 
 function Spotify
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Spotify.Spotify --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Spotify..." -Verbose
-
-		# Download the latest Spotify
-		# https://www.spotify.com/download/windows
-		$Parameters = @{
-			Uri             = "https://download.scdn.co/SpotifySetup.exe"
-			OutFile         = "$DownloadsFolder\SpotifySetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\SpotifySetup.exe"
-	}
+	winget install --id Spotify.Spotify --exact --accept-source-agreements
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore)
@@ -128,26 +169,7 @@ function Spotify
 
 function Discord
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Discord.Discord --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Discord..." -Verbose
-
-		# Download the latest Discord
-		# https://discord.com/download
-		$Parameters = @{
-			Uri             = "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
-			OutFile         = "$DownloadsFolder\DiscordSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\DiscordSetup.exe" -Wait
-	}
+	winget install --id Discord.Discord --exact --accept-source-agreements
 
 	# Remove Discord from autostart
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
@@ -166,33 +188,40 @@ function Discord
 
 function BetterDiscord
 {
-	Write-Verbose -Message "Installing BetterDiscord..." -Verbose
+	if (-not (Test-Path -Path "$env:APPDATA\BetterDiscord"))
+	{
+		Write-Verbose -Message "Installing BetterDiscord..." -Verbose
 
-	# Download the latest BetterDiscord
-	# https://github.com/BetterDiscord/Installer/releases/latest
-	$Parameters = @{
-		Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases/latest"
-		UseBasicParsing = $true
+		# Download the latest BetterDiscord
+		# https://github.com/BetterDiscord/Installer/releases/latest
+		$Parameters = @{
+			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases/latest"
+			UseBasicParsing = $true
+		}
+		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
+
+		$Parameters = @{
+			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
+			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+
+		Stop-Process -Name Discord -Force -ErrorAction Ignore
+
+		Write-Warning -Message "Close 'BetterDiscord' window manually after installation"
+
+		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
+
+		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
 	}
-	$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-
-	$Parameters = @{
-		Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
-		OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
-		UseBasicParsing = $true
-		Verbose         = $true
+	else
+	{
+		Write-Warning -Message "BetterDiscord already installed."
 	}
-	Invoke-WebRequest @Parameters
 
-	Stop-Process -Name Discord -Force -ErrorAction Ignore
-
-	Write-Warning -Message "Close 'BetterDiscord' window manually after installation"
-
-	Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
-
-	Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
-
-	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
+	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
 	{
 		# Install Better Discord plugins
 		$Plugins = @(
@@ -292,7 +321,7 @@ function BetterDiscord
 		Write-Verbose -Message "Can't install plugins. BetterDiscord isn't installed" -Verbose
 	}
 
-	if (Test-Path -Path "$env:APPDATA\BetterDiscord\")
+	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
 	{
 		# Install Better Discord themes
 		$Themes = @(
@@ -335,26 +364,7 @@ function BetterDiscord
 
 function Steam
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Valve.Steam --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Steam..." -Verbose
-
-		# Download the latest Steam
-		# https://store.steampowered.com/about/
-		$Parameters = @{
-			Uri             = "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
-			OutFile         = "$DownloadsFolder\SteamSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\SteamSetup.exe" -ArgumentList "/S" -Wait
-	}
+	winget install --id Valve.Steam --exact --accept-source-agreements
 
 	# Configuring Steam
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
@@ -412,25 +422,7 @@ function Steam
 
 function GoogleChrome
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Google.Chrome --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Google Chrome..." -Verbose
-
-		# Download the latest Google Chrome
-		# https://chromeenterprise.google/browser/download
-		$Parameters = @{
-			Uri     = "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi"
-			OutFile = "$DownloadsFolder\googlechromestandaloneenterprise64.msi"
-			Verbose = [switch]::Present
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\googlechromestandaloneenterprise64.msi" -ArgumentList "/passive"
-	}
+	winget install --id Google.Chrome --exact --accept-source-agreements
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore)
@@ -446,34 +438,7 @@ function GoogleChrome
 
 function NanaZip
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id M2Team.NanaZip --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing NanaZip..." -Verbose
-
-		# Get the latest NanaZip
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/M2Team/NanaZip/releases/latest"
-			UseBasicParsing = $true
-		}
-		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-		$releaseName = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
-
-		# Download the latest NanaZip
-		# https://github.com/M2Team/NanaZip/releases/latest
-		$Parameters = @{
-			Uri             = "https://github.com/M2Team/NanaZip/releases/download/$($bestRelease)/$($releaseName)"
-			OutFile         = "$DownloadsFolder\$releaseName"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Add-AppxPackage -Path "$DownloadsFolder\$releaseName" -Verbose
-	}
+	winget install --id M2Team.NanaZip --exact --accept-source-agreements
 }
 
 function Cursor
@@ -496,34 +461,7 @@ function Cursor
 
 function Notepad
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Notepad++.Notepad++ --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Notepad++..." -Verbose
-
-		# Get the latest Notepad++
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/notepad-plus-plus/notepad-plus-plus/releases/latest"
-			UseBasicParsing = $true
-		}
-		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-		$bestReleaseVersion = (Invoke-RestMethod @Parameters).tag_name.replace("v", "") | Select-Object -Index 0
-
-		# Download the latest Notepad++
-		# https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest
-		$Parameters = @{
-			Uri             = "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/$($bestRelease)/npp.$($bestReleaseVersion).Installer.x64.exe"
-			OutFile         = "$DownloadsFolder\NotepadPlusPlusSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\NotepadPlusPlusSetup.exe" -ArgumentList "/S" -Wait
-	}
+	winget install --id Notepad++.Notepad++ --exact --accept-source-agreements
 
 	Write-Warning -Message "Close 'Notepad++' window manually"
 
@@ -653,100 +591,22 @@ function Notepad
 
 function GitHubDesktop
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id GitHub.GitHubDesktop --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing GitHub Desktop..." -Verbose
-
-		# Download the latest GitHub Desktop
-		# https://desktop.github.com/
-		$Parameters = @{
-			Uri             = "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi"
-			OutFile         = "$DownloadsFolder\GitHubDesktop.msi"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\GitHubDesktop.msi" -ArgumentList "/passive"
-	}
+	winget install --id GitHub.GitHubDesktop --exact --accept-source-agreements
 }
 
 function VisualStudio
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
 	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Visual Stutio..." -Verbose
-
-		# Download the latest Visual Stutio
-		# https://visualstudio.microsoft.com/#vs-section
-		$Parameters = @{
-			Uri             = "https://c2rsetup.officeapps.live.com/c2r/downloadVS.aspx?sku=community&channel=Release&version=VS2022&source=VSLandingPage&passive=true&includeRecommended=true&cid=2030"
-			OutFile         = "$DownloadsFolder\VisualStutioSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\VisualStutioSetup.exe" -ArgumentList "/silent"
-	}
 }
 
 function VisualStudioCode
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing Visual Stutio Code..." -Verbose
-
-		# Download the latest Visual Stutio Code
-		# https://code.visualstudio.com/download
-		$Parameters = @{
-			Uri             = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
-			OutFile         = "$DownloadsFolder\VisualStutioCodeSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Write-Warning -Message "Close 'Visual Studio Code' window manually after installation"
-
-		Start-Process -FilePath "$DownloadsFolder\VisualStutioCodeSetup.exe" -ArgumentList "/silent"
-	}
+	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
 }
 
 function TeamSpeak3
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing TeamSpeak 3..." -Verbose
-
-		# Download the latest TeamSpeak 3
-		# https://www.teamspeak.com/en/downloads/
-		$Parameters = @{
-			Uri             = "https://files.teamspeak-services.com/releases/client/3.5.6/TeamSpeak3-Client-win64-3.5.6.exe"
-			OutFile         = "$DownloadsFolder\TeamSpeakSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\TeamSpeakSetup.exe" -ArgumentList "/S"
-	}
+	winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore)
@@ -762,34 +622,7 @@ function TeamSpeak3
 
 function qBittorrent
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id qBittorrent.qBittorrent --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing qBittorrent..." -Verbose
-
-		# Get the latest qBittorrent
-		$Parameters = @{
-			Uri             = "https://sourceforge.net/projects/qbittorrent/best_release.json"
-			UseBasicParsing = $true
-		}
-		$bestRelease = (Invoke-RestMethod @Parameters).platform_releases.windows.filename
-
-		# Download the latest approved by maintainer qBittorrent
-		# https://www.qbittorrent.org/download.php
-		# For example 4.4.3 e.g., not 4.4.3.1
-		$Parameters = @{
-			Uri             = "https://nchc.dl.sourceforge.net/project/qbittorrent$($bestRelease)"
-			OutFile         = "$DownloadsFolder\qBittorrentSetup.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\qBittorrentSetup.exe" -ArgumentList "/S" -Wait
-	}
+	winget install --id qBittorrent.qBittorrent --exact --accept-source-agreements
 
 	# Configuring qBittorrent
 	if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
@@ -897,56 +730,31 @@ function qBittorrent
 
 function AdobeCreativeCloud
 {
-	Write-Verbose -Message "Installing Adobe Creative Cloud..." -Verbose
-
-	# Download the latest Adobe Creative Cloud
-	# https://creativecloud.adobe.com/en/apps/download/creative-cloud
-	$Parameters = @{
-		Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
-		OutFile         = "$DownloadsFolder\CreativeCloudSetUp.exe"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
-
-	Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT"
-}
-
-function Java8
-{
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
+	if (-not (Test-Path -Path "$env:ProgramFiles\Adobe\Adobe Creative Cloud\ACC"))
 	{
-		winget install --id Oracle.JavaRuntimeEnvironment --exact --accept-source-agreements
-	}
-	else
-	{
-		# Get the latest Java 8(JRE)
-		$Parameters = @{
-			Uri             = "https://javadl-esd-secure.oracle.com/update/1.8.0/map-m-1.8.0.xml"
-			UseBasicParsing = $true
-		}
-		$Versions = (Invoke-RestMethod @Parameters)."java-update-map".mapping
-		$LatestVersion = $Versions.version | Select-Object -Last 1
-		$URL = ($Versions | Where-Object -FilterScript {$_.Version -eq $LatestVersion}).url
+		Write-Verbose -Message "Installing Adobe Creative Cloud..." -Verbose
 
+		# Download the latest Adobe Creative Cloud
+		# https://creativecloud.adobe.com/en/apps/download/creative-cloud
 		$Parameters = @{
-			Uri             = $URL
-			UseBasicParsing = $true
-		}
-		$Link = ((Invoke-RestMethod @Parameters)."java-update".information | Where-Object -FilterScript {$_.lang -eq "en"}).url
-
-		# Download the latest approved by maintainer Java 8(JRE)
-		# https://www.java.com/en/download/
-		$Parameters = @{
-			Uri             = $Link
-			OutFile         = "$DownloadsFolder\Java 8(JRE).exe"
+			Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
+			OutFile         = "$DownloadsFolder\CreativeCloudSetUp.exe"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\Java 8(JRE).exe" -ArgumentList "INSTALL_SILENT=1" -Wait
+		Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT"
 	}
+	else
+	{
+		Write-Warning -Message "Adobe Creative Cloud already installed."
+	}
+}
+
+function Java8
+{
+	winget install --id Oracle.JavaRuntimeEnvironment --exact --accept-source-agreements
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore)
@@ -962,26 +770,7 @@ function Java8
 
 function Java19
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id Oracle.JDK.19 --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing latest Java 19(JDK)..." -Verbose
-
-		# Download the latest Java 19(JDK)
-		# https://www.oracle.com/java/technologies/downloads/#jdk19-windows
-		$Parameters = @{
-			Uri             = "https://download.oracle.com/java/19/latest/jdk-19_windows-x64_bin.msi"
-			OutFile         = "$DownloadsFolder\Java 19(JDK).msi"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\Java 19(JDK).msi" -ArgumentList "/passive" -Wait
-	}
+	winget install --id Oracle.JDK.19 --exact --accept-source-agreements
 
 	# Configuring Java 19(JDK)
 	if (Test-Path -Path "$env:ProgramFiles\Java\jdk-19")
@@ -1004,28 +793,7 @@ function Java19
 
 function WireGuard
 {
-	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -ge [System.Version]"1.17")
-	{
-		winget install --id WireGuard.WireGuard --exact --accept-source-agreements
-	}
-	else
-	{
-		Write-Verbose -Message "Installing WireGuard..." -Verbose
-
-		# Download the latest WireGuard
-		# https://www.wireguard.com/install/
-		$Parameters = @{
-			Uri             = "https://download.wireguard.com/windows-client/wireguard-installer.exe"
-			OutFile         = "$DownloadsFolder\WireGuardInstaller.exe"
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		Start-Process -FilePath "$DownloadsFolder\WireGuardInstaller.exe" -Wait
-
-		Stop-Process -Name WireGuard -Force -ErrorAction Ignore
-	}
+	winget install --id WireGuard.WireGuard --exact --accept-source-agreements
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore)
@@ -1112,6 +880,8 @@ function SophiaScript
 function DeleteInstallationFiles
 {
 	$Paths = @(
+		"$DownloadsFolder\$winget",
+		"$DownloadsFolder\$name",
 		"$DownloadsFolder\TelegramSetup.exe",
 		"$DesktopFolder\Telegram.lnk",
 		"$DownloadsFolder\DiscordSetup.exe",
