@@ -58,6 +58,30 @@ $Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Wi
 
 function Checks
 {
+	# Check if Windows is x64
+	if (-not [System.Environment]::Is64BitOperatingSystem)
+	{
+		Write-Warning -Message "The Script isn't supported by Windows x86"
+		break
+	}
+
+	try
+	{
+		# Check the internet connection
+		$Parameters = @{
+			Uri              = "https://www.google.com"
+			Method           = "Head"
+			DisableKeepAlive = $true
+			UseBasicParsing  = $true
+		}
+		(Invoke-WebRequest @Parameters).StatusDescription
+	}
+	catch [System.Net.WebException]
+	{
+		Write-Warning -Message "No internet connection"
+		break
+	}
+
 	# Check if winget is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -lt [System.Version]"1.19")
 	{
@@ -85,6 +109,24 @@ function Checks
 	# Check if Windows Terminal is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal -ErrorAction Ignore).Version -lt [System.Version]"1.16")
 	{
+		# Check if the Script was started from the Windows Terminal
+		if ($env:WT_SESSION)
+		{
+			$xml = @"
+<toast>
+	<visual>
+		<binding template="ToastGeneric">
+			<text>Please re-run the Script after updating Windows Terminal</text>
+		</binding>
+	</visual>
+</toast>
+"@
+
+			$XmlDocument = [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]::New()
+			$XmlDocument.loadXml($xml)
+			[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]::CreateToastNotifier("Microsoft.WindowsTerminal_8wekyb3d8bbwe!App").Show($XmlDocument)
+		}
+
 		switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			{($_ -ge 17763) -and ($_ -le 19048)}
@@ -381,7 +423,7 @@ function Steam
 		Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 	}
 
-	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata")
+	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
 		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
 		{
