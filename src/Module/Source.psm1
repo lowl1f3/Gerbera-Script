@@ -791,12 +791,9 @@ function Java19
 {
 	winget install --id Oracle.JDK.19 --exact --accept-source-agreements
 
-	# Configuring Java 19(JDK)
-	if (Test-Path -Path "$env:ProgramFiles\Java\jdk-19")
-	{
-		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
-		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
-	}
+	# Remove Java19(JDK) shortcuts
+	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
+	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore)
