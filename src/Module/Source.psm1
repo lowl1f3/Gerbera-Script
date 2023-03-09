@@ -497,6 +497,7 @@ function Cursor
 	}
 	Invoke-WebRequest @Parameters
 
+	# We cannot call "$PSScriptRoot\Install_Cursor.ps1" directly
 	$Path = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
 	wt --window 0 new-tab --title InstallCursor --startingDirectory $Path powershell -Command "& {.\Install_Cursor.ps1}"
 }
@@ -854,18 +855,36 @@ function Office
 	Write-Verbose -Message "Installing Office..." -Verbose
 
 	# Download the latest Office
+	# We cannot call "$PSScriptRoot\..\Office\Download.ps1" directly due to we have to assign the Office folder to download Office to
 	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
 	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
 
-	Start-Sleep -Seconds 18
+	# To ensure that the process has time to appear when we call Get-CimInstance
+	Start-Sleep -Seconds 1
 
-	Wait-Process -Name "setup"
+	# Сreating a do/until loop to wait for the process to execute
+	do
+	{
+		$PowerShellWindow = Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "powershell.exe"} | Where-Object -FilterScript {$_.CommandLine -match "Download.ps1"}
+		if ($PowerShellWindow)
+		{
+			Start-Sleep -Seconds 1
+		}
+	}
+	until (-not $PowerShellWindow)
 
-	Start-Sleep -Seconds 5
+	Write-Warning -Message "Close `"Office`" window manually after installation"
 
-	Write-Warning -Message "Close 'Office' window manually after installation"
-
-	Wait-Process -Name "OfficeC2RClient"
+	# Сreating a do/until loop to wait for the process to execute
+	do
+	{
+		$OfficeC2RClient = Wait-Process -Name OfficeC2RClient -ErrorAction Ignore
+		if ($OfficeC2RClient)
+		{
+			Start-Sleep -Seconds 1
+		}
+	}
+	until (-not $OfficeC2RClient)
 
 	# Configuring Office
 	if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
@@ -874,6 +893,7 @@ function Office
 
 		Write-Verbose -Message "Configuring Office..." -Verbose
 
+		# We cannot call "$PSScriptRoot\..\Office\Configure.ps1" directly
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
 		wt --window 0 new-tab --title Configure --startingDirectory $Path powershell -Command "& {.\Configure.ps1}"
 	}
@@ -887,10 +907,9 @@ function SophiaScript
 	{
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
-		Start-Sleep -Seconds 7
-
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
+		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
 		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
@@ -900,20 +919,15 @@ function SophiaScript
 		# https://github.com/farag2/Sophia-Script-for-Windows
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/Download_Sophia.ps1"
-			OutFile         = "$PSScriptRoot\Download_Sophia.ps1"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
-		Invoke-WebRequest @Parameters
-
-		$Path = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
-		wt --window 0 new-tab --title DownloadSophia --startingDirectory $Path powershell -Command "& {.\Download_Sophia.ps1}"
-
-		Start-Sleep -Seconds 7
+		Invoke-WebRequest @Parameters | Invoke-Expression
 
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
-		$Path = Join-Path -Path $PSScriptRoot -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
+		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
 		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 }
