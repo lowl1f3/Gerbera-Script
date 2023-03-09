@@ -131,7 +131,7 @@ function Checks
 		{
 			{($_ -ge 17763) -and ($_ -le 19048)}
 			{
-				# Get the latest Windows Terminal
+				# Get the latest Windows 10 Terminal
 				$Parameters = @{
 					Uri             = "https://api.github.com/repos/microsoft/terminal/releases/latest"
 					UseBasicParsing = $true
@@ -153,7 +153,7 @@ function Checks
 			}
 			{$_ -ge 22000}
 			{
-				# Get the latest Windows Terminal
+				# Get the latest Windows 11 Terminal
 				$Parameters = @{
 					Uri             = "https://api.github.com/repos/microsoft/terminal/releases/latest"
 					UseBasicParsing = $true
