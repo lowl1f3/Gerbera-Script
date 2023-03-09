@@ -127,6 +127,7 @@ function Checks
 			[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]::CreateToastNotifier("Microsoft.WindowsTerminal_8wekyb3d8bbwe!App").Show($XmlDocument)
 		}
 
+		# Check Windows build version
 		switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			{($_ -ge 17763) -and ($_ -le 19048)}
@@ -234,7 +235,7 @@ function BetterDiscord
 	{
 		Write-Verbose -Message "Installing BetterDiscord..." -Verbose
 
-		# Download the latest BetterDiscord
+		# Get the latest BetterDiscord
 		# https://github.com/BetterDiscord/Installer/releases/latest
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases/latest"
@@ -242,6 +243,7 @@ function BetterDiscord
 		}
 		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 
+		# Download the latest BetterDiscord
 		$Parameters = @{
 			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
 			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
@@ -252,7 +254,7 @@ function BetterDiscord
 
 		Stop-Process -Name Discord -Force -ErrorAction Ignore
 
-		Write-Warning -Message "Close 'BetterDiscord' window manually after installation"
+		Write-Warning -Message "Close `"BetterDiscord`" window manually after installation"
 
 		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
@@ -416,6 +418,7 @@ function Steam
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam\Steam.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 		}
 
+		# Remove Steam shortcuts
 		Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 
@@ -491,22 +494,17 @@ function Cursor
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Cursor/Install_Cursor.ps1"
-		OutFile         = "$PSScriptRoot\Install_Cursor.ps1"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
-	Invoke-WebRequest @Parameters
-
-	# We cannot call "$PSScriptRoot\Install_Cursor.ps1" directly
-	$Path = Join-Path -Path $PSScriptRoot -ChildPath "" -Resolve
-	wt --window 0 new-tab --title InstallCursor --startingDirectory $Path powershell -Command "& {.\Install_Cursor.ps1}"
+	Invoke-WebRequest @Parameters | Invoke-Expression
 }
 
 function Notepad
 {
 	winget install --id Notepad++.Notepad++ --exact --accept-source-agreements
 
-	Write-Warning -Message "Close 'Notepad++' window manually"
+	Write-Warning -Message "Close `"Notepad++`" window manually"
 
 	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
 
@@ -605,31 +603,6 @@ function Notepad
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .md -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 
 	Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
-
-	<#
-		# It is needed to use -Wait to make Notepad++ apply written settings
-		Write-Warning -Message "Close Notepad++' window manually"
-		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-
-		[xml]$config = Get-Content -Path "$env:APPDATA\Notepad++\config.xml" -Force
-		# Fluent UI: large
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ToolBar"} | ForEach-Object -Process {$_."#text" = "large"}
-		# Mute all sounds
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "MISC"} | ForEach-Object -Process {$_.muteSounds = "yes"}
-		# Show White Space and TAB
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "ScintillaPrimaryView"} | ForEach-Object -Process {$_.whiteSpaceShow = "show"}
-		# 2 find buttons mode
-		$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.isSearch2ButtonsMode = "yes"}
-		# Wrap around
-		$config.NotepadPlus.FindHistory | ForEach-Object -Process {$_.wrap = "yes"}
-		# Disable creating backups
-		$config.NotepadPlus.GUIConfigs.GUIConfig | Where-Object -FilterScript {$_.name -eq "Backup"} | ForEach-Object -Process {$_.action = "0"}
-		$config.Save("$env:APPDATA\Notepad++\config.xml")
-
-		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -ArgumentList "$env:APPDATA\Notepad++\config.xml" -Wait
-		Start-Sleep -Seconds 1
-		Stop-Process -Name notepad++ -ErrorAction Ignore
-	#>
 }
 
 function GitHubDesktop
@@ -671,6 +644,7 @@ function qBittorrent
 	if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	{
 		Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
+
 		if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent.lnk"))
 		{
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
@@ -703,6 +677,7 @@ function qBittorrent
 			Verbose = $true
 		}
 		Invoke-WebRequest @Parameters
+
 		<#
 			.SYNOPSIS
 			Expand the specific file from ZIP archive. Folder structure will be created recursively
@@ -719,6 +694,7 @@ function qBittorrent
 			.Example
 			ExtractZIPFile -Source "D:\Folder\File.zip" -Destination "D:\Folder" -File "Folder1/Folder2/File.txt"
 		#>
+
 		function ExtractZIPFile
 		{
 			[CmdletBinding()]
@@ -854,7 +830,6 @@ function Office
 {
 	Write-Verbose -Message "Installing Office..." -Verbose
 
-	# Download the latest Office
 	# We cannot call "$PSScriptRoot\..\Office\Download.ps1" directly due to we have to assign the Office folder to download Office to
 	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
 	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
