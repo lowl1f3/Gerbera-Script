@@ -85,6 +85,8 @@ function Checks
 	# Check if winget is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -lt [System.Version]"1.19")
 	{
+		Write-Verbose -Message "Installing winget..." -Verbose
+
 		# Get the latest winget
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
@@ -104,11 +106,15 @@ function Checks
 		Invoke-WebRequest @Parameters
 
 		Add-AppxPackage -Path "$DownloadsFolder\$winget" -Verbose
+
+		Write-Verbose -Message "winget installed" -Verbose
 	}
 
 	# Check if Windows Terminal is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal -ErrorAction Ignore).Version -lt [System.Version]"1.16")
 	{
+		Write-Verbose -Message "Installing Windows Terminal..." -Verbose
+
 		# Check if the Script was started from the Windows Terminal
 		if ($env:WT_SESSION)
 		{
@@ -150,7 +156,11 @@ function Checks
 				}
 				Invoke-WebRequest @Parameters
 
-				Add-AppxPackage -Path "$DownloadsFolder\$name" -Verbose
+				Start-Process -FilePath "$DownloadsFolder\$name"
+
+				Write-Verbose -Message "Install `"$name`" manually" -Verbose
+
+				exit
 			}
 			{$_ -ge 22000}
 			{
@@ -172,7 +182,11 @@ function Checks
 				}
 				Invoke-WebRequest @Parameters
 
-				Add-AppxPackage -Path "$DownloadsFolder\$name" -Verbose
+				Start-Process -FilePath "$DownloadsFolder\$name"
+
+				Write-Verbose -Message "Install `"$name`" manually" -Verbose
+
+				exit
 			}
 		}
 	}
@@ -185,12 +199,14 @@ function Telegram
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Telegram' already exists"
+		Write-Warning -Message "Firewall rule for `"Telegram`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Telegram`" created"
 	}
 }
 
@@ -201,12 +217,14 @@ function Spotify
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Spotify' already exists"
+		Write-Warning -Message "Firewall rule for `"Spotify`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Spotify`" created"
 	}
 }
 
@@ -220,12 +238,14 @@ function Discord
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Discord" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Discord' already exists"
+		Write-Warning -Message "Firewall rule for `"Discord`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Discord`" created"
 	}
 }
 
@@ -258,11 +278,13 @@ function BetterDiscord
 
 		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
+		Write-Verbose -Message "BetterDiscord installed" -Verbose
+
 		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
 	}
 	else
 	{
-		Write-Warning -Message "BetterDiscord already installed."
+		Write-Warning -Message "`"BetterDiscord`" already installed."
 	}
 
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
@@ -342,7 +364,7 @@ function BetterDiscord
 			"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"
 		)
 
-		Write-Verbose -Message "Installing BetterDiscord plugins..." -Verbose
+		Write-Warning -Message "Installing plugins..." -Verbose
 
 		foreach ($Plugin in $Plugins)
 		{
@@ -359,10 +381,11 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
+		Write-Warning -Message "Plugins installed" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "Can't install plugins. BetterDiscord isn't installed" -Verbose
+		Write-Warning -Message "Can't install plugins. BetterDiscord isn't installed." -Verbose
 	}
 
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
@@ -382,7 +405,7 @@ function BetterDiscord
 			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Themes/SettingsModal/SettingsModal.theme.css"
 		)
 
-		Write-Verbose -Message "Installing BetterDiscord themes..." -Verbose
+		Write-Warning -Message "Installing themes..." -Verbose
 
 		foreach ($Theme in $Themes)
 		{
@@ -399,10 +422,11 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
+		Write-Warning -Message "Themes installed" -Verbose
 	}
 	else
 	{
-		Write-Verbose -Message "Can't install themes. BetterDiscord isn't installed" -Verbose
+		Write-Warning -Message "Can't install themes. BetterDiscord isn't installed." -Verbose
 	}
 }
 
@@ -410,15 +434,15 @@ function Steam
 {
 	winget install --id Valve.Steam --exact --accept-source-agreements
 
-	# Configuring Steam
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
+		# Move Steam shortcut to another folder
 		if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam.lnk"))
 		{
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam\Steam.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 		}
 
-		# Remove Steam shortcuts
+		# Remove Steam shortcut folders
 		Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 
@@ -428,6 +452,8 @@ function Steam
 
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
+		Write-Verbose -Message "Configuring Steam..." -Verbose
+
 		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
 		{
 			if (Test-Path -Path $folder.FullName)
@@ -447,6 +473,7 @@ function Steam
 				} | Set-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8 -Force
 			}
 		}
+		Write-Verbose -Message "Steam configured" -Verbose
 	}
 	else
 	{
@@ -456,12 +483,14 @@ function Steam
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Steam" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Steam' already exists"
+		Write-Warning -Message "Firewall rule for `"Steam`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Steam`" created"
 	}
 }
 
@@ -472,12 +501,14 @@ function GoogleChrome
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Google Chrome' already exists"
+		Write-Warning -Message "Firewall rule for `"Google Chrome`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Google Chrome`" created"
 	}
 }
 
@@ -498,6 +529,8 @@ function Cursor
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
+	
+	Write-Verbose -Message "Custom Cursor installed" -Verbose
 }
 
 function Notepad
@@ -564,6 +597,8 @@ function Notepad
 				}
 			}
 
+			Write-Verbose -Message "Downloading Notepad++ context menu.ps1..."
+
 			# We cannot invoke an expression with non-latin words to avoid "??????"
 			$Parameters = @{
 				Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Notepad%2B%2B_context_menu.ps1"
@@ -571,9 +606,13 @@ function Notepad
 				Verbose         = $true
 			}
 			Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
+			
+			Write-Verbose -Message "Notepad++ context menu.ps1 downloaded"
 		}
 	}
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
+
+	Write-Verbose -Message "Downloading Sophia.ps1..."
 
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
@@ -582,6 +621,8 @@ function Notepad
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters
+
+	Write-Verbose -Message "Sophia.ps1 downloaded"
 
 	# Change the line endings from UNIX LF to Windows (CR LF) for downlaoded file to be able to dot-source it
 	# https://en.wikipedia.org/wiki/Newline#Representation
@@ -627,12 +668,14 @@ function TeamSpeak3
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'TeamSpeak 3' already exists"
+		Write-Warning -Message "Firewall rule for `"TeamSpeak 3`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"TeamSpeak 3`" created"
 	}
 }
 
@@ -655,94 +698,105 @@ function qBittorrent
 		{
 			New-Item -Path "$env:APPDATA\qBittorrent\" -ItemType Directory -Force
 		}
+
+		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme"))
+		{
+			# Get the latest qBittorrent dark theme version
+			$Parameters = @{
+				Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
+				UseBasicParsing = $true
+			}
+			$latestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
+
+			# Install dark theme
+			$Parameters = @{
+				Uri     = $latestVersion
+				OutFile = "$DownloadsFolder\qbt-theme.zip"
+				Verbose = $true
+			}
+			Invoke-WebRequest @Parameters
+
+			<#
+				.SYNOPSIS
+				Expand the specific file from ZIP archive. Folder structure will be created recursively
+
+				.Parameter Source
+				The source ZIP archive
+
+				.Parameter Destination
+				Where to expand file
+
+				.Parameter File
+				Assign the file to expand
+
+				.Example
+				ExtractZIPFile -Source "D:\Folder\File.zip" -Destination "D:\Folder" -File "Folder1/Folder2/File.txt"
+			#>
+
+			function ExtractZIPFile
+			{
+				[CmdletBinding()]
+				param
+				(
+					[string]
+					$Source,
+
+					[string]
+					$Destination,
+
+					[string]
+					$File
+				)
+
+				Add-Type -Assembly System.IO.Compression.FileSystem
+				$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
+				$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
+				$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
+				if (-not (Test-Path -Path $Destination))
+				{
+					New-Item -Path $Destination -ItemType Directory -Force
+				}
+				$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
+				$ZIP.Dispose()
+			}
+			$Parameters = @{
+				Source      = "$DownloadsFolder\qbt-theme.zip"
+				Destination = "$env:APPDATA\qBittorrent"
+				File        = "darkstylesheet.qbtheme"
+			}
+			ExtractZIPFile @Parameters
+
+			# Enable dark theme
+			$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
+		}
+
+		Write-Verbose -Message "Installing the settings file..." -Verbose
+
 		# Install the settings file
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
 			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
 			UseBasicParsing = $true
+			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
-		
-		# Get the latest qBittorrent dark theme version
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
-			UseBasicParsing = $true
-		}
-		$latestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
-
-		# Install dark theme
-		$Parameters = @{
-			Uri     = $latestVersion
-			OutFile = "$DownloadsFolder\qbt-theme.zip"
-			Verbose = $true
-		}
-		Invoke-WebRequest @Parameters
-
-		<#
-			.SYNOPSIS
-			Expand the specific file from ZIP archive. Folder structure will be created recursively
-
-			.Parameter Source
-			The source ZIP archive
-
-			.Parameter Destination
-			Where to expand file
-
-			.Parameter File
-			Assign the file to expand
-
-			.Example
-			ExtractZIPFile -Source "D:\Folder\File.zip" -Destination "D:\Folder" -File "Folder1/Folder2/File.txt"
-		#>
-
-		function ExtractZIPFile
-		{
-			[CmdletBinding()]
-			param
-			(
-				[string]
-				$Source,
-
-				[string]
-				$Destination,
-
-				[string]
-				$File
-			)
-
-			Add-Type -Assembly System.IO.Compression.FileSystem
-			$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
-			$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
-			$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
-			if (-not (Test-Path -Path $Destination))
-			{
-				New-Item -Path $Destination -ItemType Directory -Force
-			}
-			$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
-			$ZIP.Dispose()
-		}
-		$Parameters = @{
-			Source      = "$DownloadsFolder\qbt-theme.zip"
-			Destination = "$env:APPDATA\qBittorrent"
-			File        = "darkstylesheet.qbtheme"
-		}
-		ExtractZIPFile @Parameters
-
-		# Enable dark theme
-		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
 
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
+		Write-Verbose -Message "The settings file installed" -Verbose
+
 		# Adding to the Windows Defender Firewall exclusion list
 		if (Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore)
 		{
-			Write-Warning -Message "Firewall rule for 'qBittorrent' already exists"
+			Write-Warning -Message "Firewall rule for `"qBittorrent`" already exists"
 		}
 		else
 		{
 			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
+
+			Write-Verbose -Message "Firewall rule for `"qBittorrent`" created"
 		}
 	}
 }
@@ -767,7 +821,7 @@ function AdobeCreativeCloud
 	}
 	else
 	{
-		Write-Warning -Message "Adobe Creative Cloud already installed."
+		Write-Warning -Message "`"Adobe Creative Cloud`" already installed."
 	}
 }
 
@@ -778,12 +832,14 @@ function Java8
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Java 8(JRE)' already exists"
+		Write-Warning -Message "Firewall rule for `"Java 8(JRE)`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Java 8(JRE)`" created"
 	}
 }
 
@@ -798,12 +854,14 @@ function Java19
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'Java 19(JDK)' already exists"
+		Write-Warning -Message "Firewall rule for `"Java 19(JDK)`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"Java 19(JDK)`" created"
 	}
 }
 
@@ -814,60 +872,75 @@ function WireGuard
 	# Adding to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for 'WireGuard' already exists"
+		Write-Warning -Message "Firewall rule for `"WireGuard`" already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
+
+		Write-Verbose -Message "Firewall rule for `"WireGuard)`" created"
 	}
 }
 
 function Office
 {
-	Write-Verbose -Message "Installing Office..." -Verbose
-
-	# We cannot call "$PSScriptRoot\..\Office\Download.ps1" directly due to we have to assign the Office folder to download Office to
-	$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
-	wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
-
-	# To ensure that the process has time to appear when we call Get-CimInstance
-	Start-Sleep -Seconds 1
-
-	# Сreating a do/until loop to wait for the process to execute
-	do
+	if(-not (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root"))
 	{
-		$PowerShellWindow = Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "powershell.exe"} | Where-Object -FilterScript {$_.CommandLine -match "Download.ps1"}
-		if ($PowerShellWindow)
-		{
-			Start-Sleep -Seconds 1
-		}
-	}
-	until (-not $PowerShellWindow)
+		Write-Verbose -Message "Installing Office..." -Verbose
 
-	Write-Warning -Message "Close `"Office`" window manually after installation"
-
-	# Сreating a do/until loop to wait for the process to execute
-	do
-	{
-		$OfficeC2RClient = Wait-Process -Name OfficeC2RClient -ErrorAction Ignore
-		if ($OfficeC2RClient)
-		{
-			Start-Sleep -Seconds 1
-		}
-	}
-	until (-not $OfficeC2RClient)
-
-	# Configuring Office
-	if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
-	{
-		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
-
-		Write-Verbose -Message "Configuring Office..." -Verbose
-
-		# We cannot call "$PSScriptRoot\..\Office\Configure.ps1" directly
+		# We cannot call "$PSScriptRoot\..\Office\Download.ps1" directly due to we have to assign the Office folder to download Office to
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
-		wt --window 0 new-tab --title Configure --startingDirectory $Path powershell -Command "& {.\Configure.ps1}"
+		wt --window 0 new-tab --title Office --startingDirectory $Path powershell -Command "& {.\Download.ps1}"
+
+		# To ensure that the process has time to appear when we call Get-CimInstance
+		Start-Sleep -Seconds 1
+
+		# Сreating a do/until loop to wait for the process to execute
+		do
+		{
+			$PowerShellWindow = Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "powershell.exe"} | Where-Object -FilterScript {$_.CommandLine -match "Download.ps1"}
+			if ($PowerShellWindow)
+			{
+				Start-Sleep -Seconds 1
+			}
+		}
+		until (-not $PowerShellWindow)
+
+		Write-Warning -Message "Close `"Office`" window manually after installation"
+
+		# Сreating a do/until loop to wait for the process to execute
+		do
+		{
+			$OfficeC2RClient = Wait-Process -Name OfficeC2RClient -ErrorAction Ignore
+			if ($OfficeC2RClient)
+			{
+				Start-Sleep -Seconds 1
+			}
+		}
+		until (-not $OfficeC2RClient)
+
+		Write-Verbose -Message "Office installed" -Verbose
+
+		# Configuring Office
+		if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
+		{
+			Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
+
+			Write-Verbose -Message "Configuring Office..." -Verbose
+
+			# We cannot call "$PSScriptRoot\..\Office\Configure.ps1" directly
+			$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
+			wt --window 0 new-tab --title Configure --startingDirectory $Path powershell -Command "& {.\Configure.ps1}"
+
+			Start-Sleep -Seconds 2
+
+			Write-Verbose -Message "Office configured" -Verbose
+		}
+	}
+	else
+	{
+		Write-Warning -Message "`"Office`" is already installed. If you want to install it, delete `"Office`" manually and run the function again."
 	}
 }
 
