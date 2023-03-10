@@ -206,7 +206,7 @@ function Telegram
 		New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Telegram`" created"
+		Write-Verbose -Message "Firewall rule for `"Telegram`" created" -Verbose
 	}
 }
 
@@ -224,7 +224,7 @@ function Spotify
 		New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Spotify`" created"
+		Write-Verbose -Message "Firewall rule for `"Spotify`" created" -Verbose
 	}
 }
 
@@ -245,7 +245,7 @@ function Discord
 		New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Discord`" created"
+		Write-Verbose -Message "Firewall rule for `"Discord`" created" -Verbose
 	}
 }
 
@@ -364,7 +364,7 @@ function BetterDiscord
 			"https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"
 		)
 
-		Write-Warning -Message "Installing plugins..." -Verbose
+		Write-Warning -Message "Installing plugins..."
 
 		foreach ($Plugin in $Plugins)
 		{
@@ -381,11 +381,11 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
-		Write-Warning -Message "Plugins installed" -Verbose
+		Write-Warning -Message "Plugins installed"
 	}
 	else
 	{
-		Write-Warning -Message "Can't install plugins. BetterDiscord isn't installed." -Verbose
+		Write-Warning -Message "Can't install plugins. BetterDiscord isn't installed."
 	}
 
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
@@ -405,7 +405,7 @@ function BetterDiscord
 			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Themes/SettingsModal/SettingsModal.theme.css"
 		)
 
-		Write-Warning -Message "Installing themes..." -Verbose
+		Write-Warning -Message "Installing themes..."
 
 		foreach ($Theme in $Themes)
 		{
@@ -422,11 +422,11 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
-		Write-Warning -Message "Themes installed" -Verbose
+		Write-Warning -Message "Themes installed"
 	}
 	else
 	{
-		Write-Warning -Message "Can't install themes. BetterDiscord isn't installed." -Verbose
+		Write-Warning -Message "Can't install themes. BetterDiscord isn't installed."
 	}
 }
 
@@ -477,7 +477,7 @@ function Steam
 	}
 	else
 	{
-		Write-Verbose -Message "Unable to configure Steam. User folder doesn't exist" -Verbose
+		Write-Warning -Message "Unable to configure Steam. User folder doesn't exist" -Verbose
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
@@ -490,7 +490,7 @@ function Steam
 		New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Steam`" created"
+		Write-Verbose -Message "Firewall rule for `"Steam`" created" -Verbose
 	}
 }
 
@@ -508,7 +508,7 @@ function GoogleChrome
 		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Google Chrome`" created"
+		Write-Verbose -Message "Firewall rule for `"Google Chrome`" created" -Verbose
 	}
 }
 
@@ -597,7 +597,7 @@ function Notepad
 				}
 			}
 
-			Write-Verbose -Message "Downloading Notepad++ context menu.ps1..."
+			Write-Verbose -Message "Downloading Notepad++ context menu.ps1..." -Verbose
 
 			# We cannot invoke an expression with non-latin words to avoid "??????"
 			$Parameters = @{
@@ -607,12 +607,12 @@ function Notepad
 			}
 			Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
 			
-			Write-Verbose -Message "Notepad++ context menu.ps1 downloaded"
+			Write-Verbose -Message "Notepad++ context menu.ps1 downloaded" -Verbose
 		}
 	}
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
-	Write-Verbose -Message "Downloading Sophia.ps1..."
+	Write-Verbose -Message "Downloading Sophia.ps1..." -Verbose
 
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
@@ -622,7 +622,7 @@ function Notepad
 	}
 	Invoke-WebRequest @Parameters
 
-	Write-Verbose -Message "Sophia.ps1 downloaded"
+	Write-Verbose -Message "Sophia.ps1 downloaded" -Verbose
 
 	# Change the line endings from UNIX LF to Windows (CR LF) for downlaoded file to be able to dot-source it
 	# https://en.wikipedia.org/wiki/Newline#Representation
@@ -675,7 +675,7 @@ function TeamSpeak3
 		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"TeamSpeak 3`" created"
+		Write-Verbose -Message "Firewall rule for `"TeamSpeak 3`" created" -Verbose
 	}
 }
 
@@ -796,7 +796,7 @@ function qBittorrent
 			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 
-			Write-Verbose -Message "Firewall rule for `"qBittorrent`" created"
+			Write-Verbose -Message "Firewall rule for `"qBittorrent`" created" -Verbose
 		}
 	}
 }
@@ -839,7 +839,7 @@ function Java8
 		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Java 8(JRE)`" created"
+		Write-Verbose -Message "Firewall rule for `"Java 8(JRE)`" created" -Verbose
 	}
 }
 
@@ -861,7 +861,7 @@ function Java19
 		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Java 19(JDK)`" created"
+		Write-Verbose -Message "Firewall rule for `"Java 19(JDK)`" created" -Verbose
 	}
 }
 
@@ -879,7 +879,7 @@ function WireGuard
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"WireGuard)`" created"
+		Write-Verbose -Message "Firewall rule for `"WireGuard)`" created" -Verbose
 	}
 }
 
