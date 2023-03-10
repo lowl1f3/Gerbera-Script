@@ -477,7 +477,7 @@ function Steam
 	}
 	else
 	{
-		Write-Warning -Message "Unable to configure Steam. User folder doesn't exist" -Verbose
+		Write-Warning -Message "Unable to configure Steam. User folder doesn't exist"
 	}
 
 	# Adding to the Windows Defender Firewall exclusion list
