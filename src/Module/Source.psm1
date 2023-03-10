@@ -912,13 +912,12 @@ function Office
 		# Сreating a do/until loop to wait for the process to execute
 		do
 		{
-			$OfficeC2RClient = Wait-Process -Name OfficeC2RClient -ErrorAction Ignore
-			if ($OfficeC2RClient)
+			if (Wait-Process -Name OfficeC2RClient -ErrorAction Ignore)
 			{
 				Start-Sleep -Seconds 1
 			}
 		}
-		until (-not $OfficeC2RClient)
+		until (-not (Wait-Process -Name OfficeC2RClient -ErrorAction Ignore))
 
 		Write-Verbose -Message "Office installed" -Verbose
 
