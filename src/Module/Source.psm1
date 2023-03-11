@@ -708,6 +708,8 @@ function qBittorrent
 			}
 			$latestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
 
+			Write-Verbose -Message "Installing qbt-theme.zip..." -Verbose
+
 			# Install dark theme
 			$Parameters = @{
 				Uri     = $latestVersion
@@ -715,6 +717,8 @@ function qBittorrent
 				Verbose = $true
 			}
 			Invoke-WebRequest @Parameters
+
+			Write-Verbose -Message "qbt-theme.zip installed" -Verbose
 
 			<#
 				.SYNOPSIS
@@ -781,10 +785,10 @@ function qBittorrent
 		}
 		Invoke-WebRequest @Parameters
 
+		Write-Verbose -Message "The settings file installed" -Verbose
+
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
-
-		Write-Verbose -Message "The settings file installed" -Verbose
 
 		# Adding to the Windows Defender Firewall exclusion list
 		if (Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore)
@@ -847,7 +851,7 @@ function Java19
 {
 	winget install --id Oracle.JDK.19 --exact --accept-source-agreements
 
-	# Remove Java19(JDK) shortcuts
+	# Remove Java19(JDK) shortcut folders
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
