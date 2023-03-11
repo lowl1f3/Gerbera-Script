@@ -52,7 +52,7 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Made with $([char]::ConvertFromUtf32(0x1F497)) by lowlif3"
+$Host.UI.RawUI.WindowTitle = "Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
 
 Remove-Module -Name Manifest -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Manifest.psd1 -PassThru -Force
