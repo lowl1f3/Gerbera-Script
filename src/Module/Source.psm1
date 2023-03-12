@@ -980,37 +980,23 @@ function SophiaScript
 	}
 }
 
-# Remove installation files and shortcuts from Desktop
+# Remove installation files and Desktop shortcuts
 function DeleteInstallationFiles
 {
 	$Paths = @(
 		"$DownloadsFolder\$winget",
 		"$DownloadsFolder\$name",
-		"$DownloadsFolder\TelegramSetup.exe",
 		"$DesktopFolder\Telegram.lnk",
-		"$DownloadsFolder\DiscordSetup.exe",
 		"$env:USERPROFILE\Desktop\Discord.lnk",
 		"$DownloadsFolder\BetterDiscordSetup.exe",
-		"$DownloadsFolder\SteamSetup.exe",
 		"$env:PUBLIC\Desktop\Steam.lnk",
-		"$DownloadsFolder\googlechromestandaloneenterprise64.msi",
 		"$env:PUBLIC\Desktop\Google Chrome.lnk",
-		"$DownloadsFolder\$releaseName",
 		"$DownloadsFolder\dark.zip",
 		"$PSScriptRoot\Install_Cursor.ps1",
-		"$DownloadsFolder\NotepadPlusPlusSetup.exe",
-		"$DownloadsFolder\GitHubDesktop.msi",
 		"$DesktopFolder\GitHub Desktop.lnk",
-		"$DownloadsFolder\VisualStutioCodeSetup.exe",
-		"$DownloadsFolder\TeamSpeakSetup.exe",
 		"$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk",
-		"$DownloadsFolder\qBittorrentSetup.exe",
 		"$DownloadsFolder\qbt-theme.zip",
-		"$DownloadsFolder\CreativeCloudSetUp.exe",
 		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk",
-		"$DownloadsFolder\Java 8(JRE).exe",
-		"$DownloadsFolder\Java 19(JDK).msi",
-		"$DownloadsFolder\WireGuardInstaller.exe",
 		"$PSScriptRoot\Download_Sophia.ps1"
 	)
 	Remove-Item -Path $Paths -Recurse -Force -ErrorAction Ignore
