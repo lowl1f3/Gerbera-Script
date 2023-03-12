@@ -65,9 +65,9 @@ function Checks
 		break
 	}
 
+	# Check the internet connection
 	try
 	{
-		# Check the internet connection
 		$Parameters = @{
 			Uri              = "https://www.google.com"
 			Method           = "Head"
@@ -85,7 +85,7 @@ function Checks
 	# Check if winget is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -lt [System.Version]"1.19")
 	{
-		Write-Verbose -Message "Installing winget..." -Verbose
+		Write-Verbose -Message "Installing `"winget`"..." -Verbose
 
 		# Get the latest winget
 		$Parameters = @{
@@ -96,7 +96,7 @@ function Checks
 		$winget = (Invoke-RestMethod @Parameters).name | Select-Object -Index 0
 
 		# Download the latest winget
-		#https://github.com/microsoft/winget-cli/releases/latest
+		#https://github.com/microsoft/winget-cli
 		$Parameters = @{
 			Uri             = "https://github.com/microsoft/winget-cli/releases/download/$bestRelease/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
 			OutFile         = "$DownloadsFolder\$winget"
@@ -107,17 +107,18 @@ function Checks
 
 		Add-AppxPackage -Path "$DownloadsFolder\$winget" -Verbose
 
-		Write-Verbose -Message "winget installed" -Verbose
+		Write-Verbose -Message "winget `"installed`"" -Verbose
 	}
 
 	# Check if Windows Terminal is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal -ErrorAction Ignore).Version -lt [System.Version]"1.16")
 	{
-		Write-Verbose -Message "Installing Windows Terminal..." -Verbose
+		Write-Verbose -Message "Installing `"Windows Terminal`"..." -Verbose
 
 		# Check if the Script was started from the Windows Terminal
 		if ($env:WT_SESSION)
 		{
+			# Create toast notification
 			$xml = @"
 <toast>
 	<visual>
@@ -147,7 +148,7 @@ function Checks
 				$name = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
 
 				# Download the latest Windows Terminal
-				# https://github.com/microsoft/terminal/releases/latest
+				# https://github.com/microsoft/terminal
 				$Parameters = @{
 					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$name"
 					OutFile         = "$DownloadsFolder\$name"
@@ -173,7 +174,7 @@ function Checks
 				$name = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 2
 
 				# Download the latest Windows Terminal
-				# https://github.com/microsoft/terminal/releases/latest
+				# https://github.com/microsoft/terminal
 				$Parameters = @{
 					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$name"
 					OutFile         = "$DownloadsFolder\$name"
@@ -196,7 +197,7 @@ function Telegram
 {
 	winget install --id Telegram.TelegramDesktop.Beta --exact --accept-source-agreements
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Telegram`" already exists"
@@ -210,11 +211,12 @@ function Telegram
 	}
 }
 
+# Due to Spotify's policy of not being able to be installed with administrator privileges, this feature is commented out in the preset file (yet)
 function Spotify
 {
 	winget install --id Spotify.Spotify --exact --accept-source-agreements
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Spotify`" already exists"
@@ -235,7 +237,7 @@ function Discord
 	# Remove Discord from autostart
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Discord -Force -ErrorAction Ignore
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Discord" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Discord`" already exists"
@@ -253,10 +255,9 @@ function BetterDiscord
 {
 	if (-not (Test-Path -Path "$env:APPDATA\BetterDiscord"))
 	{
-		Write-Verbose -Message "Installing BetterDiscord..." -Verbose
+		Write-Verbose -Message "Installing `"BetterDiscord`"..." -Verbose
 
 		# Get the latest BetterDiscord
-		# https://github.com/BetterDiscord/Installer/releases/latest
 		$Parameters = @{
 			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases/latest"
 			UseBasicParsing = $true
@@ -264,6 +265,7 @@ function BetterDiscord
 		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 
 		# Download the latest BetterDiscord
+		# https://github.com/BetterDiscord/Installer
 		$Parameters = @{
 			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
 			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
@@ -278,7 +280,7 @@ function BetterDiscord
 
 		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
-		Write-Verbose -Message "BetterDiscord installed" -Verbose
+		Write-Verbose -Message "`"BetterDiscord`" installed" -Verbose
 
 		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
 	}
@@ -385,7 +387,7 @@ function BetterDiscord
 	}
 	else
 	{
-		Write-Warning -Message "Can't install plugins. BetterDiscord isn't installed."
+		Write-Warning -Message "Can't install plugins. `"BetterDiscord`" isn't installed."
 	}
 
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
@@ -426,7 +428,7 @@ function BetterDiscord
 	}
 	else
 	{
-		Write-Warning -Message "Can't install themes. BetterDiscord isn't installed."
+		Write-Warning -Message "Can't install themes. `"BetterDiscord`" isn't installed."
 	}
 }
 
@@ -436,12 +438,11 @@ function Steam
 
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
-		# Move Steam shortcut to another folder
+		# Move Steam shortcut from the Steam folder to the main Programs folder
 		if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam.lnk"))
 		{
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam\Steam.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 		}
-
 		# Remove Steam shortcut folders
 		Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Steam" -Recurse -Force -ErrorAction Ignore
@@ -450,6 +451,7 @@ function Steam
 		Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 	}
 
+	# Configure Steam
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
 		Write-Verbose -Message "Configuring Steam..." -Verbose
@@ -480,7 +482,7 @@ function Steam
 		Write-Warning -Message "Unable to configure Steam. User folder doesn't exist"
 	}
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Steam" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Steam`" already exists"
@@ -498,7 +500,7 @@ function GoogleChrome
 {
 	winget install --id Google.Chrome --exact --accept-source-agreements
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Google Chrome`" already exists"
@@ -519,7 +521,7 @@ function NanaZip
 
 function Cursor
 {
-	Write-Verbose -Message "Installing Custom Cursor..." -Verbose
+	Write-Verbose -Message "Applying Custom Cursor..." -Verbose
 
 	# Download custom Cursor
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
@@ -530,7 +532,7 @@ function Cursor
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
 	
-	Write-Verbose -Message "Custom Cursor installed" -Verbose
+	Write-Verbose -Message "Custom Cursor applied" -Verbose
 }
 
 function Notepad
@@ -555,6 +557,7 @@ function Notepad
 		Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
 	}
 
+	# Check if Windows localization is ru-RU
 	if ((Get-WinSystemLocale).Name -eq "ru-RU")
 	{
 		Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
@@ -597,7 +600,7 @@ function Notepad
 				}
 			}
 
-			Write-Verbose -Message "Downloading Notepad++ context menu.ps1..." -Verbose
+			Write-Verbose -Message "Applying `"Notepad++_context_menu.ps1`"..." -Verbose
 
 			# We cannot invoke an expression with non-latin words to avoid "??????"
 			$Parameters = @{
@@ -607,29 +610,31 @@ function Notepad
 			}
 			Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
 			
-			Write-Verbose -Message "Notepad++ context menu.ps1 downloaded" -Verbose
+			Write-Verbose -Message "`"Notepad++_context_menu.ps1`" applied" -Verbose
 		}
 	}
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
-	Write-Verbose -Message "Downloading Sophia.ps1..." -Verbose
+	Write-Verbose -Message "Downloading Sophia.psm1..." -Verbose
 
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
-		Outfile         = "$env:TEMP\Sophia.ps1"
+		Outfile         = "$env:TEMP\Sophia.psm1"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters
 
-	Write-Verbose -Message "Sophia.ps1 downloaded" -Verbose
+	Write-Verbose -Message "Sophia.psm1 downloaded" -Verbose
 
-	# Change the line endings from UNIX LF to Windows (CR LF) for downlaoded file to be able to dot-source it
+	# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot-source it
 	# https://en.wikipedia.org/wiki/Newline#Representation
-	(Get-Content -Path "$env:TEMP\Sophia.ps1" -Force) | Set-Content -Path "$env:TEMP\Sophia.ps1" -Encoding UTF8 -Force
+	(Get-Content -Path "$env:TEMP\Sophia.psm1" -Force) | Set-Content -Path "$env:TEMP\Sophia.psm1" -Encoding UTF8 -Force
 
 	# Dot source the Sophia module to make the function available in the current session
-	. "$env:TEMP\Sophia.ps1"
+	. "$env:TEMP\Sophia.psm1"
+
+	Write-Verbose -Message "Associating extensions..." -Verbose
 
 	# Register Notepad++, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .cfg -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
@@ -642,6 +647,8 @@ function Notepad
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .xml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .yml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
 	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .md -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+	Write-Verbose -Message "Extentions associated" -Verbose
 
 	Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
 }
@@ -665,7 +672,7 @@ function TeamSpeak3
 {
 	winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"TeamSpeak 3`" already exists"
@@ -683,7 +690,7 @@ function qBittorrent
 {
 	winget install --id qBittorrent.qBittorrent --exact --accept-source-agreements
 
-	# Configuring qBittorrent
+	# Configure qBittorrent
 	if (Test-Path -Path "$env:ProgramFiles\qBittorrent")
 	{
 		Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
@@ -702,16 +709,20 @@ function qBittorrent
 			New-Item -Path "$env:APPDATA\qBittorrent" -ItemType Directory -Force
 		}
 
+		# Check if "defaulticons-fluent-dark-no-mica.qbtheme" already installed
 		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"))
 		{
-			# https://github.com/witalihirsch/qBitTorrent-fluent-theme
+			# Get the latest fluent dark theme
 			$Parameters = @{
 				Uri             = "https://api.github.com/repos/witalihirsch/qBitTorrent-fluent-theme/releases/latest"
 				UseBasicParsing = $true
-				Verbose         = $true
 			}
 			$LatestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url | Where-Object -FilterScript {$_ -match "defaulticons-fluent-dark-no-mica"}
 
+			Write-Verbose -Message "Installing `"defaulticons-fluent-dark-no-mica.qbtheme`"..." -Verbose
+
+			# Download the latest fluent dark theme
+			# https://github.com/witalihirsch/qBitTorrent-fluent-theme
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
 				Uri     = $LatestVersion
@@ -719,11 +730,13 @@ function qBittorrent
 				Verbose = $true
 			}
 			Invoke-WebRequest @Parameters
+
+			Write-Verbose -Message "`"defaulticons-fluent-dark-no-mica.qbtheme`" installed" -Verbose
 		}
 
-		Write-Verbose -Message "Installing qBittorrent.ini..." -Verbose
+		Write-Verbose -Message "Installing `"qBittorrent.ini`"..." -Verbose
 
-		# Install the settings file
+		# Download qBittorrent.ini
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
 			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
@@ -732,13 +745,13 @@ function qBittorrent
 		}
 		Invoke-WebRequest @Parameters
 
-		Write-Verbose -Message "qBittorrent.ini installed" -Verbose
+		Write-Verbose -Message "`"qBittorrent.ini`" installed" -Verbose
 
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme").Path.Replace("\", "/")
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
-		# Adding to the Windows Defender Firewall exclusion list
+		# Add to the Windows Defender Firewall exclusion list
 		if (Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore)
 		{
 			Write-Warning -Message "Firewall rule for `"qBittorrent`" already exists"
@@ -755,9 +768,10 @@ function qBittorrent
 
 function AdobeCreativeCloud
 {
+	# Check if Adobe Creative Cloud already installed
 	if (-not (Test-Path -Path "$env:ProgramFiles\Adobe\Adobe Creative Cloud\ACC"))
 	{
-		Write-Verbose -Message "Installing Adobe Creative Cloud..." -Verbose
+		Write-Verbose -Message "Installing `"Adobe Creative Cloud`"..." -Verbose
 
 		# Download the latest Adobe Creative Cloud
 		# https://creativecloud.adobe.com/en/apps/download/creative-cloud
@@ -781,7 +795,7 @@ function Java8
 {
 	winget install --id Oracle.JavaRuntimeEnvironment --exact --accept-source-agreements
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Java 8(JRE)`" already exists"
@@ -803,7 +817,7 @@ function Java19
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"Java 19(JDK)`" already exists"
@@ -821,7 +835,7 @@ function WireGuard
 {
 	winget install --id WireGuard.WireGuard --exact --accept-source-agreements
 
-	# Adding to the Windows Defender Firewall exclusion list
+	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore)
 	{
 		Write-Warning -Message "Firewall rule for `"WireGuard`" already exists"
@@ -839,7 +853,7 @@ function Office
 {
 	if(-not (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root"))
 	{
-		Write-Verbose -Message "Installing Office..." -Verbose
+		Write-Verbose -Message "Installing `"Office`"..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Office\Download.ps1" directly due to we have to assign the Office folder to download Office to
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
@@ -848,7 +862,7 @@ function Office
 		# To ensure that the process has time to appear when we call Get-CimInstance
 		Start-Sleep -Seconds 1
 
-		# Сreating a do/until loop to wait for the process to execute
+		# Сreate a do/until loop to wait for the process to execute
 		do
 		{
 			$PowerShellWindow = Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "powershell.exe"} | Where-Object -FilterScript {$_.CommandLine -match "Download.ps1"}
@@ -861,7 +875,7 @@ function Office
 
 		Write-Warning -Message "Close `"Office`" window manually after installation"
 
-		# Сreating a do/until loop to wait for the process to execute
+		# Сreate a do/until loop to wait for the process to execute
 		do
 		{
 			if (Wait-Process -Name OfficeC2RClient -ErrorAction Ignore)
@@ -871,9 +885,9 @@ function Office
 		}
 		until (-not (Wait-Process -Name OfficeC2RClient -ErrorAction Ignore))
 
-		Write-Verbose -Message "Office installed" -Verbose
+		Write-Verbose -Message "`"Office`" installed" -Verbose
 
-		# Configuring Office
+		# Configure Office
 		if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 		{
 			Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
@@ -897,14 +911,14 @@ function Office
 
 function SophiaScript
 {
-	Write-Verbose -Message "Downloading Sophia Script..." -Verbose
+	Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
 
 	# We need try/catch to check if the user can download the script from script.sophi.app
 	try
 	{
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
-		Write-Verbose -Message "Starting Sophia Script..." -Verbose
+		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
@@ -921,7 +935,7 @@ function SophiaScript
 		}
 		Invoke-WebRequest @Parameters | Invoke-Expression
 
-		Write-Verbose -Message "Starting Sophia Script..." -Verbose
+		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
@@ -937,6 +951,7 @@ function DeleteInstallationFiles
 		"$DownloadsFolder\$name",
 		"$DesktopFolder\Telegram.lnk",
 		"$env:USERPROFILE\Desktop\Discord.lnk",
+		"$DesktopFolder\Discord.lnk",
 		"$DownloadsFolder\BetterDiscordSetup.exe",
 		"$env:PUBLIC\Desktop\Steam.lnk",
 		"$env:PUBLIC\Desktop\Google Chrome.lnk",
