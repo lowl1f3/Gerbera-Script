@@ -688,93 +688,40 @@ function qBittorrent
 	{
 		Stop-Process -Name qBittorrent -Force -ErrorAction Ignore
 
+		# Move qBittorrent shortcut from the qBittorrent folder to the main Programs folder
 		if (-not (Test-Path -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent.lnk"))
 		{
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 		}
+		# Remove qBittorrent folder from the main Programs folder
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
 
-		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\"))
+		# Create the qBittorrent folder in AppData\Roaming if it doesn't exist
+		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent"))
 		{
-			New-Item -Path "$env:APPDATA\qBittorrent\" -ItemType Directory -Force
+			New-Item -Path "$env:APPDATA\qBittorrent" -ItemType Directory -Force
 		}
 
-		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme"))
+		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"))
 		{
-			# Get the latest qBittorrent dark theme version
+			# https://github.com/witalihirsch/qBitTorrent-fluent-theme
 			$Parameters = @{
-				Uri             = "https://api.github.com/repos/jagannatharjun/qbt-theme/releases/latest"
+				Uri             = "https://api.github.com/repos/witalihirsch/qBitTorrent-fluent-theme/releases/latest"
 				UseBasicParsing = $true
+				Verbose         = $true
 			}
-			$latestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url
+			$LatestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url | Where-Object -FilterScript {$_ -match "defaulticons-fluent-dark-no-mica"}
 
-			Write-Verbose -Message "Installing qbt-theme.zip..." -Verbose
-
-			# Install dark theme
+			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
-				Uri     = $latestVersion
-				OutFile = "$DownloadsFolder\qbt-theme.zip"
+				Uri     = $LatestVersion
+				OutFile = "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"
 				Verbose = $true
 			}
 			Invoke-WebRequest @Parameters
-
-			Write-Verbose -Message "qbt-theme.zip installed" -Verbose
-
-			<#
-				.SYNOPSIS
-				Expand the specific file from ZIP archive. Folder structure will be created recursively
-
-				.Parameter Source
-				The source ZIP archive
-
-				.Parameter Destination
-				Where to expand file
-
-				.Parameter File
-				Assign the file to expand
-
-				.Example
-				ExtractZIPFile -Source "D:\Folder\File.zip" -Destination "D:\Folder" -File "Folder1/Folder2/File.txt"
-			#>
-
-			function ExtractZIPFile
-			{
-				[CmdletBinding()]
-				param
-				(
-					[string]
-					$Source,
-
-					[string]
-					$Destination,
-
-					[string]
-					$File
-				)
-
-				Add-Type -Assembly System.IO.Compression.FileSystem
-				$ZIP = [IO.Compression.ZipFile]::OpenRead($Source)
-				$Entries = $ZIP.Entries | Where-Object -FilterScript {$_.FullName -eq $File}
-				$Destination = "$Destination\$(Split-Path -Path $File -Parent)"
-				if (-not (Test-Path -Path $Destination))
-				{
-					New-Item -Path $Destination -ItemType Directory -Force
-				}
-				$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$($Destination)\$($_.Name)", $true)}
-				$ZIP.Dispose()
-			}
-			$Parameters = @{
-				Source      = "$DownloadsFolder\qbt-theme.zip"
-				Destination = "$env:APPDATA\qBittorrent"
-				File        = "darkstylesheet.qbtheme"
-			}
-			ExtractZIPFile @Parameters
-
-			# Enable dark theme
-			$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\darkstylesheet.qbtheme").Path.Replace("\", "/")
 		}
 
-		Write-Verbose -Message "Installing the settings file..." -Verbose
+		Write-Verbose -Message "Installing qBittorrent.ini..." -Verbose
 
 		# Install the settings file
 		$Parameters = @{
@@ -785,9 +732,10 @@ function qBittorrent
 		}
 		Invoke-WebRequest @Parameters
 
-		Write-Verbose -Message "The settings file installed" -Verbose
+		Write-Verbose -Message "qBittorrent.ini installed" -Verbose
 
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
+		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme").Path.Replace("\", "/")
 		(Get-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8) -replace "General\\CustomUIThemePath=", "General\CustomUIThemePath=$qbtheme" | Set-Content -Path "$env:APPDATA\qBittorrent\qBittorrent.ini" -Encoding UTF8 -Force
 
 		# Adding to the Windows Defender Firewall exclusion list
@@ -951,6 +899,7 @@ function SophiaScript
 {
 	Write-Verbose -Message "Downloading Sophia Script..." -Verbose
 
+	# We need try/catch to check if the user can download the script from script.sophi.app
 	try
 	{
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
@@ -991,11 +940,10 @@ function DeleteInstallationFiles
 		"$DownloadsFolder\BetterDiscordSetup.exe",
 		"$env:PUBLIC\Desktop\Steam.lnk",
 		"$env:PUBLIC\Desktop\Google Chrome.lnk",
-		"$DownloadsFolder\dark.zip",
 		"$PSScriptRoot\Install_Cursor.ps1",
 		"$DesktopFolder\GitHub Desktop.lnk",
 		"$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk",
-		"$DownloadsFolder\qbt-theme.zip",
+		"$DownloadsFolder\CreativeCloudSetUp.exe",
 		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk",
 		"$PSScriptRoot\Download_Sophia.ps1"
 	)
