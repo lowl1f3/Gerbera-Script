@@ -107,7 +107,7 @@ function Checks
 
 		Add-AppxPackage -Path "$DownloadsFolder\$winget" -Verbose
 
-		Write-Verbose -Message "winget `"installed`"" -Verbose
+		Write-Verbose -Message "`"winget`" installed" -Verbose
 	}
 
 	# Check if Windows Terminal is installed or up to date
