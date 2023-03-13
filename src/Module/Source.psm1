@@ -118,7 +118,7 @@ function Checks
 		# Check if the Script was started from the Windows Terminal
 		if ($env:WT_SESSION)
 		{
-			# Create toast notification
+			# Create a toast notification
 			$xml = @"
 <toast>
 	<visual>
@@ -145,21 +145,21 @@ function Checks
 					UseBasicParsing = $true
 				}
 				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-				$name = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
+				$terminal = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
 
 				# Download the latest Windows Terminal
 				# https://github.com/microsoft/terminal
 				$Parameters = @{
-					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$name"
-					OutFile         = "$DownloadsFolder\$name"
+					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$terminal"
+					OutFile         = "$DownloadsFolder\$terminal"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
 				Invoke-WebRequest @Parameters
 
-				Start-Process -FilePath "$DownloadsFolder\$name"
+				Start-Process -FilePath "$DownloadsFolder\$terminal"
 
-				Write-Verbose -Message "Install `"$name`" manually" -Verbose
+				Write-Verbose -Message "Install `"$terminal`" manually" -Verbose
 
 				exit
 			}
@@ -171,21 +171,21 @@ function Checks
 					UseBasicParsing = $true
 				}
 				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-				$name = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 2
+				$terminal = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 2
 
 				# Download the latest Windows Terminal
 				# https://github.com/microsoft/terminal
 				$Parameters = @{
-					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$name"
-					OutFile         = "$DownloadsFolder\$name"
+					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$terminal"
+					OutFile         = "$DownloadsFolder\$terminal"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
 				Invoke-WebRequest @Parameters
 
-				Start-Process -FilePath "$DownloadsFolder\$name"
+				Start-Process -FilePath "$DownloadsFolder\$terminal"
 
-				Write-Verbose -Message "Install `"$name`" manually" -Verbose
+				Write-Verbose -Message "Install `"$terminal`" manually" -Verbose
 
 				exit
 			}
@@ -284,12 +284,12 @@ function BetterDiscord
 	}
 	else
 	{
-		Write-Warning -Message "`"BetterDiscord`" already installed."
+		Write-Warning -Message "`"BetterDiscord`" already installed. If you want to install it again, delete `"BetterDiscord`" manually and re-run the function."
 	}
 
+	# BetterDiscord plugins
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
 	{
-		# Install Better Discord plugins
 		$Plugins = @(
 			# BDFDB
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
@@ -381,6 +381,7 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
+
 		Write-Warning -Message "Plugins installed"
 	}
 	else
@@ -388,9 +389,9 @@ function BetterDiscord
 		Write-Warning -Message "Can't install plugins. `"BetterDiscord`" isn't installed."
 	}
 
+	# BetterDiscord themes
 	if (Test-Path -Path "$env:APPDATA\BetterDiscord")
 	{
-		# Install Better Discord themes
 		$Themes = @(
 			# EmojiReplace
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/EmojiReplace/EmojiReplace.theme.css
@@ -422,6 +423,7 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
+
 		Write-Warning -Message "Themes installed"
 	}
 	else
@@ -521,7 +523,6 @@ function Cursor
 {
 	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`"..." -Verbose
 
-	# Download custom Cursor
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Cursor/Install_Cursor.ps1"
@@ -529,7 +530,7 @@ function Cursor
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
-	
+
 	Write-Verbose -Message "`"Windows 11 Cursors Concept v2.2`" applied" -Verbose
 }
 
@@ -607,7 +608,7 @@ function Notepad
 				Verbose         = $true
 			}
 			Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
-			
+
 			Write-Verbose -Message "`"Notepad++_context_menu.ps1`" applied" -Verbose
 		}
 	}
@@ -707,7 +708,7 @@ function qBittorrent
 			New-Item -Path "$env:APPDATA\qBittorrent" -ItemType Directory -Force
 		}
 
-		# Check if "defaulticons-fluent-dark-no-mica.qbtheme" already installed
+		# Check if "defaulticons-fluent-dark-no-mica.qbtheme" is already installed
 		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"))
 		{
 			# Get the latest fluent dark theme
@@ -766,7 +767,7 @@ function qBittorrent
 
 function AdobeCreativeCloud
 {
-	# Check if Adobe Creative Cloud already installed
+	# Check if Adobe Creative Cloud is already installed
 	if (-not (Test-Path -Path "$env:ProgramFiles\Adobe\Adobe Creative Cloud\ACC"))
 	{
 		Write-Verbose -Message "Installing `"Adobe Creative Cloud`"..." -Verbose
@@ -785,7 +786,7 @@ function AdobeCreativeCloud
 	}
 	else
 	{
-		Write-Warning -Message "`"Adobe Creative Cloud`" already installed."
+		Write-Warning -Message "`"Adobe Creative Cloud`" already installed. If you want to install it again, delete `"Adobe Creative Cloud`" manually and re-run the function."
 	}
 }
 
@@ -849,6 +850,7 @@ function WireGuard
 
 function Office
 {
+	# Check if Office is already installed
 	if(-not (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root"))
 	{
 		Write-Verbose -Message "Installing `"Office`"..." -Verbose
@@ -899,7 +901,7 @@ function Office
 	}
 	else
 	{
-		Write-Warning -Message "`"Office`" is already installed. If you want to install it, delete `"Office`" manually and run the function again."
+		Write-Warning -Message "`"Office`" already installed. If you want to install it again, delete `"Office`" manually and re-run the function."
 	}
 }
 
@@ -907,7 +909,7 @@ function SophiaScript
 {
 	Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
 
-	# We need try/catch to check if the user can download the script from script.sophi.app
+	# We need try/catch to check if the user can download Sophia Script from script.sophi.app
 	try
 	{
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
@@ -920,7 +922,9 @@ function SophiaScript
 	}
 	catch [System.Net.WebException]
 	{
-		# Download the latest Sophia Script
+		Write-Verbose -Message "Downloading `"Download_Sophia.ps1`"..." -Verbose
+
+		# Download the latest Sophia Script using Download_Sophia.ps1
 		# https://github.com/farag2/Sophia-Script-for-Windows
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/Download_Sophia.ps1"
@@ -928,6 +932,8 @@ function SophiaScript
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters | Invoke-Expression
+
+		Write-Verbose -Message "`"Download_Sophia.ps1`" downloaded" -Verbose
 
 		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
 
@@ -937,24 +943,22 @@ function SophiaScript
 	}
 }
 
-# Remove installation files and Desktop shortcuts
+# Delete installation files and shortcuts
 function DeleteInstallationFiles
 {
 	$Paths = @(
 		"$DownloadsFolder\$winget",
-		"$DownloadsFolder\$name",
+		"$DownloadsFolder\$terminal",
 		"$DesktopFolder\Telegram.lnk",
 		"$env:USERPROFILE\Desktop\Discord.lnk",
 		"$DesktopFolder\Discord.lnk",
 		"$DownloadsFolder\BetterDiscordSetup.exe",
 		"$env:PUBLIC\Desktop\Steam.lnk",
 		"$env:PUBLIC\Desktop\Google Chrome.lnk",
-		"$PSScriptRoot\Install_Cursor.ps1",
 		"$DesktopFolder\GitHub Desktop.lnk",
 		"$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk",
 		"$DownloadsFolder\CreativeCloudSetUp.exe",
-		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk",
-		"$PSScriptRoot\Download_Sophia.ps1"
+		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk"
 	)
 	Remove-Item -Path $Paths -Recurse -Force -ErrorAction Ignore
 }
