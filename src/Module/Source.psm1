@@ -481,6 +481,7 @@ function Steam
 				} | Set-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8 -Force
 			}
 		}
+
 		Write-Verbose -Message "`"Steam`" configured" -Verbose
 	}
 	else
