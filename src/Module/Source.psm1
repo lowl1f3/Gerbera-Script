@@ -97,7 +97,6 @@ function Checks
 		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 		$winget = (Invoke-RestMethod @Parameters).name | Select-Object -Index 0
 
-		# Download the latest winget
 		#https://github.com/microsoft/winget-cli
 		$Parameters = @{
 			Uri             = "https://github.com/microsoft/winget-cli/releases/download/$bestRelease/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
@@ -149,7 +148,6 @@ function Checks
 				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 				$terminal = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
 
-				# Download the latest Windows Terminal
 				# https://github.com/microsoft/terminal
 				$Parameters = @{
 					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$terminal"
@@ -175,7 +173,6 @@ function Checks
 				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 				$terminal = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 2
 
-				# Download the latest Windows Terminal
 				# https://github.com/microsoft/terminal
 				$Parameters = @{
 					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$terminal"
@@ -370,6 +367,7 @@ function BetterDiscord
 
 		Write-Warning -Message "Installing plugins..."
 
+		# Loop
 		foreach ($Plugin in $Plugins)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
@@ -412,6 +410,7 @@ function BetterDiscord
 
 		Write-Warning -Message "Installing themes..."
 
+		# Loop
 		foreach ($Theme in $Themes)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
@@ -441,6 +440,7 @@ function Steam
 {
 	winget install --id Valve.Steam --exact --accept-source-agreements
 
+	# Check if Steam is installed
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam")
 	{
 		# Move Steam shortcut from the Steam folder to the main Programs folder
@@ -456,11 +456,12 @@ function Steam
 		Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name Steam -Force -ErrorAction Ignore
 	}
 
-	# Configure Steam
+	# Check if any user folder exist
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
 		Write-Verbose -Message "Configuring `"Steam`"..." -Verbose
 
+		# Configure Steam
 		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
 		{
 			if (Test-Path -Path $folder.FullName)
@@ -547,15 +548,14 @@ function Notepad++
 {
 	winget install --id Notepad++.Notepad++ --exact --accept-source-agreements
 
-	Write-Warning -Message "Close `"Notepad++`" window manually"
-
-	Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
-
-	# Configure Notepad++
+	# Check if Notepad++ is installed
 	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L214
 	if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	{
-		Stop-Process -Name notepad++ -Force -ErrorAction Ignore
+		Write-Warning -Message "Close `"Notepad++`" window manually"
+
+		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
+
 		$Remove = @(
 			"$env:ProgramFiles\Notepad++\change.log",
 			"$env:ProgramFiles\Notepad++\LICENSE",
@@ -563,102 +563,104 @@ function Notepad++
 			"$env:ProgramFiles\Notepad++\autoCompletion"
 		)
 		Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
-	}
 
-	# Check if Windows localization is ru-RU
-	if ((Get-WinSystemLocale).Name -eq "ru-RU")
-	{
-		Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
-
-		if ($Host.Version.Major -eq 5)
+		# Check if Windows localization is ru-RU
+		if ((Get-WinSystemLocale).Name -eq "ru-RU")
 		{
-			# https://gist.github.com/mklement0/209a9506b8ba32246f95d1cc238d564d
-			function ConvertTo-BodyWithEncoding
+			Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
+
+			if ($Host.Version.Major -eq 5)
 			{
-				[CmdletBinding(PositionalBinding = $false)]
-				param
-				(
-					[Parameter(Mandatory, ValueFromPipeline)]
-					[Microsoft.PowerShell.Commands.WebResponseObject]
-					$InputObject,
-
-					# The encoding to use; defaults to UTF-8
-					[Parameter(Position = 0)]
-					$Encoding = [System.Text.Encoding]::Utf8
-				)
-
-				begin
+				# https://gist.github.com/mklement0/209a9506b8ba32246f95d1cc238d564d
+				function ConvertTo-BodyWithEncoding
 				{
-					if ($Encoding -isnot [System.Text.Encoding])
+					[CmdletBinding(PositionalBinding = $false)]
+					param
+					(
+						[Parameter(Mandatory, ValueFromPipeline)]
+						[Microsoft.PowerShell.Commands.WebResponseObject]
+						$InputObject,
+
+						# The encoding to use; defaults to UTF-8
+						[Parameter(Position = 0)]
+						$Encoding = [System.Text.Encoding]::Utf8
+					)
+
+					begin
 					{
-						try
+						if ($Encoding -isnot [System.Text.Encoding])
 						{
-							$Encoding = [System.Text.Encoding]::GetEncoding($Encoding)
+							try
+							{
+								$Encoding = [System.Text.Encoding]::GetEncoding($Encoding)
+							}
+							catch
+							{
+								throw
+							}
 						}
-						catch
-						{
-							throw
-						}
+					}
+
+					process
+					{
+						$Encoding.GetString($InputObject.RawContentStream.ToArray())
 					}
 				}
 
-				process
-				{
-					$Encoding.GetString($InputObject.RawContentStream.ToArray())
+				Write-Verbose -Message "Applying `"Notepad++_context_menu.ps1`"..." -Verbose
+
+				# We cannot invoke an expression with non-latin words to avoid "??????"
+				# https://github.com/farag2/Utilities/blob/master/Notepad%2B%2B_context_menu.ps1
+				$Parameters = @{
+					Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Notepad%2B%2B_context_menu.ps1"
+					UseBasicParsing = $true
+					Verbose         = $true
 				}
+				Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
+
+				Write-Verbose -Message "`"Notepad++_context_menu.ps1`" applied" -Verbose
 			}
-
-			Write-Verbose -Message "Applying `"Notepad++_context_menu.ps1`"..." -Verbose
-
-			# We cannot invoke an expression with non-latin words to avoid "??????"
-			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Notepad%2B%2B_context_menu.ps1"
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
-
-			Write-Verbose -Message "`"Notepad++_context_menu.ps1`" applied" -Verbose
 		}
+		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
+
+		Write-Verbose -Message "Downloading `"Sophia.psm1`"..." -Verbose
+
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1
+		$Parameters = @{
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
+			Outfile         = "$env:TEMP\Sophia.psm1"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+
+		Write-Verbose -Message "`"Sophia.psm1`" downloaded" -Verbose
+
+		# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot-source it
+		# https://en.wikipedia.org/wiki/Newline#Representation
+		(Get-Content -Path "$env:TEMP\Sophia.psm1" -Force) | Set-Content -Path "$env:TEMP\Sophia.psm1" -Encoding UTF8 -Force
+
+		# Dot source the Sophia module to make the function available in the current session
+		. "$env:TEMP\Sophia.psm1"
+
+		Write-Verbose -Message "Associating extensions..." -Verbose
+
+		# Register Notepad++, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .cfg -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ini -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .log -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .nfo -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ps1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psm1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psd1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .xml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .yml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .md -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+
+		Write-Verbose -Message "Extentions associated" -Verbose
+
+		Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
 	}
-	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
-
-	Write-Verbose -Message "Downloading `"Sophia.psm1`"..." -Verbose
-
-	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
-		Outfile         = "$env:TEMP\Sophia.psm1"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
-
-	Write-Verbose -Message "`"Sophia.psm1`" downloaded" -Verbose
-
-	# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot-source it
-	# https://en.wikipedia.org/wiki/Newline#Representation
-	(Get-Content -Path "$env:TEMP\Sophia.psm1" -Force) | Set-Content -Path "$env:TEMP\Sophia.psm1" -Encoding UTF8 -Force
-
-	# Dot source the Sophia module to make the function available in the current session
-	. "$env:TEMP\Sophia.psm1"
-
-	Write-Verbose -Message "Associating extensions..." -Verbose
-
-	# Register Notepad++, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .cfg -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ini -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .log -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .nfo -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ps1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psm1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psd1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .xml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .yml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-	Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .md -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-
-	Write-Verbose -Message "Extentions associated" -Verbose
-
-	Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
 }
 
 # Download GitHub Desktop
@@ -734,7 +736,6 @@ function qBittorrent
 
 			Write-Verbose -Message "Installing `"defaulticons-fluent-dark-no-mica.qbtheme`"..." -Verbose
 
-			# Download the latest fluent dark theme
 			# https://github.com/witalihirsch/qBitTorrent-fluent-theme
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
@@ -908,6 +909,7 @@ function Office
 		# Configure Office
 		if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 		{
+			# Remove "Microsoft Office Tools" folder from the main Programs folder
 			Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 
 			Write-Verbose -Message "Configuring `"Office`"..." -Verbose
