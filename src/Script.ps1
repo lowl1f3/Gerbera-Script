@@ -66,19 +66,23 @@ if ($Functions)
 	}
 	exit
 }
+
+## A warning message about whether the preset file was customized
 Confirmation
+
+## Mandatory checks before running Script
 Checks
 
 ## Download Telegram
 Telegram
 
-## Download Spotify
+## Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
 #Spotify
 
 ## Download Discord
 Discord
 
-## Download BetterDiscord
+## Download BetterDiscord with plugins and themes
 BetterDiscord
 
 ## Download Steam
@@ -90,11 +94,11 @@ GoogleChrome
 ## Download NanaZip
 NanaZip
 
-## Download Custom Cursor
+## Apply "Windows 11 Cursors Concept v2.2" Cursor
 Cursor
 
-## Download Notepad
-Notepad
+## Download Notepad++
+Notepad++
 
 ## Download GitHub Desktop
 GitHubDesktop
@@ -114,11 +118,11 @@ qBittorrent
 ## Download Adobe Creative Cloud
 AdobeCreativeCloud
 
-## Download Java8
-Java8
+## Download Java 8 (JRE)
+Java8.JRE
 
-## Download Java19
-Java19
+## Download Java 19 (JDK)
+Java19.JDK
 
 ## Download WireGuard
 WireGuard

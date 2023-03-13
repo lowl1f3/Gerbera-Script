@@ -30,6 +30,7 @@
 	https://github.com/lowl1f3
 #>
 
+# A warning message about whether the preset file was customized
 function Confirmation
 {
 	# Startup confirmation
@@ -56,6 +57,7 @@ function Confirmation
 $Script:DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 
+# Mandatory checks before running Script
 function Checks
 {
 	# Check if Windows is x64
@@ -193,6 +195,7 @@ function Checks
 	}
 }
 
+# Download Telegram
 function Telegram
 {
 	winget install --id Telegram.TelegramDesktop.Beta --exact --accept-source-agreements
@@ -211,7 +214,7 @@ function Telegram
 	}
 }
 
-# Due to Spotify's policy of not being able to be installed with administrator privileges, this feature is commented out in the preset file (yet)
+# Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
 function Spotify
 {
 	winget install --id Spotify.Spotify --exact --accept-source-agreements
@@ -230,6 +233,7 @@ function Spotify
 	}
 }
 
+# Download Discord
 function Discord
 {
 	winget install --id Discord.Discord --exact --accept-source-agreements
@@ -251,6 +255,7 @@ function Discord
 	}
 }
 
+# Download BetterDiscord
 function BetterDiscord
 {
 	if (-not (Test-Path -Path "$env:APPDATA\BetterDiscord"))
@@ -264,7 +269,6 @@ function BetterDiscord
 		}
 		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 
-		# Download the latest BetterDiscord
 		# https://github.com/BetterDiscord/Installer
 		$Parameters = @{
 			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
@@ -432,6 +436,7 @@ function BetterDiscord
 	}
 }
 
+# Download Steam
 function Steam
 {
 	winget install --id Valve.Steam --exact --accept-source-agreements
@@ -454,7 +459,7 @@ function Steam
 	# Configure Steam
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
-		Write-Verbose -Message "Configuring Steam..." -Verbose
+		Write-Verbose -Message "Configuring `"Steam`"..." -Verbose
 
 		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
 		{
@@ -475,11 +480,11 @@ function Steam
 				} | Set-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8 -Force
 			}
 		}
-		Write-Verbose -Message "Steam configured" -Verbose
+		Write-Verbose -Message "`"Steam`" configured" -Verbose
 	}
 	else
 	{
-		Write-Warning -Message "Unable to configure Steam. User folder doesn't exist"
+		Write-Warning -Message "Unable to configure `"Steam`". User folder doesn't exist"
 	}
 
 	# Add to the Windows Defender Firewall exclusion list
@@ -496,6 +501,7 @@ function Steam
 	}
 }
 
+# Download Google Chrome
 function GoogleChrome
 {
 	winget install --id Google.Chrome --exact --accept-source-agreements
@@ -514,11 +520,13 @@ function GoogleChrome
 	}
 }
 
+# Download NanaZip
 function NanaZip
 {
 	winget install --id M2Team.NanaZip --exact --accept-source-agreements
 }
 
+# Apply "Windows 11 Cursors Concept v2.2" Cursor
 function Cursor
 {
 	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`"..." -Verbose
@@ -534,7 +542,8 @@ function Cursor
 	Write-Verbose -Message "`"Windows 11 Cursors Concept v2.2`" applied" -Verbose
 }
 
-function Notepad
+# Download Notepad++
+function Notepad++
 {
 	winget install --id Notepad++.Notepad++ --exact --accept-source-agreements
 
@@ -614,7 +623,7 @@ function Notepad
 	}
 	New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
-	Write-Verbose -Message "Downloading Sophia.psm1..." -Verbose
+	Write-Verbose -Message "Downloading `"Sophia.psm1`"..." -Verbose
 
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
@@ -624,7 +633,7 @@ function Notepad
 	}
 	Invoke-WebRequest @Parameters
 
-	Write-Verbose -Message "Sophia.psm1 downloaded" -Verbose
+	Write-Verbose -Message "`"Sophia.psm1`" downloaded" -Verbose
 
 	# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot-source it
 	# https://en.wikipedia.org/wiki/Newline#Representation
@@ -652,21 +661,25 @@ function Notepad
 	Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
 }
 
+# Download GitHub Desktop
 function GitHubDesktop
 {
 	winget install --id GitHub.GitHubDesktop --exact --accept-source-agreements
 }
 
+# Download Visual Studio
 function VisualStudio
 {
 	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
 }
 
+# Download Visual Studio Code
 function VisualStudioCode
 {
 	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
 }
 
+# Download TeamSpeak 3
 function TeamSpeak3
 {
 	winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
@@ -685,6 +698,7 @@ function TeamSpeak3
 	}
 }
 
+# Download qBittorrent
 function qBittorrent
 {
 	winget install --id qBittorrent.qBittorrent --exact --accept-source-agreements
@@ -765,6 +779,7 @@ function qBittorrent
 	}
 }
 
+# Download Adobe Creative Cloud
 function AdobeCreativeCloud
 {
 	# Check if Adobe Creative Cloud is already installed
@@ -772,7 +787,6 @@ function AdobeCreativeCloud
 	{
 		Write-Verbose -Message "Installing `"Adobe Creative Cloud`"..." -Verbose
 
-		# Download the latest Adobe Creative Cloud
 		# https://creativecloud.adobe.com/en/apps/download/creative-cloud
 		$Parameters = @{
 			Uri             = "https://prod-rel-ffc-ccm.oobesaas.adobe.com/adobe-ffc-external/core/v1/wam/download?sapCode=KCCC&productName=Creative%20Cloud&os=win"
@@ -790,7 +804,8 @@ function AdobeCreativeCloud
 	}
 }
 
-function Java8
+# Download Java 8 (JRE)
+function Java8.JRE
 {
 	winget install --id Oracle.JavaRuntimeEnvironment --exact --accept-source-agreements
 
@@ -808,7 +823,8 @@ function Java8
 	}
 }
 
-function Java19
+# Download Java 19 (JDK)
+function Java19.JDK
 {
 	winget install --id Oracle.JDK.19 --exact --accept-source-agreements
 
@@ -830,6 +846,7 @@ function Java19
 	}
 }
 
+# Download WireGuard
 function WireGuard
 {
 	winget install --id WireGuard.WireGuard --exact --accept-source-agreements
@@ -848,6 +865,7 @@ function WireGuard
 	}
 }
 
+# Download Office
 function Office
 {
 	# Check if Office is already installed
@@ -892,11 +910,11 @@ function Office
 		{
 			Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 
-			Write-Verbose -Message "Configuring Office..." -Verbose
+			Write-Verbose -Message "Configuring `"Office`"..." -Verbose
 
 			& "$PSScriptRoot\..\Office\Configure.ps1"
 
-			Write-Verbose -Message "Office configured" -Verbose
+			Write-Verbose -Message "`"Office`" configured" -Verbose
 		}
 	}
 	else
@@ -905,14 +923,18 @@ function Office
 	}
 }
 
+# Download Sophia Script
 function SophiaScript
 {
-	Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
-
 	# We need try/catch to check if the user can download Sophia Script from script.sophi.app
 	try
 	{
+		Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
+
+		# https://github.com/farag2/Sophia-Script-for-Windows#how-to-download-sophia-script-via-powershell
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
+
+		Write-Verbose -Message "`"Sophia Script`" downloaded" -Verbose
 
 		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
 
@@ -925,7 +947,7 @@ function SophiaScript
 		Write-Verbose -Message "Downloading `"Download_Sophia.ps1`"..." -Verbose
 
 		# Download the latest Sophia Script using Download_Sophia.ps1
-		# https://github.com/farag2/Sophia-Script-for-Windows
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/Download_Sophia.ps1
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/Download_Sophia.ps1"
 			UseBasicParsing = $true
@@ -943,7 +965,7 @@ function SophiaScript
 	}
 }
 
-# Delete installation files and shortcuts
+# Delete Installation Files and Shortcuts
 function DeleteInstallationFiles
 {
 	$Paths = @(
