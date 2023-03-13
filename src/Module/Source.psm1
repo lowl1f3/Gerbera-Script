@@ -280,8 +280,6 @@ function BetterDiscord
 
 		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
-		Write-Verbose -Message "`"BetterDiscord`" installed" -Verbose
-
 		Stop-Process -Name BetterDiscord -Force -ErrorAction Ignore
 	}
 	else
@@ -521,7 +519,7 @@ function NanaZip
 
 function Cursor
 {
-	Write-Verbose -Message "Applying Custom Cursor..." -Verbose
+	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`"..." -Verbose
 
 	# Download custom Cursor
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
@@ -532,7 +530,7 @@ function Cursor
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
 	
-	Write-Verbose -Message "Custom Cursor applied" -Verbose
+	Write-Verbose -Message "`"Windows 11 Cursors Concept v2.2`" applied" -Verbose
 }
 
 function Notepad
@@ -894,11 +892,7 @@ function Office
 
 			Write-Verbose -Message "Configuring Office..." -Verbose
 
-			# We cannot call "$PSScriptRoot\..\Office\Configure.ps1" directly
-			$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
-			wt --window 0 new-tab --title Configure --startingDirectory $Path powershell -Command "& {.\Configure.ps1}"
-
-			Start-Sleep -Seconds 2
+			& "$PSScriptRoot\..\Office\Configure.ps1"
 
 			Write-Verbose -Message "Office configured" -Verbose
 		}
