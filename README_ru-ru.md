@@ -48,7 +48,7 @@
 * [Telegram](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагины](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L293) и [темы](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L394)
+  * [BetterDiscord](https://betterdiscord.app), [плагины](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L297) и [темы](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L399)
 * [Steam](https://store.steampowered.com/about)
 * [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
 * [NanaZip](https://github.com/M2Team/NanaZip)
