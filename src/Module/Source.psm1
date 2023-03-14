@@ -553,23 +553,9 @@ function Notepad++
 	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L214
 	if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	{
-		Write-Warning -Message "Close `"Notepad++`" window manually"
-
-		Start-Process -FilePath "$env:ProgramFiles\Notepad++\notepad++.exe" -Wait
-
-		$Remove = @(
-			"$env:ProgramFiles\Notepad++\change.log",
-			"$env:ProgramFiles\Notepad++\LICENSE",
-			"$env:ProgramFiles\Notepad++\readme.txt",
-			"$env:ProgramFiles\Notepad++\autoCompletion"
-		)
-		Remove-Item -Path $Remove -Recurse -Force -ErrorAction Ignore
-
 		# Check if Windows localization is ru-RU
 		if ((Get-WinSystemLocale).Name -eq "ru-RU")
 		{
-			Remove-Item -Path "$env:ProgramFiles\Notepad++\localization" -Exclude russian.xml -Recurse -Force -ErrorAction Ignore
-
 			if ($Host.Version.Major -eq 5)
 			{
 				# https://gist.github.com/mklement0/209a9506b8ba32246f95d1cc238d564d
@@ -624,39 +610,64 @@ function Notepad++
 		}
 		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
+		# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
+		$Signature = @{
+			Namespace        = "WinAPI"
+			Name             = "GetStr"
+			Language         = "CSharp"
+			UsingNamespace   = "System.Text"
+			MemberDefinition = @"
+[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+public static extern IntPtr GetModuleHandle(string lpModuleName);
+[DllImport("user32.dll", CharSet = CharSet.Auto)]
+internal static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+public static string GetString(uint strId)
+{
+	IntPtr intPtr = GetModuleHandle("shell32.dll");
+	StringBuilder sb = new StringBuilder(255);
+	LoadString(intPtr, strId, sb, sb.Capacity);
+	return sb.ToString();
+}
+"@
+		}
+		if (-not ("WinAPI.GetStr" -as [type]))
+		{
+			Add-Type @Signature
+		}
+
 		Write-Verbose -Message "Downloading `"Sophia.psm1`"..." -Verbose
 
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
-			Outfile         = "$env:TEMP\Sophia.psm1"
+			Outfile         = "$env:TEMP\Sophia.ps1"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Write-Verbose -Message "`"Sophia.psm1`" downloaded" -Verbose
+		Write-Verbose -Message "`"Sophia.ps1`" downloaded" -Verbose
 
 		# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot-source it
 		# https://en.wikipedia.org/wiki/Newline#Representation
-		(Get-Content -Path "$env:TEMP\Sophia.psm1" -Force) | Set-Content -Path "$env:TEMP\Sophia.psm1" -Encoding UTF8 -Force
+		(Get-Content -Path "$env:TEMP\Sophia.ps1" -Force) | Set-Content -Path "$env:TEMP\Sophia.ps1" -Encoding UTF8 -Force
 
 		# Dot source the Sophia module to make the function available in the current session
-		. "$env:TEMP\Sophia.psm1"
+		. "$env:TEMP\Sophia.ps1"
 
 		Write-Verbose -Message "Associating extensions..." -Verbose
 
 		# Register Notepad++, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .cfg -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ini -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .log -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .nfo -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .ps1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psm1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .psd1 -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .xml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .yml -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
-		Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension .md -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		$Extensions = @(
+			".cfg", ".ini", ".log",
+			".nfo", ".ps1", ".psm1",
+			".psd1", ".xml", ".yml",
+			".md", ".txt"
+		)
+		foreach ($Extension in $Extensions)
+		{
+			Set-Association -ProgramPath "%ProgramFiles%\Notepad++\notepad++.exe" -Extension $Extension -Icon "%ProgramFiles%\Notepad++\notepad++.exe,0"
+		}
 
 		Write-Verbose -Message "Extentions associated" -Verbose
 
