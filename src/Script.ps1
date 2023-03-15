@@ -94,7 +94,7 @@ GoogleChrome
 ## Download NanaZip
 NanaZip
 
-## Apply "Windows 11 Cursors Concept v2.2" Cursor
+## Apply "Windows 11 Cursors Concept v2.2" Dark Cursor
 Cursor
 
 ## Download Notepad++
@@ -103,7 +103,7 @@ Notepad++
 ## Download GitHub Desktop
 GitHubDesktop
 
-## Download Visual Studio
+## Download Visual Studio Community
 VisualStudio
 
 ## Download Visual Studio Code
@@ -130,7 +130,7 @@ WireGuard
 ## Download Office
 Office
 
-## Download Sophia Script
+## Download and run Sophia Script
 SophiaScript
 
 ## Delete Installation Files and Shortcuts

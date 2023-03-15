@@ -486,7 +486,7 @@ function Steam
 	}
 	else
 	{
-		Write-Warning -Message "Unable to configure `"Steam`". User folder doesn't exist"
+		Write-Warning -Message "Unable to configure `"Steam`". User folder doesn't exist."
 	}
 
 	# Add to the Windows Defender Firewall exclusion list
@@ -528,10 +528,10 @@ function NanaZip
 	winget install --id M2Team.NanaZip --exact --accept-source-agreements
 }
 
-# Apply "Windows 11 Cursors Concept v2.2" Cursor
+# Apply "Windows 11 Cursors Concept v2.2" Dark Cursor
 function Cursor
 {
-	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`"..." -Verbose
+	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`" dark cursor..." -Verbose
 
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
 	$Parameters = @{
@@ -541,7 +541,7 @@ function Cursor
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
 
-	Write-Verbose -Message "`"Windows 11 Cursors Concept v2.2`" applied" -Verbose
+	Write-Verbose -Message "`"Windows 11 Cursors Concept v2.2`" dark cursor applied" -Verbose
 }
 
 # Download Notepad++
@@ -681,7 +681,7 @@ function GitHubDesktop
 	winget install --id GitHub.GitHubDesktop --exact --accept-source-agreements
 }
 
-# Download Visual Studio
+# Download Visual Studio Community
 function VisualStudio
 {
 	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
@@ -921,10 +921,10 @@ function Office
 		# Configure Office
 		if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 		{
+			Write-Verbose -Message "Configuring `"Office`"..." -Verbose
+
 			# Remove "Microsoft Office Tools" folder from the main Programs folder
 			Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
-
-			Write-Verbose -Message "Configuring `"Office`"..." -Verbose
 
 			& "$PSScriptRoot\..\Office\Configure.ps1"
 
@@ -937,7 +937,7 @@ function Office
 	}
 }
 
-# Download Sophia Script
+# Download and run Sophia Script
 function SophiaScript
 {
 	Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
