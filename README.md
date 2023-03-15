@@ -55,7 +55,7 @@ Supports `Windows 10` & `Windows 11`
 * [Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
-* [Visual Stutio](https://visualstudio.microsoft.com/#vs-section)
+* [Visual Stutio Community](https://visualstudio.microsoft.com/#vs-section)
 * [Visual Stutio Code](https://code.visualstudio.com/Download)
 * [TeamSpeak 3](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
