@@ -610,7 +610,7 @@ function Notepad++
 		}
 		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
 
-		# Extract strings from %SystemRoot%\System32\shell32.dll using its' number
+		# Extract strings from %SystemRoot%\System32\shell32.dll using its number
 		$Signature = @{
 			Namespace        = "WinAPI"
 			Name             = "GetStr"
@@ -635,8 +635,9 @@ public static string GetString(uint strId)
 			Add-Type @Signature
 		}
 
-		Write-Verbose -Message "Downloading `"Sophia.psm1`"..." -Verbose
+		Write-Verbose -Message "Downloading `"Sophia.ps1`"..." -Verbose
 
+		# We can dot source .ps1 files only. So we artificially rename .psm1 into .ps1
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1"
@@ -648,7 +649,7 @@ public static string GetString(uint strId)
 
 		Write-Verbose -Message "`"Sophia.ps1`" downloaded" -Verbose
 
-		# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot-source it
+		# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot source it
 		# https://en.wikipedia.org/wiki/Newline#Representation
 		(Get-Content -Path "$env:TEMP\Sophia.ps1" -Force) | Set-Content -Path "$env:TEMP\Sophia.ps1" -Encoding UTF8 -Force
 
@@ -874,7 +875,7 @@ function WireGuard
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"WireGuard)`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for `"WireGuard`" created" -Verbose
 	}
 }
 
