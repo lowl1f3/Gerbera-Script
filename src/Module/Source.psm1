@@ -940,15 +940,13 @@ function Office
 # Download Sophia Script
 function SophiaScript
 {
+	Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
+
 	# We need try/catch to check if the user can download Sophia Script from script.sophi.app
 	try
 	{
-		Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
-
 		# https://github.com/farag2/Sophia-Script-for-Windows#how-to-download-sophia-script-via-powershell
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
-
-		Write-Verbose -Message "`"Sophia Script`" downloaded" -Verbose
 
 		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
 
@@ -958,8 +956,6 @@ function SophiaScript
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Verbose -Message "Downloading `"Download_Sophia.ps1`"..." -Verbose
-
 		# Download the latest Sophia Script using Download_Sophia.ps1
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/Download_Sophia.ps1
 		$Parameters = @{
@@ -968,8 +964,6 @@ function SophiaScript
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters | Invoke-Expression
-
-		Write-Verbose -Message "`"Download_Sophia.ps1`" downloaded" -Verbose
 
 		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
 
