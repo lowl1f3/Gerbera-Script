@@ -1,4 +1,4 @@
-$CurrentVersion = "${{ github.ref_name }}"
+$CurrentVersion = "`${{ github.ref_name }}"
 
 Write-Verbose -Message "Script_$CurrentVersion.zip" -Verbose
 

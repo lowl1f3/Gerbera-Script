@@ -22,4 +22,5 @@ jobs:
           name: ${{ env.RELEASE_NAME }}
           token: ${{ github.token }}
           files: |
-            "Script_`"${{ github.ref_name }}`".zip"
+            $CurrentVersion = "`${{ github.ref_name }}"
+            "Script_$CurrentVersion.zip"
