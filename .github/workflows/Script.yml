@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - "*.*"
+
+jobs:
+  patch:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Build
+        run: |
+          . "Scripts\Script.ps1"
+
+      - name: Uploading
+        uses: softprops/action-gh-release@master
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          token: ${{ github.token }}
+          files: |
+            "Script_`"${{ github.ref_name }}`".zip"

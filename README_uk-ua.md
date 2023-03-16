@@ -38,6 +38,25 @@
 
 * Введіть `.\Script.ps1` <kbd>Enter</kbd> для запуску всього пресету.
 
+### Як викликати конкретні функції(ю)
+
+Щоб викликати конкретні функції(ю), необхідно спочатку [дот-сорсити](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) файл `Functions.ps1`:
+
+```powershell
+# З точкою на початку
+. .\Functions.ps1
+```
+
+* Тепер ви можете робити так
+
+```powershell
+Script -Functions <TAB>
+Script -Functions tele<TAB>
+Script -Functions delete<TAB>
+
+Script -Functions Telegram, AdobeCreativeCloud
+```
+
 ## Список
 
 > **Note**: Деякі з них мають тихе встановлення
@@ -48,9 +67,9 @@
 * [Telegram](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L294) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L397)
+  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L296) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L399)
 * [Steam](https://store.steampowered.com/about)
-* [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
+* [Firefox](https://www.mozilla.org/en/firefox/new/)
 * [NanaZip](https://github.com/M2Team/NanaZip)
 * [Курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)

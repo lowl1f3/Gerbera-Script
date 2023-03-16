@@ -88,8 +88,8 @@ BetterDiscord
 ## Download Steam
 Steam
 
-## Download Google Chrome
-GoogleChrome
+## Download Firefox
+Firefox
 
 ## Download NanaZip
 NanaZip

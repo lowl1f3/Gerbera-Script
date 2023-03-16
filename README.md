@@ -38,6 +38,25 @@ Supports `Windows 10` & `Windows 11`
 
 * Type `.\Script.ps1` <kbd>Enter</kbd> to run the whole preset file.
 
+### How to run the specific function(s)
+
+To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator) the `Functions.ps1` file first:
+
+```powershell
+# With a dot at the beginning
+. .\Functions.ps1
+```
+
+* Now you can do like this (the quotation marks required)
+
+```powershell
+Script -Functions <TAB>
+Script -Functions tele<TAB>
+Script -Functions delete<TAB>
+
+Script -Functions Telegram, AdobeCreativeCloud
+```
+
 ## List
 
 > **Note**: Some of them have a silent installation
@@ -48,9 +67,9 @@ Supports `Windows 10` & `Windows 11`
 * [Telegram](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L294) & [themes](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L397)
+  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L296) & [themes](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L399)
 * [Steam](https://store.steampowered.com/about)
-* [Google Chrome](https://chromeenterprise.google/browser/download/#windows-tab)
+* [Firefox](https://www.mozilla.org/en/firefox/new/)
 * [NanaZip](https://github.com/M2Team/NanaZip)
 * [Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)

@@ -42,11 +42,13 @@ function Confirmation
 
 	switch ($Result)
 	{
-		"0" {
+		"0"
+		{
 			Invoke-Item -Path "$PSScriptRoot\..\Script.ps1"
 			exit
 		}
-		"1" {
+		"1"
+		{
 			continue
 		}
 	}
@@ -503,22 +505,22 @@ function Steam
 	}
 }
 
-# Download Google Chrome
-function GoogleChrome
+# Download Firefox
+function Firefox
 {
-	winget install --id Google.Chrome --exact --accept-source-agreements
+	winget install --id Mozilla.Firefox --exact --accept-source-agreements
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Google Chrome" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Firefox" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Google Chrome`" already exists"
+		Write-Warning -Message "Firewall rule for `"Firefox`" already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Inbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Google Chrome" -Direction Outbound -Program "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Firefox" -Direction Inbound -Program "$env:ProgramFiles\Mozilla Firefox\firefox.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Firefox" -Direction Outbound -Program "$env:ProgramFiles\Mozilla Firefox\firefox.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Google Chrome`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for `"Firefox`" created" -Verbose
 	}
 }
 
@@ -985,7 +987,7 @@ function DeleteInstallationFiles
 		"$DesktopFolder\Discord.lnk",
 		"$DownloadsFolder\BetterDiscordSetup.exe",
 		"$env:PUBLIC\Desktop\Steam.lnk",
-		"$env:PUBLIC\Desktop\Google Chrome.lnk",
+		"$env:PUBLIC\Desktop\Firefox.lnk",
 		"$DesktopFolder\GitHub Desktop.lnk",
 		"$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk",
 		"$DownloadsFolder\CreativeCloudSetUp.exe",
