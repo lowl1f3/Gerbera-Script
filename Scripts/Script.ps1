@@ -1,11 +1,13 @@
-Write-Verbose -Message "Script_`"${{ github.ref_name }}`".zip" -Verbose
+$CurrentVersion = "${{ github.ref_name }}"
 
-New-Item -Path "Script_`"${{ github.ref_name }}`"" -ItemType Directory -Force
+Write-Verbose -Message "Script_$CurrentVersion.zip" -Verbose
 
-Get-ChildItem -Path src -Force | Copy-Item -Destination "Script_`"${{ github.ref_name }}`"" -Recurse -Force
+New-Item -Path "Script_$CurrentVersion" -ItemType Directory -Force
+
+Get-ChildItem -Path src -Force | Copy-Item -Destination "Script_$CurrentVersion" -Recurse -Force
 $Parameters = @{
-    Path             = "Script_`"${{ github.ref_name }}`""
-    DestinationPath  = "Script_`"${{ github.ref_name }}`".zip"
+    Path             = "Script_$CurrentVersion"
+    DestinationPath  = "Script_$CurrentVersion.zip"
     CompressionLevel = "Fastest"
     Force            = $true
 }
