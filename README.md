@@ -47,7 +47,7 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 . .\Functions.ps1
 ```
 
-* Now you can do like this (the quotation marks required)
+* Now you can do like this
 
 ```powershell
 Script -Functions <TAB>
