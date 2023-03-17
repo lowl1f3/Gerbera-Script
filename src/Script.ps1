@@ -22,6 +22,11 @@
 	.NOTES
 	Supported Windows 10 & 11 x64 versions
 
+	.NOTES
+	To use the TAB completion for functions dot source the Functions.ps1 script first:
+		. .\Function.ps1 (with a dot at the beginning)
+	Read more in the Functions.ps1 file
+
 	.LINK GitHub
 	https://github.com/lowl1f3/Script
 
