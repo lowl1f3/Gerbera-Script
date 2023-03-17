@@ -9,7 +9,7 @@
 
 	.DESCRIPTION
 	Dot source the script first: . .\Functions.ps1 (with a dot at the beginning)
-	Start typing any characters contained in the function's name or its arguments, and press the TAB button
+	Start typing any characters contained in the function's name and press the TAB button
 
 	.EXAMPLE
 	Script -Functions <tab>
