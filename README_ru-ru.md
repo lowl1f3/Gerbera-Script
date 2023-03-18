@@ -54,7 +54,7 @@ Script -Functions <TAB>
 Script -Functions tele<TAB>
 Script -Functions delete<TAB>
 
-Script -Functions Telegram, AdobeCreativeCloud
+Script -Functions Telegram, DeleteInstallationFiles
 ```
 
 ## Список
