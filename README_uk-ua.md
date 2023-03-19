@@ -67,7 +67,7 @@ Script -Functions Telegram, DeleteInstallationFiles
 * [Telegram](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L296) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L399)
+  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L294) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L395)
 * [Steam](https://store.steampowered.com/about)
 * [Firefox](https://www.mozilla.org/en/firefox/new/)
 * [NanaZip](https://github.com/M2Team/NanaZip)
