@@ -683,8 +683,8 @@ function VisualStudioCode
 	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
 }
 
-# Download TeamSpeak 3
-function TeamSpeak3
+# Download TeamSpeak
+function TeamSpeak
 {
 	winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
 
