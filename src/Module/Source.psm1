@@ -109,8 +109,6 @@ function Checks
 		Invoke-WebRequest @Parameters
 
 		Add-AppxPackage -Path "$DownloadsFolder\$winget" -Verbose
-
-		Write-Verbose -Message "`"winget`" installed" -Verbose
 	}
 
 	# Check if Windows Terminal is installed or up to date
@@ -385,8 +383,6 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
-
-		Write-Warning -Message "Plugins installed"
 	}
 	else
 	{
@@ -428,8 +424,6 @@ function BetterDiscord
 			}
 			Invoke-Webrequest @Parameters
 		}
-
-		Write-Warning -Message "Themes installed"
 	}
 	else
 	{
@@ -483,8 +477,6 @@ function Steam
 				} | Set-Content -Path "$($folder.PSPath)\7\remote\sharedconfig.vdf" -Encoding UTF8 -Force
 			}
 		}
-
-		Write-Verbose -Message "`"Steam`" configured" -Verbose
 	}
 	else
 	{
@@ -542,8 +534,6 @@ function Cursor
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
-
-	Write-Verbose -Message "`"Windows 11 Cursors Concept v2.2`" dark cursor applied" -Verbose
 }
 
 # Download Notepad++
@@ -606,8 +596,6 @@ function Notepad++
 					Verbose         = $true
 				}
 				Invoke-WebRequest @Parameters | ConvertTo-BodyWithEncoding | Invoke-Expression
-
-				Write-Verbose -Message "`"Notepad++_context_menu.ps1`" applied" -Verbose
 			}
 		}
 		New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name "C:\Program Files\Notepad++\notepad++.exe.FriendlyAppName" -PropertyType String -Value "Notepad++" -Force
@@ -648,8 +636,6 @@ public static string GetString(uint strId)
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
-
-		Write-Verbose -Message "`"Sophia.ps1`" downloaded" -Verbose
 
 		# Change the line endings from UNIX LF to Windows (CR LF) for downloaded file to be able to dot source it
 		# https://en.wikipedia.org/wiki/Newline#Representation
@@ -759,8 +745,6 @@ function qBittorrent
 				Verbose = $true
 			}
 			Invoke-WebRequest @Parameters
-
-			Write-Verbose -Message "`"defaulticons-fluent-dark-no-mica.qbtheme`" installed" -Verbose
 		}
 
 		Write-Verbose -Message "Installing `"qBittorrent.ini`"..." -Verbose
@@ -773,8 +757,6 @@ function qBittorrent
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
-
-		Write-Verbose -Message "`"qBittorrent.ini`" installed" -Verbose
 
 		# Save qBittorrent.ini in UTF8-BOM encoding to make it work with non-latin usernames
 		$qbtheme = (Resolve-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme").Path.Replace("\", "/")
