@@ -114,8 +114,8 @@ VisualStudio
 ## Download Visual Studio Code
 VisualStudioCode
 
-## Download TeamSpeak 3
-TeamSpeak3
+## Download TeamSpeak
+TeamSpeak
 
 ## Download qBittorrent
 qBittorrent
