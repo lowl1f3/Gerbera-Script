@@ -19,7 +19,7 @@
 	Script -Functions Telegram, Cursor, Notepad++
 
 	.NOTES
-	Use commas to separate funtions
+	Use commas to separate functions
 
 	.LINK
 	https://github.com/lowl1f3/Script
