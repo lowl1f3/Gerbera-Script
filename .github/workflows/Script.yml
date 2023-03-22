@@ -16,8 +16,6 @@ jobs:
         run: |
           . "Scripts\Script.ps1"
 
-          get-item Sophia*.zip
-
       - name: Uploading
         uses: softprops/action-gh-release@master
         with:
