@@ -1,9 +1,8 @@
 name: Build
 
-on:
-  push:
-    tags:
-      - "*.*"
+on: push
+  tags:
+    - "*.*"
 
 jobs:
   patch:
@@ -14,12 +13,23 @@ jobs:
 
       - name: Build
         run: |
-          . "Scripts\Script.ps1"
+          Write-Verbose -Message "Script_`"${{ github.ref_name }}`".zip" -Verbose
+
+          New-Item -Path Script -ItemType Directory -Force
+
+          Get-ChildItem -Path src -Force | Copy-Item -Destination Script -Recurse -Force
+
+          $Parameters = @{
+              Path             = "Script"
+              DestinationPath  = "Script_`"${{ github.ref_name }}`".zip"
+              CompressionLevel = "Fastest"
+              Force            = $true
+          }
+          Compress-Archive @Parameters
 
       - name: Uploading
         uses: softprops/action-gh-release@master
         with:
           name: ${{ env.RELEASE_NAME }}
           token: ${{ github.token }}
-          files: |
-            Script*.zip
+          files: Script_"${{ github.ref_name }}".zip
