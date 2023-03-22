@@ -18,7 +18,7 @@ jobs:
 
           New-Item -Path "Script_${{ github.ref_name }}" -ItemType Directory -Force
 
-          Get-ChildItem -Path src -Force | Copy-Item -Destination Script -Recurse -Force
+          Get-ChildItem -Path src -Force | Copy-Item -Destination "Script_${{ github.ref_name }}" -Recurse -Force
 
           $Parameters = @{
               Path             = "Script_${{ github.ref_name }}"
