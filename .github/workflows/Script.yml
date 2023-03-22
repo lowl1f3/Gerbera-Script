@@ -14,7 +14,7 @@ jobs:
 
       - name: Build
         run: |
-          Write-Verbose -Message "Script_`"${{ github.ref_name }}`".zip" -Verbose
+          Write-Verbose -Message "Script_${{ github.ref_name }}.zip" -Verbose
 
           New-Item -Path Script -ItemType Directory -Force
 
@@ -22,7 +22,7 @@ jobs:
 
           $Parameters = @{
               Path             = "Script"
-              DestinationPath  = "Script_`"${{ github.ref_name }}`".zip"
+              DestinationPath  = "Script_${{ github.ref_name }}.zip"
               CompressionLevel = "Fastest"
               Force            = $true
           }
@@ -33,4 +33,4 @@ jobs:
         with:
           name: ${{ env.RELEASE_NAME }}
           token: ${{ github.token }}
-          files: Script_"${{ github.ref_name }}".zip
+          files: Script_${{ github.ref_name }}.zip
