@@ -78,8 +78,8 @@ Confirmation
 ## Mandatory checks before running Script
 Checks
 
-## Download Telegram
-Telegram
+## Download Telegram Desktop
+TelegramDesktop
 
 ## Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
 #Spotify
@@ -114,7 +114,7 @@ VisualStudioCommunity
 ## Download Visual Studio Code
 VisualStudioCode
 
-## Download TeamSpeak Client
+## Download TeamSpeak 3 Client
 TeamSpeakClient
 
 ## Download qBittorrent

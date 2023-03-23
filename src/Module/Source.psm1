@@ -192,22 +192,22 @@ function Checks
 	}
 }
 
-# Download Telegram
-function Telegram
+# Download Telegram Desktop
+function TelegramDesktop
 {
 	winget install --id Telegram.TelegramDesktop.Beta --exact --accept-source-agreements
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Telegram" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Telegram Desktop" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Telegram`" already exists"
+		Write-Warning -Message "Firewall rule for `"Telegram Desktop`" already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Telegram" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Telegram" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Telegram Desktop" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Telegram Desktop" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Telegram`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for `"Telegram Desktop`" created" -Verbose
 	}
 }
 
