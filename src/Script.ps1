@@ -109,13 +109,13 @@ Notepad++
 GitHubDesktop
 
 ## Download Visual Studio Community
-VisualStudio
+VisualStudioCommunity
 
 ## Download Visual Studio Code
 VisualStudioCode
 
-## Download TeamSpeak
-TeamSpeak
+## Download TeamSpeak Client
+TeamSpeakClient
 
 ## Download qBittorrent
 qBittorrent

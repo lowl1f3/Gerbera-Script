@@ -672,7 +672,7 @@ function GitHubDesktop
 }
 
 # Download Visual Studio Community
-function VisualStudio
+function VisualStudioCommunity
 {
 	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
 }
@@ -683,22 +683,22 @@ function VisualStudioCode
 	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
 }
 
-# Download TeamSpeak
-function TeamSpeak
+# Download TeamSpeak Client
+function TeamSpeakClient
 {
 	winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3 Client" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"TeamSpeak 3`" already exists"
+		Write-Warning -Message "Firewall rule for `"TeamSpeak 3 Client`" already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "TeamSpeak 3" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "TeamSpeak 3 Client" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "TeamSpeak 3 Client" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"TeamSpeak 3`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for `"TeamSpeak 3 Client`" created" -Verbose
 	}
 }
 
