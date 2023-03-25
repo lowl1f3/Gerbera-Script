@@ -91,24 +91,16 @@ function Checks
 	{
 		Write-Verbose -Message "Installing `"winget`"..." -Verbose
 
-		# Get the latest winget
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-			UseBasicParsing = $true
-		}
-		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-		$winget = (Invoke-RestMethod @Parameters).name | Select-Object -Index 0
-
 		#https://github.com/microsoft/winget-cli
 		$Parameters = @{
-			Uri             = "https://github.com/microsoft/winget-cli/releases/download/$bestRelease/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
-			OutFile         = "$DownloadsFolder\$winget"
+			Uri             = "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+			OutFile         = "$DownloadsFolder\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
 
-		Add-AppxPackage -Path "$DownloadsFolder\$winget" -Verbose
+		Add-AppxPackage -Path "$DownloadsFolder\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
 	}
 
 	# Check if Windows Terminal is installed or up to date
@@ -145,12 +137,11 @@ function Checks
 					Uri             = "https://api.github.com/repos/microsoft/terminal/releases/latest"
 					UseBasicParsing = $true
 				}
-				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 				$terminal = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 0
 
 				# https://github.com/microsoft/terminal
 				$Parameters = @{
-					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$terminal"
+					Uri             = "https://github.com/microsoft/terminal/releases/latest/download/$terminal"
 					OutFile         = "$DownloadsFolder\$terminal"
 					UseBasicParsing = $true
 					Verbose         = $true
@@ -170,12 +161,11 @@ function Checks
 					Uri             = "https://api.github.com/repos/microsoft/terminal/releases/latest"
 					UseBasicParsing = $true
 				}
-				$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
 				$terminal = (Invoke-RestMethod @Parameters).assets.name | Select-Object -Index 2
 
 				# https://github.com/microsoft/terminal
 				$Parameters = @{
-					Uri             = "https://github.com/microsoft/terminal/releases/download/$bestRelease/$terminal"
+					Uri             = "https://github.com/microsoft/terminal/releases/latest/download/$terminal"
 					OutFile         = "$DownloadsFolder\$terminal"
 					UseBasicParsing = $true
 					Verbose         = $true
@@ -259,16 +249,9 @@ function BetterDiscord
 	{
 		Write-Verbose -Message "Installing `"BetterDiscord`"..." -Verbose
 
-		# Get the latest BetterDiscord
-		$Parameters = @{
-			Uri             = "https://api.github.com/repos/BetterDiscord/Installer/releases/latest"
-			UseBasicParsing = $true
-		}
-		$bestRelease = (Invoke-RestMethod @Parameters).tag_name | Select-Object -Index 0
-
 		# https://github.com/BetterDiscord/Installer
 		$Parameters = @{
-			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$bestRelease/BetterDiscord-Windows.exe"
+			Uri             = "https://github.com/BetterDiscord/Installer/releases/latest/download/BetterDiscord-Windows.exe"
 			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
 			UseBasicParsing = $true
 			Verbose         = $true
@@ -543,9 +526,9 @@ function Notepad++
 	winget install --id Notepad++.Notepad++ --exact --accept-source-agreements
 
 	# Check if Notepad++ is installed
-	# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L214
 	if (Test-Path -Path "$env:ProgramFiles\Notepad++")
 	{
+		# https://github.com/farag2/Utilities/blob/master/Configure_Apps_And_The_Start_Menu_Shortcuts.ps1#L214
 		# Check if Windows localization is ru-RU
 		if ((Get-WinSystemLocale).Name -eq "ru-RU")
 		{
@@ -739,7 +722,6 @@ function qBittorrent
 			Write-Verbose -Message "Installing `"defaulticons-fluent-dark-no-mica.qbtheme`"..." -Verbose
 
 			# https://github.com/witalihirsch/qBitTorrent-fluent-theme
-			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
 				Uri     = $LatestVersion
 				OutFile = "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"
