@@ -268,7 +268,7 @@ function BetterDiscord
 
 		# https://github.com/BetterDiscord/Installer
 		$Parameters = @{
-			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$($bestRelease)/BetterDiscord-Windows.exe"
+			Uri             = "https://github.com/BetterDiscord/Installer/releases/download/$bestRelease/BetterDiscord-Windows.exe"
 			OutFile         = "$DownloadsFolder\BetterDiscordSetup.exe"
 			UseBasicParsing = $true
 			Verbose         = $true
