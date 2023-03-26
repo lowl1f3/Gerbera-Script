@@ -940,7 +940,7 @@ function SophiaScript
 function DeleteInstallationFiles
 {
 	$Paths = @(
-		"$DownloadsFolder\$winget",
+		"$DownloadsFolder\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle",
 		"$DownloadsFolder\$terminal",
 		"$DesktopFolder\Telegram.lnk",
 		"$env:USERPROFILE\Desktop\Discord.lnk",
