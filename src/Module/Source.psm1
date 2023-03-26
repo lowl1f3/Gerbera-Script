@@ -59,6 +59,7 @@ function Confirmation
 $Script:DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 
+#region Checks
 # Mandatory checks before running Script
 function Checks
 {
@@ -181,6 +182,7 @@ function Checks
 		}
 	}
 }
+#endregion Checks
 
 # Download Telegram Desktop
 function TelegramDesktop
@@ -666,7 +668,7 @@ function VisualStudioCode
 	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
 }
 
-# Download TeamSpeak Client
+# Download TeamSpeak 3 Client
 function TeamSpeakClient
 {
 	winget install --id TeamSpeakSystems.TeamSpeakClient --exact --accept-source-agreements
@@ -725,7 +727,7 @@ function qBittorrent
 
 		Write-Verbose -Message "Installing `"qBittorrent.ini`"..." -Verbose
 
-		# Download qBittorrent.ini
+		# https://github.com/farag2/Utilities/blob/master/qBittorrent/qBittorrent.ini
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/qBittorrent/qBittorrent.ini"
 			OutFile         = "$env:APPDATA\qBittorrent\qBittorrent.ini"
