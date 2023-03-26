@@ -91,7 +91,7 @@ function Checks
 	{
 		Write-Verbose -Message "Installing `"winget`"..." -Verbose
 
-		#https://github.com/microsoft/winget-cli
+		# https://github.com/microsoft/winget-cli
 		$Parameters = @{
 			Uri             = "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
 			OutFile         = "$DownloadsFolder\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
