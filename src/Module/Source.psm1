@@ -712,18 +712,11 @@ function qBittorrent
 		# Check if "defaulticons-fluent-dark-no-mica.qbtheme" is already installed
 		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"))
 		{
-			# Get the latest fluent dark theme
-			$Parameters = @{
-				Uri             = "https://api.github.com/repos/witalihirsch/qBitTorrent-fluent-theme/releases/latest"
-				UseBasicParsing = $true
-			}
-			$LatestVersion = (Invoke-RestMethod @Parameters).assets.browser_download_url | Where-Object -FilterScript {$_ -match "defaulticons-fluent-dark-no-mica"}
-
 			Write-Verbose -Message "Installing `"defaulticons-fluent-dark-no-mica.qbtheme`"..." -Verbose
 
 			# https://github.com/witalihirsch/qBitTorrent-fluent-theme
 			$Parameters = @{
-				Uri     = $LatestVersion
+				Uri     = "https://github.com/witalihirsch/qBitTorrent-fluent-theme/releases/latest/download/defaulticons-fluent-dark-no-mica.qbtheme"
 				OutFile = "$env:APPDATA\qBittorrent\defaulticons-fluent-dark-no-mica.qbtheme"
 				Verbose = $true
 			}
