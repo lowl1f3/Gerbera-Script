@@ -59,7 +59,7 @@ Script -Functions Telegram, DeleteInstallationFiles
 
 ## Список
 
-> **Note**: Деякі з них мають тихе встановлення
+> **Note**: Для коректного виконання скрипта необхідні [winget](https://github.com/microsoft/winget-cli) і [Windows Terminal](https://github.com/microsoft/terminal)
 
 <details>
   <summary>Програми</summary>
