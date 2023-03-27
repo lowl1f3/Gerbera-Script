@@ -772,7 +772,7 @@ function AdobeCreativeCloud
 		}
 		Invoke-WebRequest @Parameters
 
-		Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe" -ArgumentList "SILENT"
+		Start-Process -FilePath "$DownloadsFolder\CreativeCloudSetUp.exe"
 	}
 	else
 	{
