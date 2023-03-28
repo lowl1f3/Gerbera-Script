@@ -10,7 +10,8 @@
 	Big thanks directly to farag2
 
 	.DESCRIPTION
-	Dot source the script first: . .\Functions.ps1 (with a dot at the beginning)
+	Dot source the script first:
+		. .\Functions.ps1 (with a dot at the beginning)
 	Start typing any characters contained in the function's name and press the TAB button
 
 	.EXAMPLE

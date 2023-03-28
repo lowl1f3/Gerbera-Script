@@ -72,71 +72,71 @@ if ($Functions)
 	exit
 }
 
-## A warning message about whether the preset file was customized
+# A warning message about whether the preset file was customized
 Confirmation
 
-## Mandatory checks before running Script
+# Mandatory checks before running Script
 Checks
 
-## Download Telegram Desktop
+# Download Telegram Desktop
 TelegramDesktop
 
-## Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
+# Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
 #Spotify
 
-## Download Discord
+# Download Discord
 Discord
 
-## Download BetterDiscord with plugins and themes
+# Download BetterDiscord with plugins and themes
 BetterDiscord
 
-## Download Steam
+# Download Steam
 Steam
 
-## Download Firefox
+# Download Firefox
 Firefox
 
-## Download NanaZip
+# Download NanaZip
 NanaZip
 
-## Apply "Windows 11 Cursors Concept v2.2" Dark Cursor
+# Apply "Windows 11 Cursors Concept v2.2" Dark Cursor
 Cursor
 
-## Download Notepad++
+# Download Notepad++
 Notepad++
 
-## Download GitHub Desktop
+# Download GitHub Desktop
 GitHubDesktop
 
-## Download Visual Studio Community
+# Download Visual Studio Community
 VisualStudioCommunity
 
-## Download Visual Studio Code
+# Download Visual Studio Code
 VisualStudioCode
 
-## Download TeamSpeak 3 Client
+# Download TeamSpeak 3 Client
 TeamSpeakClient
 
-## Download qBittorrent
+# Download qBittorrent
 qBittorrent
 
-## Download Adobe Creative Cloud
+# Download Adobe Creative Cloud
 AdobeCreativeCloud
 
-## Download Java 8 (JRE)
+# Download Java 8 (JRE)
 Java8.JRE
 
-## Download Java 19 (JDK)
+# Download Java 19 (JDK)
 Java19.JDK
 
-## Download WireGuard
+# Download WireGuard
 WireGuard
 
-## Download Office
+# Download Office
 Office
 
-## Download and run Sophia Script
+# Download and run Sophia Script
 SophiaScript
 
-## Delete Installation Files and Shortcuts
+# Delete Installation Files and Shortcuts
 DeleteInstallationFiles

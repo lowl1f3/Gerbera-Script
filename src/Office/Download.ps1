@@ -30,7 +30,7 @@
 	https://docs.microsoft.com/en-us/deployoffice/vlactivation/gvlks
 
 	.NOTES
-	Run as non-admin
+	You can also run as a non-admin
 #>
 
 function DownloadOffice
@@ -128,7 +128,7 @@ function DownloadOffice
 					{
 						try
 						{
-							# Downloading the latest OneDrive installer x64
+							# Download the latest OneDrive installer x64
 							$Parameters = @{
 								Uri              = "https://www.google.com"
 								Method           = "Head"
