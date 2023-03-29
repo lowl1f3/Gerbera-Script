@@ -20,7 +20,9 @@
 	.\Script.ps1 -Functions Telegram, GitHubDesktop, Steam, etc.
 
 	.NOTES
-	Supported Windows 10 & 11 x64 versions
+	Supported Windows 10 & 11 versions
+	Editions: Home/Pro/Enterprise
+	Architecture: x64
 
 	.NOTES
 	To use the TAB completion for functions dot source the Functions.ps1 script first:
