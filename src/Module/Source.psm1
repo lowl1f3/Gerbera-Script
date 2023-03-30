@@ -704,10 +704,10 @@ function qBittorrent
 		{
 			Copy-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent\qBittorrent.lnk" -Destination "$env:ProgramData\Microsoft\Windows\Start Menu\Programs" -Force
 		}
-		# Remove qBittorrent folder from the main Programs folder
+		# Remove the qBittorrent folder from the main Programs folder
 		Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\qBittorrent" -Recurse -Force -ErrorAction Ignore
 
-		# Create the qBittorrent folder in AppData\Roaming if it doesn't exist
+		# Create a qBittorrent folder in AppData\Roaming if it doesn't exist
 		if (-not (Test-Path -Path "$env:APPDATA\qBittorrent"))
 		{
 			New-Item -Path "$env:APPDATA\qBittorrent" -ItemType Directory -Force
