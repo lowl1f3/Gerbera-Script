@@ -4,7 +4,7 @@
   <a title="Русский" href="README_ru-ru.md"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/></a>
 </div>
 
-## Про скрипт
+## Про Gerbera Script
 
 Скрипт PowerShell для Windows, автоматизуючий встановлення та налаштування програм
 
@@ -16,10 +16,10 @@
 
 ## Як користуватися
 
-* <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Завантажити-%20ZIP-green&?style=for-the-badge"/></a>
+* Завантажте [актуальну версію](https://github.com/lowl1f3/Gerbera-Script/releases/latest);
 * Розпакуйте архів;
 * Відкрийте папку розпакованого архіву;
-* Перегляньте файл `Script.ps1` для налаштування функцій, які потрібно запустити;
+* Перегляньте файл `Gerbera.ps1` для налаштування функцій, які потрібно запустити;
   * Помістіть символ "#" перед функцією, якщо ви не бажаєте, щоб вона виконувалася.
   * Приберіть символ "#" перед функцією, якщо ви бажаєте, щоб вона виконувалася.
 * В `Windows 10` натисніть `Файл` у Провіднику, наведіть курсор на `Запустити Windows PowerShell`, і виберіть `Запустити Windows PowerShell від імені адміністратора` [(як це зробити зі скріншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
@@ -36,7 +36,7 @@
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Введіть `.\Script.ps1` <kbd>Enter</kbd> для запуску всього пресету.
+* Введіть `.\Gerbera.ps1` <kbd>Enter</kbd> для запуску всього пресету.
 
 ### Як викликати конкретні функції(ю)
 
@@ -50,16 +50,16 @@
 * Тепер ви можете робити так
 
 ```powershell
-Script -Functions <TAB>
-Script -Functions tele<TAB>
-Script -Functions delete<TAB>
+Gerbera -Functions <TAB>
+Gerbera -Functions tele<TAB>
+Gerbera -Functions delete<TAB>
 
-Script -Functions Telegram, DeleteInstallationFiles
+Gerbera -Functions Telegram, DeleteInstallationFiles
 ```
 
 ## Список
 
-> **Note**: Для коректного виконання скрипта необхідні [winget](https://github.com/microsoft/winget-cli) і [Windows Terminal](https://github.com/microsoft/terminal)
+> **Note**: Для коректного виконання скрипту необхідні [winget](https://github.com/microsoft/winget-cli) і [Windows Terminal](https://github.com/microsoft/terminal)
 
 <details>
   <summary>Програми</summary>
@@ -67,24 +67,24 @@ Script -Functions Telegram, DeleteInstallationFiles
 * [Telegram Desktop](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L279) і [теми](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L380)
+  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L283) і [теми](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L384)
 * [Steam](https://store.steampowered.com/about)
-* [Firefox](https://www.mozilla.org/en/firefox/new/)
+* [Mozilla Firefox](https://www.mozilla.org/en/firefox/new/)
 * [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)
 * [Курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
-* [Visual Stutio Community](https://visualstudio.microsoft.com/#vs-section)
-* [Visual Stutio Code](https://code.visualstudio.com/Download)
+* [Visual Stutio Community 2022](https://visualstudio.microsoft.com/#vs-section)
+* [Microsoft Visual Stutio Code](https://code.visualstudio.com/Download)
 * [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8(JRE)](https://www.java.com/en/download) і [Java 19(JDK)](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
+* [Java 8](https://www.java.com/en/download) і [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
 * [WireGuard](https://www.wireguard.com/install)
 * [Налаштовуваний](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook
 * [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
-  * [Системні вимоги](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
+  * [Системні вимоги](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/README_uk-ua.md#системні-вимоги)
 </details>
 
 ## Посилання

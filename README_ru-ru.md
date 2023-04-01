@@ -4,7 +4,7 @@
   <a title="Українська" href="README_uk-ua.md"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/></a>
 </div>
 
-## О скрипте
+## Про Gerbera Script
 
 Скрипт PowerShell для Windows, автоматизирующий установку и настройку программ
 
@@ -16,10 +16,10 @@
 
 ## Как использовать
 
-* <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Скачать-%20ZIP-green&?style=for-the-badge"/></a>
+* Скачайте [актуальную версию](https://github.com/lowl1f3/Gerbera-Script/releases/latest);
 * Распакуйте архив;
 * Откройте папку распакованного архива;
-* Просмотрите файл `Script.ps1`, чтобы настроить функции, которые вы хотите запустить;
+* Просмотрите файл `Gerbera.ps1`, чтобы настроить функции, которые вы хотите запустить;
   * Поставьте символ "#" перед функцией, если вы не хотите, чтобы она выполнялась.
   * Уберите символ "#" перед функцией, если вы хотите, чтобы она выполнялась.
 * В `Windows 10` нажмите `Файл` в Проводнике, наведите курсор на `Запустить Windows PowerShell`, и выберите `Запустить Windows PowerShell от имени администратора` [(как это сделать со скриншотами)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
@@ -36,7 +36,7 @@
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Введите `.\Script.ps1` <kbd>Enter</kbd> для запуска всего пресета.
+* Введите `.\Gerbera.ps1` <kbd>Enter</kbd> для запуска всего пресета.
 
 ### Как вызвать конкретные функции(ю)
 
@@ -50,11 +50,11 @@
 * Теперь вы можете делать так
 
 ```powershell
-Script -Functions <TAB>
-Script -Functions tele<TAB>
-Script -Functions delete<TAB>
+Gerbera -Functions <TAB>
+Gerbera -Functions tele<TAB>
+Gerbera -Functions delete<TAB>
 
-Script -Functions Telegram, DeleteInstallationFiles
+Gerbera -Functions Telegram, DeleteInstallationFiles
 ```
 
 ## Список
@@ -67,19 +67,19 @@ Script -Functions Telegram, DeleteInstallationFiles
 * [Telegram Desktop](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагины](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L279) и [темы](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L380)
+  * [BetterDiscord](https://betterdiscord.app), [плагины](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L283) и [темы](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L384)
 * [Steam](https://store.steampowered.com/about)
-* [Firefox](https://www.mozilla.org/en/firefox/new/)
+* [Mozilla Firefox](https://www.mozilla.org/en/firefox/new/)
 * [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)
 * [Курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
-* [Visual Stutio Community](https://visualstudio.microsoft.com/#vs-section)
-* [Visual Stutio Code](https://code.visualstudio.com/Download)
+* [Visual Stutio Community 2022](https://visualstudio.microsoft.com/#vs-section)
+* [Microsoft Visual Stutio Code](https://code.visualstudio.com/Download)
 * [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8(JRE)](https://www.java.com/en/download) и [Java 19(JDK)](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
+* [Java 8](https://www.java.com/en/download) и [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
 * [WireGuard](https://www.wireguard.com/install)
 * [Настраиваемый](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook

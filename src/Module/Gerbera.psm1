@@ -3,7 +3,7 @@
 	A PowerShell script for Windows that automates installing and configuring programs
 
 	Version: v1.0.0
-	Date: #TBA#
+	Date: 01.04.2023
 
 	Copyright (c) 2023 lowl1f3
 
@@ -15,7 +15,7 @@
 	Architecture: x64
 
 	.LINK GitHub
-	https://github.com/lowl1f3/Script
+	https://github.com/lowl1f3/Gerbera-Script
 
 	.LINK Telegram
 	https://t.me/lowlif3
@@ -36,7 +36,7 @@
 function Confirmation
 {
 	# Startup confirmation
-	$Title         = "Have you customized the preset file before running Script?"
+	$Title         = "Have you customized the preset file before running Gerbera Script?"
 	$Message       = ""
 	$Options       = "&No", "&Yes"
 	$DefaultChoice = 0
@@ -46,7 +46,7 @@ function Confirmation
 	{
 		"0"
 		{
-			Invoke-Item -Path "$PSScriptRoot\..\Script.ps1"
+			Invoke-Item -Path "$PSScriptRoot\..\Gerbera.ps1"
 			exit
 		}
 		"1"
@@ -62,13 +62,13 @@ $Script:DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\
 $Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 
 #region Checks
-# Mandatory checks before running Script
+# Mandatory checks before running Gerbera Script
 function Checks
 {
 	# Check if Windows is x64
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
-		Write-Warning -Message "The Script isn't supported by Windows x86"
+		Write-Warning -Message "The Gerbera Script isn't supported by Windows x86"
 		break
 	}
 
@@ -92,7 +92,7 @@ function Checks
 	# Check if winget is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction Ignore).Version -lt [System.Version]"1.19")
 	{
-		Write-Verbose -Message "Installing `"winget`"..." -Verbose
+		Write-Verbose -Message "Installing winget..." -Verbose
 
 		# https://github.com/microsoft/winget-cli
 		$Parameters = @{
@@ -103,15 +103,17 @@ function Checks
 		}
 		Invoke-WebRequest @Parameters
 
-		Add-AppxPackage -Path "$DownloadsFolder\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
+		Start-Process -FilePath "$DownloadsFolder\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+
+		Write-Verbose -Message "Install Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle manually" -Verbose
 	}
 
 	# Check if Windows Terminal is installed or up to date
 	if ([System.Version](Get-AppxPackage -Name Microsoft.WindowsTerminal -ErrorAction Ignore).Version -lt [System.Version]"1.16")
 	{
-		Write-Verbose -Message "Installing `"Windows Terminal`"..." -Verbose
+		Write-Verbose -Message "Installing Windows Terminal..." -Verbose
 
-		# Check if the Script was started from the Windows Terminal
+		# Check if the Gerbera Script was started from the Windows Terminal
 		if ($env:WT_SESSION)
 		{
 			# Create a toast notification
@@ -119,7 +121,7 @@ function Checks
 <toast>
 	<visual>
 		<binding template="ToastGeneric">
-			<text>Please re-run the Script after updating Windows Terminal</text>
+			<text>Please re-run the script after updating Windows Terminal</text>
 		</binding>
 	</visual>
 </toast>
@@ -153,7 +155,7 @@ function Checks
 
 				Start-Process -FilePath "$DownloadsFolder\$terminal"
 
-				Write-Verbose -Message "Install `"$terminal`" manually" -Verbose
+				Write-Verbose -Message "Install $terminal manually" -Verbose
 
 				exit
 			}
@@ -177,7 +179,7 @@ function Checks
 
 				Start-Process -FilePath "$DownloadsFolder\$terminal"
 
-				Write-Verbose -Message "Install `"$terminal`" manually" -Verbose
+				Write-Verbose -Message "Install $terminal manually" -Verbose
 
 				exit
 			}
@@ -194,14 +196,14 @@ function TelegramDesktop
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Telegram Desktop" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Telegram Desktop`" already exists"
+		Write-Warning -Message "Firewall rule for Telegram Desktop already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Telegram Desktop" -Direction Inbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Telegram Desktop" -Direction Outbound -Program "$env:APPDATA\Telegram Desktop\Telegram.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Telegram Desktop`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Telegram Desktop created" -Verbose
 	}
 }
 
@@ -213,14 +215,14 @@ function Spotify
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Spotify`" already exists"
+		Write-Warning -Message "Firewall rule for Spotify already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Spotify`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Spotify created" -Verbose
 	}
 }
 
@@ -235,14 +237,14 @@ function Discord
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Discord" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Discord`" already exists"
+		Write-Warning -Message "Firewall rule for Discord already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Discord" -Direction Inbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Discord" -Direction Outbound -Program "$env:LOCALAPPDATA\Discord\Update.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Discord`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Discord created" -Verbose
 	}
 }
 
@@ -251,7 +253,7 @@ function BetterDiscord
 {
 	if (-not (Test-Path -Path "$env:APPDATA\BetterDiscord"))
 	{
-		Write-Verbose -Message "Installing `"BetterDiscord`"..." -Verbose
+		Write-Verbose -Message "Installing BetterDiscord..." -Verbose
 
 		# https://github.com/BetterDiscord/Installer
 		$Parameters = @{
@@ -264,7 +266,7 @@ function BetterDiscord
 
 		Stop-Process -Name Discord -Force -ErrorAction Ignore
 
-		Write-Warning -Message "Close `"BetterDiscord`" window manually after installation"
+		Write-Warning -Message "Close BetterDiscord window manually after installation"
 
 		Start-Process -FilePath "$DownloadsFolder\BetterDiscordSetup.exe" -Wait
 
@@ -272,7 +274,7 @@ function BetterDiscord
 	}
 	else
 	{
-		Write-Warning -Message "`"BetterDiscord`" already installed. If you want to install it again, delete `"BetterDiscord`" manually and re-run the function."
+		Write-Warning -Message "BetterDiscord already installed. If you want to install it again, delete BetterDiscord manually and re-run the function."
 	}
 
 	# BetterDiscord plugins
@@ -373,7 +375,7 @@ function BetterDiscord
 	}
 	else
 	{
-		Write-Warning -Message "Can't install plugins. `"BetterDiscord`" isn't installed."
+		Write-Warning -Message "Can't install plugins. BetterDiscord isn't installed."
 	}
 
 	# BetterDiscord themes
@@ -414,7 +416,7 @@ function BetterDiscord
 	}
 	else
 	{
-		Write-Warning -Message "Can't install themes. `"BetterDiscord`" isn't installed."
+		Write-Warning -Message "Can't install themes. BetterDiscord isn't installed."
 	}
 }
 
@@ -442,7 +444,7 @@ function Steam
 	# Check if any user folder exist
 	if (Test-Path -Path "${env:ProgramFiles(x86)}\Steam\userdata\*")
 	{
-		Write-Verbose -Message "Configuring `"Steam`"..." -Verbose
+		Write-Verbose -Message "Configuring Steam..." -Verbose
 
 		# Configure Steam
 		foreach ($folder in @(Get-ChildItem -Path "${env:ProgramFiles(x86)}\Steam\userdata" -Force -Directory))
@@ -467,39 +469,39 @@ function Steam
 	}
 	else
 	{
-		Write-Warning -Message "Unable to configure `"Steam`". User folder doesn't exist."
+		Write-Warning -Message "Unable to configure Steam. User folder doesn't exist."
 	}
 
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Steam" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Steam`" already exists"
+		Write-Warning -Message "Firewall rule for Steam already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "Steam" -Direction Inbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "Steam" -Direction Outbound -Program "${env:ProgramFiles(x86)}\Steam\steam.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Steam`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Steam created" -Verbose
 	}
 }
 
-# Download Firefox
-function Firefox
+# Download Mozilla Firefox
+function MozillaFirefox
 {
 	winget install --id Mozilla.Firefox --exact --accept-source-agreements
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Firefox" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Mozilla Firefox" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Firefox`" already exists"
+		Write-Warning -Message "Firewall rule for Mozilla Firefox already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Firefox" -Direction Inbound -Program "$env:ProgramFiles\Mozilla Firefox\firefox.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Firefox" -Direction Outbound -Program "$env:ProgramFiles\Mozilla Firefox\firefox.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Mozilla Firefox" -Direction Inbound -Program "$env:ProgramFiles\Mozilla Firefox\firefox.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Mozilla Firefox" -Direction Outbound -Program "$env:ProgramFiles\Mozilla Firefox\firefox.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Firefox`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Mozilla Firefox created" -Verbose
 	}
 }
 
@@ -613,7 +615,7 @@ public static string GetString(uint strId)
 			Add-Type @Signature
 		}
 
-		Write-Verbose -Message "Downloading `"Sophia.ps1`"..." -Verbose
+		Write-Verbose -Message "Downloading Sophia.ps1..." -Verbose
 
 		# We can dot source .ps1 files only. So we artificially rename .psm1 into .ps1
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/master/src/Sophia_Script_for_Windows_11/Module/Sophia.psm1
@@ -648,7 +650,7 @@ public static string GetString(uint strId)
 
 		Write-Verbose -Message "Extentions associated" -Verbose
 
-		Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force
+		Remove-Item -Path "$env:TEMP\Sophia.ps1" -Force -ErrorAction Ignore
 	}
 }
 
@@ -658,13 +660,13 @@ function GitHubDesktop
 	winget install --id GitHub.GitHubDesktop --exact --accept-source-agreements
 }
 
-# Download Visual Studio Community
+# Download Visual Studio Community 2022
 function VisualStudioCommunity
 {
 	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
 }
 
-# Download Visual Studio Code
+# Download Microsoft Visual Studio Code
 function VisualStudioCode
 {
 	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
@@ -678,14 +680,14 @@ function TeamSpeakClient
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "TeamSpeak 3 Client" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"TeamSpeak 3 Client`" already exists"
+		Write-Warning -Message "Firewall rule for TeamSpeak 3 Client already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "TeamSpeak 3 Client" -Direction Inbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "TeamSpeak 3 Client" -Direction Outbound -Program "$env:ProgramFiles\TeamSpeak 3 Client\ts3client_win64.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"TeamSpeak 3 Client`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for TeamSpeak 3 Client created" -Verbose
 	}
 }
 
@@ -727,7 +729,7 @@ function qBittorrent
 			Invoke-WebRequest @Parameters
 		}
 
-		Write-Verbose -Message "Installing `"qBittorrent.ini`"..." -Verbose
+		Write-Verbose -Message "Installing qBittorrent.ini..." -Verbose
 
 		# https://github.com/farag2/Utilities/blob/master/qBittorrent/qBittorrent.ini
 		$Parameters = @{
@@ -745,14 +747,14 @@ function qBittorrent
 		# Add to the Windows Defender Firewall exclusion list
 		if (Get-NetFirewallRule -DisplayName "qBittorrent" -ErrorAction Ignore)
 		{
-			Write-Warning -Message "Firewall rule for `"qBittorrent`" already exists"
+			Write-Warning -Message "Firewall rule for qBittorrent already exists"
 		}
 		else
 		{
 			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Inbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 			New-NetFirewallRule -DisplayName "qBittorrent" -Direction Outbound -Program "$env:ProgramFiles\qBittorrent\qbittorrent.exe" -Action Allow
 
-			Write-Verbose -Message "Firewall rule for `"qBittorrent`" created" -Verbose
+			Write-Verbose -Message "Firewall rule for qBittorrent created" -Verbose
 		}
 	}
 }
@@ -763,7 +765,7 @@ function AdobeCreativeCloud
 	# Check if Adobe Creative Cloud is already installed
 	if (-not (Test-Path -Path "$env:ProgramFiles\Adobe\Adobe Creative Cloud\ACC"))
 	{
-		Write-Verbose -Message "Installing `"Adobe Creative Cloud`"..." -Verbose
+		Write-Verbose -Message "Installing Adobe Creative Cloud..." -Verbose
 
 		# https://creativecloud.adobe.com/en/apps/download/creative-cloud
 		$Parameters = @{
@@ -778,30 +780,30 @@ function AdobeCreativeCloud
 	}
 	else
 	{
-		Write-Warning -Message "`"Adobe Creative Cloud`" already installed. If you want to install it again, delete `"Adobe Creative Cloud`" manually and re-run the function."
+		Write-Warning -Message "Adobe Creative Cloud already installed. If you want to install it again, delete Adobe Creative Cloud manually and re-run the function."
 	}
 }
 
-# Download Java 8 (JRE)
+# Download Java 8
 function Java8.JRE
 {
 	winget install --id Oracle.JavaRuntimeEnvironment --exact --accept-source-agreements
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Java 8(JRE)" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Java 8" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Java 8(JRE)`" already exists"
+		Write-Warning -Message "Firewall rule for Java 8 already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Java 8(JRE)" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 8" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 8" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Java 8(JRE)`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Java 8 created" -Verbose
 	}
 }
 
-# Download Java 19 (JDK)
+# Download Java SE Development Kit 19
 function Java19.JDK
 {
 	winget install --id Oracle.JDK.19 --exact --accept-source-agreements
@@ -811,16 +813,16 @@ function Java19.JDK
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Java 19(JDK)" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Java 19" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"Java 19(JDK)`" already exists"
+		Write-Warning -Message "Firewall rule for Java 19 already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Java 19(JDK)" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 19" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 19" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"Java 19(JDK)`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for Java 19 created" -Verbose
 	}
 }
 
@@ -832,14 +834,14 @@ function WireGuard
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "WireGuard" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for `"WireGuard`" already exists"
+		Write-Warning -Message "Firewall rule for WireGuard already exists"
 	}
 	else
 	{
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Inbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 		New-NetFirewallRule -DisplayName "WireGuard" -Direction Outbound -Program "$env:ProgramFiles\WireGuard\wireguard.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for `"WireGuard`" created" -Verbose
+		Write-Verbose -Message "Firewall rule for WireGuard created" -Verbose
 	}
 }
 
@@ -849,7 +851,7 @@ function Office
 	# Check if Office is already installed
 	if(-not (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root"))
 	{
-		Write-Verbose -Message "Installing `"Office`"..." -Verbose
+		Write-Verbose -Message "Installing Office..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Office\Download.ps1" directly due to we have to assign the Office folder to download Office to
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Office" -Resolve
@@ -869,7 +871,7 @@ function Office
 		}
 		until (-not $PowerShellWindow)
 
-		Write-Warning -Message "Close `"Office`" window manually after installation"
+		Write-Warning -Message "Close Office window manually after installation"
 
 		# Сreate a do/until loop to wait for the process to execute
 		do
@@ -881,31 +883,31 @@ function Office
 		}
 		until (-not (Wait-Process -Name OfficeC2RClient -ErrorAction Ignore))
 
-		Write-Verbose -Message "`"Office`" installed" -Verbose
+		Write-Verbose -Message "Office installed" -Verbose
 
 		# Configure Office
 		if (Test-Path -Path "$env:ProgramFiles\Microsoft Office\root")
 		{
-			Write-Verbose -Message "Configuring `"Office`"..." -Verbose
+			Write-Verbose -Message "Configuring Office..." -Verbose
 
 			# Remove "Microsoft Office Tools" folder from the main Programs folder
 			Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools" -Recurse -Force -ErrorAction Ignore
 
 			& "$PSScriptRoot\..\Office\Configure.ps1"
 
-			Write-Verbose -Message "`"Office`" configured" -Verbose
+			Write-Verbose -Message "Office configured" -Verbose
 		}
 	}
 	else
 	{
-		Write-Warning -Message "`"Office`" already installed. If you want to install it again, delete `"Office`" manually and re-run the function."
+		Write-Warning -Message "Office already installed. If you want to install it again, delete Office manually and re-run the function."
 	}
 }
 
 # Download and run Sophia Script
 function SophiaScript
 {
-	Write-Verbose -Message "Downloading `"Sophia Script`"..." -Verbose
+	Write-Verbose -Message "Downloading Sophia Script..." -Verbose
 
 	# We need try/catch to check if the user can download Sophia Script from script.sophi.app
 	try
@@ -913,7 +915,7 @@ function SophiaScript
 		# https://github.com/farag2/Sophia-Script-for-Windows#how-to-download-sophia-script-via-powershell
 		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
 
-		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
+		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
@@ -930,7 +932,7 @@ function SophiaScript
 		}
 		Invoke-WebRequest @Parameters | Invoke-Expression
 
-		Write-Verbose -Message "Starting `"Sophia Script`"..." -Verbose
+		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
 		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve

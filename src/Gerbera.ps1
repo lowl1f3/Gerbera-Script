@@ -1,9 +1,9 @@
 <#
 	.SYNOPSIS
-	Default preset file for "Script"
+	Default preset file for "Gerbera Script"
 
 	Version: v1.0.0
-	Date: #TBA#
+	Date: 01.04.2023
 
 	Copyright (c) 2023 lowl1f3
 
@@ -14,10 +14,10 @@
 	Remove the "#" char before function if you want to run it
 
 	.EXAMPLE Run the whole script
-	.\Script.ps1
+	.\Gerbera.ps1
 
 	.EXAMPLE Run the script by specifying the module functions as an argument
-	.\Script.ps1 -Functions Telegram, GitHubDesktop, Steam, etc.
+	.\Gerbera.ps1 -Functions TelegramDesktop, GitHubDesktop, Steam, etc.
 
 	.NOTES
 	Supported Windows 10 & 11 versions
@@ -26,11 +26,11 @@
 
 	.NOTES
 	To use the TAB completion for functions dot source the Functions.ps1 script first:
-		. .\Function.ps1 (with a dot at the beginning)
+		. .\Functions.ps1 (with a dot at the beginning)
 	Read more in the Functions.ps1 file
 
 	.LINK GitHub
-	https://github.com/lowl1f3/Script
+	https://github.com/lowl1f3/Gerbera-Script
 
 	.LINK Telegram
 	https://t.me/lowlif3
@@ -60,10 +60,10 @@ param
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
+$Host.UI.RawUI.WindowTitle = "Gerbera Script v1.0.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
 
-Remove-Module -Name Manifest -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\Manifest.psd1 -PassThru -Force
+Remove-Module -Name Gerbera -Force -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\Manifest\Gerbera.psd1 -PassThru -Force
 
 if ($Functions)
 {
@@ -77,7 +77,7 @@ if ($Functions)
 # A warning message about whether the preset file was customized
 Confirmation
 
-# Mandatory checks before running Script
+# Mandatory checks
 Checks
 
 # Download Telegram Desktop
@@ -95,8 +95,8 @@ BetterDiscord
 # Download Steam
 Steam
 
-# Download Firefox
-Firefox
+# Download Mozilla Firefox
+MozillaFirefox
 
 # Download NanaZip
 NanaZip
@@ -110,10 +110,10 @@ Notepad++
 # Download GitHub Desktop
 GitHubDesktop
 
-# Download Visual Studio Community
+# Download Visual Studio Community 2022
 VisualStudioCommunity
 
-# Download Visual Studio Code
+# Download Microsoft Visual Studio Code
 VisualStudioCode
 
 # Download TeamSpeak 3 Client
@@ -125,10 +125,10 @@ qBittorrent
 # Download Adobe Creative Cloud
 AdobeCreativeCloud
 
-# Download Java 8 (JRE)
+# Download Java 8
 Java8.JRE
 
-# Download Java 19 (JDK)
+# Download Java SE Development Kit 19
 Java19.JDK
 
 # Download WireGuard

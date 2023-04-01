@@ -1,5 +1,5 @@
 @{
-	RootModule            = '..\Module\Source.psm1'
+	RootModule            = '..\Module\Gerbera.psm1'
 	ModuleVersion         = '1.0.0'
 	GUID                  = '3553de44-b8df-40df-bc92-c0a63cec30d0'
 	Author                = 'Eugene "lowl1f3"'
@@ -11,8 +11,8 @@
 
 	PrivateData = @{
 		PSData = @{
-			LicenseUri    = 'https://github.com/lowl1f3/Script/blob/main/LICENSE'
-			ProjectUri    = 'https://github.com/lowl1f3/Script'
+			LicenseUri    = 'https://github.com/lowl1f3/Gerbera-Script/blob/main/LICENSE'
+			ProjectUri    = 'https://github.com/lowl1f3/Gerbera-Script'
 		}
 	}
 }

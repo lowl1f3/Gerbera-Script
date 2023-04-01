@@ -4,7 +4,7 @@
   <a title="Українська" href="README_uk-ua.md"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/></a>
 </div>
 
-## About script
+## About Gerbera Script
 
 A PowerShell script for Windows that automates installing and configuring programs
 
@@ -16,10 +16,10 @@ Supports `Windows 10` & `Windows 11`
 
 ## How to use
 
-* <a href="https://github.com/lowl1f3/Script/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge"/></a>
+* Download [up-to-date version](https://github.com/lowl1f3/Gerbera-Script/releases/latest);
 * Expand the archive;
 * Open folder with the expanded archive;
-* Look through the `Script.ps1` file to configure functions that you want to be run;
+* Look through the `Gerbera.ps1` file to configure functions that you want to be run;
   * Place the "#" char before function if you don't want it to be run.
   * Remove the "#" char before function if you want it to be run.
 * On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
@@ -36,7 +36,7 @@ Supports `Windows 10` & `Windows 11`
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   ```
 
-* Type `.\Script.ps1` <kbd>Enter</kbd> to run the whole preset file.
+* Type `.\Gerbera.ps1` <kbd>Enter</kbd> to run the whole preset file.
 
 ### How to run the specific function(s)
 
@@ -50,11 +50,11 @@ To run the specific function(s) [dot source](https://docs.microsoft.com/ru-ru/po
 * Now you can do like this
 
 ```powershell
-Script -Functions <TAB>
-Script -Functions tele<TAB>
-Script -Functions delete<TAB>
+Gerbera -Functions <TAB>
+Gerbera -Functions tele<TAB>
+Gerbera -Functions delete<TAB>
 
-Script -Functions Telegram, DeleteInstallationFiles
+Gerbera -Functions Telegram, DeleteInstallationFiles
 ```
 
 ## List
@@ -67,19 +67,19 @@ Script -Functions Telegram, DeleteInstallationFiles
 * [Telegram Desktop](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L279) & [themes](https://github.com/lowl1f3/Script/blob/main/src/Module/Source.psm1#L380)
+  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L283) & [themes](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L384)
 * [Steam](https://store.steampowered.com/about)
-* [Firefox](https://www.mozilla.org/en/firefox/new/)
+* [Mozilla Firefox](https://www.mozilla.org/en/firefox/new/)
 * [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)
 * [Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
-* [Visual Stutio Community](https://visualstudio.microsoft.com/#vs-section)
-* [Visual Stutio Code](https://code.visualstudio.com/Download)
+* [Visual Stutio Community 2022](https://visualstudio.microsoft.com/#vs-section)
+* [Microsoft Visual Stutio Code](https://code.visualstudio.com/Download)
 * [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8(JRE)](https://www.java.com/en/download) & [Java 19(JDK)](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
+* [Java 8](https://www.java.com/en/download) & [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
 * [WireGuard](https://www.wireguard.com/install)
 * [Customizable](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook

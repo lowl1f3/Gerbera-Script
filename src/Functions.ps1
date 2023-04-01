@@ -3,7 +3,7 @@
 	The TAB completion for functions and their arguments
 
 	Version: v1.0.0
-	Date: #TBA#
+	Date: 01.04.2023
 
 	Copyright (c) 2023 lowl1f3
 
@@ -15,21 +15,21 @@
 	Start typing any characters contained in the function's name and press the TAB button
 
 	.EXAMPLE
-	Script -Functions <tab>
-	Script -Functions tele<tab>
-	Script -Functions Telegram, Cursor, Notepad++
+	Gerbera -Functions <tab>
+	Gerbera -Functions tele<tab>
+	Gerbera -Functions TelegramDesktop, Cursor, Notepad++
 
 	.NOTES
 	Use commas to separate functions
 
 	.LINK
-	https://github.com/lowl1f3/Script
+	https://github.com/lowl1f3/Gerbera-Script
 #>
 
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
-function Script
+function Gerbera
 {
 	[CmdletBinding()]
 	param
@@ -47,16 +47,16 @@ function Script
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
+$Host.UI.RawUI.WindowTitle = "Gerbera Script v1.0.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
 
-Remove-Module -Name Manifest -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Manifest\Manifest.psd1 -PassThru -Force
+Remove-Module -Name Gerbera -Force -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\Manifest\Gerbera.psd1 -PassThru -Force
 
 # The mandatory checks. Please, do not comment out this function
 Checks
 
 $Parameters = @{
-	CommandName   = "Script"
+	CommandName   = "Gerbera"
 	ParameterName = "Functions"
 	ScriptBlock   = {
 		param
@@ -91,6 +91,6 @@ $Parameters = @{
 Register-ArgumentCompleter @Parameters
 
 Write-Information -MessageData "" -InformationAction Continue
-Write-Verbose -Message "Script -Functions <tab>" -Verbose
-Write-Verbose -Message "Script -Functions tele<tab>" -Verbose
-Write-Verbose -Message "Script -Functions Telegram, Cursor, Notepad++" -Verbose
+Write-Verbose -Message "Gerbera -Functions <tab>" -Verbose
+Write-Verbose -Message "Gerbera -Functions tele<tab>" -Verbose
+Write-Verbose -Message "Gerbera -Functions TelegramDesktop, Cursor, Notepad++" -Verbose
