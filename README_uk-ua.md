@@ -54,7 +54,7 @@ Gerbera -Functions <TAB>
 Gerbera -Functions tele<TAB>
 Gerbera -Functions delete<TAB>
 
-Gerbera -Functions Telegram, DeleteInstallationFiles
+Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 ```
 
 ## Список
