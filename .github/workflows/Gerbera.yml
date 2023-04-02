@@ -14,15 +14,15 @@ jobs:
 
       - name: Gerbera Script
         run: |
-          Write-Verbose -Message "Gerbera_Script_${{ github.ref_name }}.zip" -Verbose
+          Write-Verbose -Message "Gerbera_Script_v${{ github.ref_name }}.zip" -Verbose
 
-          New-Item -Path "Gerbera_Script_${{ github.ref_name }}" -ItemType Directory -Force
+          New-Item -Path "Gerbera_Script_v${{ github.ref_name }}" -ItemType Directory -Force
 
-          Get-ChildItem -Path src -Force | Copy-Item -Destination "Gerbera_Script_${{ github.ref_name }}" -Recurse -Force
+          Get-ChildItem -Path src -Force | Copy-Item -Destination "Gerbera_Script_v${{ github.ref_name }}" -Recurse -Force
 
           $Parameters = @{
-              Path             = "Gerbera_Script_${{ github.ref_name }}"
-              DestinationPath  = "Gerbera_Script_${{ github.ref_name }}.zip"
+              Path             = "Gerbera_Script_v${{ github.ref_name }}"
+              DestinationPath  = "Gerbera_Script_v${{ github.ref_name }}.zip"
               CompressionLevel = "Fastest"
               Force            = $true
           }
@@ -33,4 +33,4 @@ jobs:
         with:
           name: ${{ env.RELEASE_NAME }}
           token: ${{ github.token }}
-          files: Gerbera_Script_${{ github.ref_name }}.zip
+          files: Gerbera_Script_v${{ github.ref_name }}.zip
