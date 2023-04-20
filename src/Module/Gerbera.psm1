@@ -491,6 +491,15 @@ function MozillaFirefox
 {
 	winget install --id Mozilla.Firefox --exact --accept-source-agreements
 
+	# https://github.com/lowl1f3/Firefox/blob/main/Customize.ps1
+	$Parameters = @{
+		Uri             = "https://raw.githubusercontent.com/lowl1f3/Firefox/main/Customize.ps1"
+		UseBasicParsing = $true
+		Verbose         = $true
+	}
+	Invoke-WebRequest @Parameters | Invoke-Expression
+}
+
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Mozilla Firefox" -ErrorAction Ignore)
 	{
