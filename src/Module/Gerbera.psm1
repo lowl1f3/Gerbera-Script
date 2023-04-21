@@ -498,7 +498,6 @@ function MozillaFirefox
 		Verbose         = $true
 	}
 	Invoke-WebRequest @Parameters | Invoke-Expression
-}
 
 	# Add to the Windows Defender Firewall exclusion list
 	if (Get-NetFirewallRule -DisplayName "Mozilla Firefox" -ErrorAction Ignore)
