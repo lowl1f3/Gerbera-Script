@@ -69,7 +69,7 @@ $Parameters = @{
 		)
 
 		# Get functions list with arguments to complete
-		$Commands = (Get-Module -Name Manifest).ExportedCommands.Keys
+		$Commands = (Get-Module -Name Gerbera).ExportedCommands.Keys
 		foreach ($Command in $Commands)
 		{
 			$ParameterSets = (Get-Command -Name $Command).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}
