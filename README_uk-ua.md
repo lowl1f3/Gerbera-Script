@@ -67,7 +67,7 @@ Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 * [Telegram Desktop](https://desktop.telegram.org)
 * [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L283) і [теми](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L384)
+  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L284) і [теми](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L397)
 * [Steam](https://store.steampowered.com/about)
 * [Mozilla Firefox](https://www.mozilla.org/en/firefox/new)
   * [Кастомізація](https://github.com/lowl1f3/Firefox) використовуючи .css доповнення
