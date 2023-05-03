@@ -27,6 +27,7 @@
 	https://github.com/farag2/Office
 	https://github.com/farag2/Sophia-Script-for-Windows
 	https://github.com/farag2/Utilities/blob/master/Download/Cursor
+	https://github.com/lowl1f3/Firefox
 
 	.LINK Author
 	https://github.com/lowl1f3
@@ -285,9 +286,17 @@ function BetterDiscord
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Library/0BDFDB.plugin.js
 			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Library/0BDFDB.plugin.js",
 
+			# BetterAnimations
+			# https://github.com/arg0NNY/DiscordPlugins/blob/master/BetterAnimations/BetterAnimations.plugin.js
+			"https://raw.githubusercontent.com/arg0NNY/DiscordPlugins/master/BetterAnimations/BetterAnimations.plugin.js",
+
 			# BetterFriendList
 			# https://github.com/mwittrien/BetterDiscordAddons/blob/master/Plugins/BetterFriendList/BetterFriendList.plugin.js
 			"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BetterFriendList/BetterFriendList.plugin.js",
+
+			# BetterGuildTooltip
+			# https://github.com/arg0NNY/DiscordPlugins/blob/master/BetterGuildTooltip/BetterGuildTooltip.plugin.js
+			"https://raw.githubusercontent.com/arg0NNY/DiscordPlugins/master/BetterGuildTooltip/BetterGuildTooltip.plugin.js",
 
 			# BetterMediaPlayer
 			# https://github.com/unknown81311/BetterMediaPlayer/blob/main/BetterMediaPlayer.plugin.js
@@ -348,6 +357,10 @@ function BetterDiscord
 			# TypingUsersAvatars
 			# https://github.com/QWERTxD/BetterDiscordPlugins/blob/main/TypingUsersAvatars/TypingUsersAvatars.plugin.js
 			"https://raw.githubusercontent.com/QWERTxD/BetterDiscordPlugins/main/TypingUsersAvatars/TypingUsersAvatars.plugin.js",
+
+			# ViewProfilePicture
+			# https://github.com/Skamt/BDAddons/tree/main/ViewProfilePicture
+			"https://raw.githubusercontent.com/Skamt/BDAddons/main/ViewProfilePicture/ViewProfilePicture.plugin.js",
 
 			# ZeresPluginLibrary
 			# https://github.com/rauenzi/BDPluginLibrary/blob/master/release/0PluginLibrary.plugin.js
