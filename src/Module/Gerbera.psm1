@@ -504,6 +504,10 @@ function MozillaFirefox
 {
 	winget install --id Mozilla.Firefox --exact --accept-source-agreements
 
+	# We need this to ensure that the necessary folders were created
+	Start-Process -FilePath "C:\Program Files\Mozilla Firefox\firefox.exe"
+	Stop-Process -Name Firefox -Force -ErrorAction Ignore
+
 	# https://github.com/lowl1f3/Firefox/blob/main/Customize.ps1
 	$Parameters = @{
 		Uri             = "https://raw.githubusercontent.com/lowl1f3/Firefox/main/Customize.ps1"
