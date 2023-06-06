@@ -71,8 +71,8 @@
 * Expand the archive;
 * Open folder with the expanded archive;
 * Look through the `Gerbera.ps1` file to configure functions that you want to be run;
-  * Place the "#" char before function if you don't want it to be run.
-  * Remove the "#" char before function if you want it to be run.
+  * Place the "`#`" char before function if you don't want it to be run.
+  * Remove the "`#`" char before function if you want it to be run.
 * On `Windows 10` click `File` in File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/);
 * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and select `Windows Terminal (Admin)`;
 * Then change the current location
