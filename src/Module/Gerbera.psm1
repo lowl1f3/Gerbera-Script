@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	A PowerShell script for Windows that automates installing and configuring programs
 
-	Version: v1.0.0
-	Date: 01.04.2023
+	Version: v1.0.1
+	Date: 28.05.2023
 
 	Copyright (c) 2023 lowl1f3
 
