@@ -542,9 +542,9 @@ function Cursor
 	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`" dark cursor..." -Verbose
 
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
-	# https://github.com/farag2/Utilities/blob/master/Download/Cursor/Install_Cursor.ps1
+	# https://github.com/farag2/Utilities/blob/master/Download/Install_Cursor.ps1
 	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Cursor/Install_Cursor.ps1"
+		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Install_Cursor.ps1"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
