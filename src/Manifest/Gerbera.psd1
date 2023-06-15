@@ -1,6 +1,6 @@
 @{
 	RootModule            = '..\Module\Gerbera.psm1'
-	ModuleVersion         = '1.0.0'
+	ModuleVersion         = '1.0.2'
 	GUID                  = '3553de44-b8df-40df-bc92-c0a63cec30d0'
 	Author                = 'Eugene "lowl1f3"'
 	Copyright             = '(c) 2023 lowl1f3. All rights reserved'

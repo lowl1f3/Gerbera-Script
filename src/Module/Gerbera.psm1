@@ -2,8 +2,8 @@
 	.SYNOPSIS
 	A PowerShell script for Windows that automates installing and configuring programs
 
-	Version: v1.0.0
-	Date: 01.04.2023
+	Version: v1.0.2
+	Date: 11.06.2023
 
 	Copyright (c) 2023 lowl1f3
 
@@ -542,9 +542,9 @@ function Cursor
 	Write-Verbose -Message "Applying `"Windows 11 Cursors Concept v2.2`" dark cursor..." -Verbose
 
 	# https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356
-	# https://github.com/farag2/Utilities/blob/master/Download/Cursor/Install_Cursor.ps1
+	# https://github.com/farag2/Utilities/blob/master/Download/Install_Cursor.ps1
 	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Cursor/Install_Cursor.ps1"
+		Uri             = "https://raw.githubusercontent.com/farag2/Utilities/master/Download/Install_Cursor.ps1"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
