@@ -47,7 +47,7 @@ function Gerbera
 
 Clear-Host
 
-$Host.UI.RawUI.WindowTitle = "Gerbera Script v1.0.0 | Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
+$Host.UI.RawUI.WindowTitle = "Gerbera Script v1.0.2 | Made with $([char]::ConvertFromUtf32(0x1F497)) by lowl1f3"
 
 Remove-Module -Name Gerbera -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Manifest\Gerbera.psd1 -PassThru -Force

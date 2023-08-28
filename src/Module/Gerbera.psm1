@@ -943,8 +943,8 @@ function SophiaScript
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
-		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
-		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\..\Sophia_Script_for_Windows_*_v*" -Resolve
+		wt --window 0 new-tab --title "Sophia Script for Windows" --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 	catch [System.Net.WebException]
 	{
@@ -960,8 +960,8 @@ function SophiaScript
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
-		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Sophia_Script_for_Windows_*_v*" -Resolve
-		wt --window 0 new-tab --title SophiaScript --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
+		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\..\Sophia_Script_for_Windows_*_v*" -Resolve
+		wt --window 0 new-tab --title "Sophia Script for Windows" --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 }
 
@@ -978,7 +978,7 @@ function DeleteInstallationFiles
 		"$env:PUBLIC\Desktop\Steam.lnk",
 		"$env:PUBLIC\Desktop\Firefox.lnk",
 		"$DesktopFolder\GitHub Desktop.lnk",
-		"$env:PUBLIC\Desktop\TeamSpeak 3 Client.lnk",
+		"$DownloadsFolder\TeamSpeak 3 Client.lnk",
 		"$DownloadsFolder\CreativeCloudSetUp.exe",
 		"$env:PUBLIC\Desktop\Adobe Creative Cloud.lnk"
 	)
