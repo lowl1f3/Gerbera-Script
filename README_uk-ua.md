@@ -47,7 +47,7 @@
 * [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8](https://www.java.com/en/download) і [Java 19](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
+* [Java 8](https://www.java.com/en/download) і [Java 20](https://www.oracle.com/java/technologies/downloads/#jdk20-windows)
 * [WireGuard](https://www.wireguard.com/install)
 * [Налаштовуваний](https://github.com/farag2/Office) Microsoft Office
   * Word, Excel, PowerPoint, Outlook
