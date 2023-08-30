@@ -128,8 +128,8 @@ AdobeCreativeCloud
 # Download Java 8
 Java8.JRE
 
-# Download Java SE Development Kit 19
-Java19.JDK
+# Download Java SE Development Kit 20
+Java20.JDK
 
 # Download WireGuard
 WireGuard

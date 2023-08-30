@@ -828,26 +828,26 @@ function Java8.JRE
 	}
 }
 
-# Download Java SE Development Kit 19
-function Java19.JDK
+# Download Java SE Development Kit 20
+function Java20.JDK
 {
-	winget install --id Oracle.JDK.19 --exact --accept-source-agreements
+	winget install --id Oracle.JDK.20 --exact --accept-source-agreements
 
-	# Remove Java19(JDK) shortcut folders
+	# Remove Java20(JDK) shortcut folders
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Java 19" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Java 20" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for Java 19 already exists"
+		Write-Warning -Message "Firewall rule for Java 20 already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Java 19" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-19\bin\javaw.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Java 19" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-19\bin\java.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 20" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-20\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java 20" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-20\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for Java 19 created" -Verbose
+		Write-Verbose -Message "Firewall rule for Java 20 created" -Verbose
 	}
 }
 
