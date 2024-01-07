@@ -62,6 +62,13 @@ function Confirmation
 $Script:DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Script:DesktopFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
 
+if ($Host.Version.Major -eq 5)
+{
+	# Progress bar can significantly impact cmdlet performance
+	# https://github.com/PowerShell/PowerShell/issues/2138
+	$Script:ProgressPreference = "SilentlyContinue"
+}
+
 #region Checks
 # Mandatory checks before running Gerbera Script
 function Checks
@@ -938,12 +945,12 @@ function SophiaScript
 	try
 	{
 		# https://github.com/farag2/Sophia-Script-for-Windows#how-to-download-sophia-script-via-powershell
-		Invoke-WebRequest -Uri script.sophi.app -UseBasicParsing | Invoke-Expression
+		Invoke-WebRequest -Uri script.sophia.team -UseBasicParsing | Invoke-Expression
 
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
-		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\..\Sophia_Script_for_Windows_*_v*" -Resolve
+		$Path = Join-Path -Path $DownloadsFolder -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
 		wt --window 0 new-tab --title "Sophia Script for Windows" --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 	catch [System.Net.WebException]
@@ -960,7 +967,7 @@ function SophiaScript
 		Write-Verbose -Message "Starting Sophia Script..." -Verbose
 
 		# We cannot call "$PSScriptRoot\..\Sophia_Script_for_Windows_*_v*\Sophia.ps1" directly
-		$Path = Join-Path -Path $PSScriptRoot -ChildPath "..\..\Sophia_Script_for_Windows_*_v*" -Resolve
+		$Path = Join-Path -Path $DownloadsFolder -ChildPath "Sophia_Script_for_Windows_*_v*" -Resolve
 		wt --window 0 new-tab --title "Sophia Script for Windows" --startingDirectory $Path powershell -Command "& {.\Sophia.ps1}"
 	}
 }
