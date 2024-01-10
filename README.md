@@ -32,7 +32,6 @@ A PowerShell script for Windows that automates installing and configuring progra
   <summary>Programs</summary>
 
 * [Telegram Desktop](https://desktop.telegram.org)
-* [Spotify](https://www.spotify.com/download/windows)
 * [Discord](https://discord.com/download)
   * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L284) & [themes](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L397)
 * [Steam](https://store.steampowered.com/about)
@@ -42,8 +41,6 @@ A PowerShell script for Windows that automates installing and configuring progra
 * [Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
 * [Notepad++](https://notepad-plus-plus.org/downloads)
 * [GitHub Desktop](https://desktop.github.com)
-* [Visual Stutio Community 2022](https://visualstudio.microsoft.com/#vs-section)
-* [Microsoft Visual Stutio Code](https://code.visualstudio.com/Download)
 * [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
 * [qBittorrent](https://www.qbittorrent.org/download.php)
 * [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)

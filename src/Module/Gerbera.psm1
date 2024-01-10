@@ -215,25 +215,6 @@ function TelegramDesktop
 	}
 }
 
-# Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
-function Spotify
-{
-	winget install --id Spotify.Spotify --exact --accept-source-agreements
-
-	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Spotify" -ErrorAction Ignore)
-	{
-		Write-Warning -Message "Firewall rule for Spotify already exists"
-	}
-	else
-	{
-		New-NetFirewallRule -DisplayName "Spotify" -Direction Inbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Spotify" -Direction Outbound -Program "$env:APPDATA\Spotify\Spotify.exe" -Action Allow
-
-		Write-Verbose -Message "Firewall rule for Spotify created" -Verbose
-	}
-}
-
 # Download Discord
 function Discord
 {
@@ -690,18 +671,6 @@ public static string GetString(uint strId)
 function GitHubDesktop
 {
 	winget install --id GitHub.GitHubDesktop --exact --accept-source-agreements
-}
-
-# Download Visual Studio Community 2022
-function VisualStudioCommunity
-{
-	winget install --id Microsoft.VisualStudio.2022.Community --exact --accept-source-agreements
-}
-
-# Download Microsoft Visual Studio Code
-function VisualStudioCode
-{
-	winget install --id Microsoft.VisualStudioCode --exact --accept-source-agreements
 }
 
 # Download TeamSpeak 3 Client

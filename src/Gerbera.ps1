@@ -83,9 +83,6 @@ Checks
 # Download Telegram Desktop
 TelegramDesktop
 
-# Due to Spotify's recent policy of not being able to be installed with administrator privileges, this function is commented out in the preset file (yet)
-#Spotify
-
 # Download Discord
 Discord
 
@@ -109,12 +106,6 @@ Notepad++
 
 # Download GitHub Desktop
 GitHubDesktop
-
-# Download Visual Studio Community 2022
-VisualStudioCommunity
-
-# Download Microsoft Visual Studio Code
-VisualStudioCode
 
 # Download TeamSpeak 3 Client
 TeamSpeakClient
