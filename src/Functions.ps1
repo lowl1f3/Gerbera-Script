@@ -5,7 +5,7 @@
 	Version: v1.0.2
 	Date: 11.06.2023
 
-	Copyright (c) 2023 lowl1f3
+	Copyright (c) 2024 lowl1f3
 
 	Big thanks directly to farag2
 

@@ -5,7 +5,7 @@
 	Version: v1.0.2
 	Date: 11.06.2023
 
-	Copyright (c) 2023 lowl1f3
+	Copyright (c) 2024 lowl1f3
 
 	Big thanks directly to farag2
 
@@ -20,9 +20,8 @@
 	.\Gerbera.ps1 -Functions TelegramDesktop, GitHubDesktop, Steam, etc.
 
 	.NOTES
-	Supported Windows 10 & 11 versions
+	Supported Windows 10 x64 & 11 versions
 	Editions: Home/Pro/Enterprise
-	Architecture: x64
 
 	.NOTES
 	To use the TAB completion for functions dot source the Functions.ps1 script first:
@@ -42,6 +41,7 @@
 	https://github.com/farag2/Office
 	https://github.com/farag2/Sophia-Script-for-Windows
 	https://github.com/farag2/Utilities/blob/master/Download/Cursor
+	https://github.com/lowl1f3/Firefox
 
 	.LINK Author
 	https://github.com/lowl1f3
