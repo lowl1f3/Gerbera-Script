@@ -57,7 +57,7 @@
 
 ## Before running
 
-> **Note**: Make sure you have [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) installed to work properly
+> **Note**: For the script to work correctly, [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) will be installed
 
 ## Donations
 

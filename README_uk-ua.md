@@ -57,7 +57,7 @@
 
 ## Перед запуском
 
-> **Note**: Переконайтесь, що у вас встановлені [winget](https://github.com/microsoft/winget-cli) та [Windows Terminal](https://github.com/microsoft/terminal) для коректного виконання
+> **Note**: Для коректної роботи скрипта буде встановлено [winget](https://github.com/microsoft/winget-cli) та [Windows Terminal](https://github.com/microsoft/terminal)
 
 ## Пожертвування
 
