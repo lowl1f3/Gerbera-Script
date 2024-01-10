@@ -59,12 +59,6 @@ A PowerShell script for Windows that automates installing and configuring progra
 
 > **Note**: For the script to work correctly, [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) will be installed
 
-## Donations
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
-
-[![Monobank](https://www.monobank.ua/resources/1.0.22.1-1684902721000/img/favicon/apple/apple-touch-icon-152x152.png)](https://send.monobank.ua/jar/2niEmTngoi)
-
 ## How to use
 
 * Download [up-to-date version](https://github.com/lowl1f3/Gerbera-Script/releases/latest);
@@ -107,3 +101,8 @@ Gerbera -Functions delete<TAB>
 
 Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 ```
+## Donations
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
+
+[![Monobank](https://www.monobank.ua/resources/1.0.22.1-1684902721000/img/favicon/apple/apple-touch-icon-152x152.png)](https://send.monobank.ua/jar/2niEmTngoi)
