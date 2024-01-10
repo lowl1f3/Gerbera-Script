@@ -26,7 +26,7 @@
 
 ## About Gerbera Script
 
-> **Note**: A PowerShell script for Windows that automates installing and configuring programs. Supports `Windows 10` & `Windows 11`
+A PowerShell script for Windows that automates installing and configuring programs. Supports `Windows 10 x64` & `Windows 11`
 
 <details>
   <summary>Programs</summary>
