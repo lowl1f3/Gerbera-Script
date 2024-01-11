@@ -784,45 +784,45 @@ function AdobeCreativeCloud
 	}
 }
 
-# Download Java 8
-function Java8.JRE
+# Download Java Runtime Environment 8
+function Oracle.JRE.8
 {
 	winget install --id Oracle.JavaRuntimeEnvironment --exact --accept-source-agreements
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Java 8" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Java Runtime Environment 8" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for Java 8 already exists"
+		Write-Warning -Message "Firewall rule for Java Runtime Environment 8 already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Java 8" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\javaw.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Java 8" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_361\bin\java.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java Runtime Environment 8" -Direction Inbound -Program "$env:ProgramFiles\Java\jre1.8.0_391\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java Runtime Environment 8" -Direction Outbound -Program "$env:ProgramFiles\Java\jre1.8.0_391\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for Java 8 created" -Verbose
+		Write-Verbose -Message "Firewall rule for Java Runtime Environment 8 created" -Verbose
 	}
 }
 
-# Download Java SE Development Kit 20
-function Java20.JDK
+# Download Java Development Kit 21
+function Oracle.JDK.21
 {
-	winget install --id Oracle.JDK.20 --exact --accept-source-agreements
+	winget install --id Oracle.JDK.21 --exact --accept-source-agreements
 
-	# Remove Java20(JDK) shortcut folders
+	# Remove Java Development Kit 21 shortcut folders
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java" -Force -Recurse -ErrorAction Ignore
 	Remove-Item -Path "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Java Development Kit" -Force -Recurse -ErrorAction Ignore
 
 	# Add to the Windows Defender Firewall exclusion list
-	if (Get-NetFirewallRule -DisplayName "Java 20" -ErrorAction Ignore)
+	if (Get-NetFirewallRule -DisplayName "Java Development Kit 21" -ErrorAction Ignore)
 	{
-		Write-Warning -Message "Firewall rule for Java 20 already exists"
+		Write-Warning -Message "Firewall rule for Java Development Kit 21 already exists"
 	}
 	else
 	{
-		New-NetFirewallRule -DisplayName "Java 20" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-20\bin\javaw.exe" -Action Allow
-		New-NetFirewallRule -DisplayName "Java 20" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-20\bin\java.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java Development Kit 21" -Direction Inbound -Program "$env:ProgramFiles\Java\jdk-20\bin\javaw.exe" -Action Allow
+		New-NetFirewallRule -DisplayName "Java Development Kit 21" -Direction Outbound -Program "$env:ProgramFiles\Java\jdk-20\bin\java.exe" -Action Allow
 
-		Write-Verbose -Message "Firewall rule for Java 20 created" -Verbose
+		Write-Verbose -Message "Firewall rule for Java Development Kit 21 created" -Verbose
 	}
 }
 

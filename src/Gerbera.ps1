@@ -48,7 +48,6 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 5.1
 
 [CmdletBinding()]
 param
@@ -117,10 +116,10 @@ qBittorrent
 AdobeCreativeCloud
 
 # Download Java 8
-Java8.JRE
+Oracle.JRE.8
 
-# Download Java SE Development Kit 20
-Java20.JDK
+# Download Java SE Development Kit 21
+Oracle.JDK.21
 
 # Download WireGuard
 WireGuard
