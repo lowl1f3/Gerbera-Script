@@ -1,10 +1,9 @@
 <div align="right">
   This page also in:
-  <a title="Русский" href="README_ru-ru.md"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/></a>
   <a title="Українська" href="README_uk-ua.md"><img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" height="11px"/></a>
 </div>
 
-# Gerbera Script
+# Gerbera Script - Simplifying Your Windows Experience🌟
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Windows_10_Logo.svg" height="30px"/> &emsp; <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Windows_11_logo.svg" height="30px"/>
 
@@ -26,35 +25,33 @@
 
 ## About Gerbera Script
 
-A PowerShell script for Windows that automates installing and configuring programs. Supports `Windows 10 x64` & `Windows 11`
+Brings hassle-free experience to your Windows setup by automating the installation and configuration of programs. Supports `Windows 10 x64` & `Windows 11`
 
 <details>
-  <summary>Programs</summary>
-
-* [Telegram Desktop](https://desktop.telegram.org)
-* [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [plugins](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L284) & [themes](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L397)
-* [Steam](https://store.steampowered.com/about)
-* [Mozilla Firefox](https://www.mozilla.org/en/firefox/new)
-  * [Customization](https://github.com/lowl1f3/Firefox) using .css add-ons
-* [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)
-* [Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
-* [Notepad++](https://notepad-plus-plus.org/downloads)
-* [GitHub Desktop](https://desktop.github.com)
-* [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
-* [qBittorrent](https://www.qbittorrent.org/download.php)
-* [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8](https://www.java.com/en/download) & [Java 20](https://www.oracle.com/java/technologies/downloads/#jdk20-windows)
-* [WireGuard](https://www.wireguard.com/install)
-* [Customizable](https://github.com/farag2/Office) Microsoft Office
-  * Word, Excel, PowerPoint, Outlook
-* [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
-  * [System Requirements](https://github.com/farag2/Sophia-Script-for-Windows#system-requirements)
+  <summary>Drop-down list: </summary>
+  
+| Programs                                                                                                                                                                                       |
+|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Telegram Desktop](https://desktop.telegram.org)                                                                                                                                               |
+| [Discord](https://discord.com/download) & [BetterDiscord](https://betterdiscord.app) with [Plugins & Themes](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L268) |
+| [Steam](https://store.steampowered.com/about)                                                                                                                                                  |
+| [Mozilla Firefox](https://www.mozilla.org/firefox/new) with [add-ons](https://github.com/lowl1f3/Firefox)                                                                                      |
+| [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)                                                                                                                                          |
+| [Custom Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)                                                                                         |
+| [Notepad++](https://notepad-plus-plus.org/downloads)                                                                                                                                           |
+| [GitHub Desktop](https://desktop.github.com)                                                                                                                                                   |
+| [TeamSpeak 3 Client](https://teamspeak.com/downloads)                                                                                                                                          |
+| [qBittorrent](https://www.qbittorrent.org/download.php)                                                                                                                                        |
+| [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)                                                                                                        |
+| [Java 8](https://www.java.com/download) & [Java 20](https://www.oracle.com/java/technologies/downloads/#jdk20-windows)                                                                         |
+| [WireGuard](https://www.wireguard.com/install)                                                                                                                                                 |
+| [Microsoft Office](https://github.com/farag2/Office) with [configuration](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Office/Configure.ps1)                                        |
+| [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)                                                                                                                           |
 </details>
 
 ## Before running
 
-> **Note**: For the script to work correctly, [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) will be installed
+> **Note**: To work properly, [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) will be installed
 
 ## How to use
 
@@ -99,6 +96,8 @@ Gerbera -Functions delete<TAB>
 Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 ```
 ## Donations
+
+Consider supporting this project with a sprinkle of joy!🌈🚀
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
 

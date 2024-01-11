@@ -1,10 +1,9 @@
 <div align="right">
   Ця сторінка також на:
   <a title="English" href="README.md"><img src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" height="11px"/></a>
-  <a title="Русский" href="README_ru-ru.md"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" height="11px"/></a>
 </div>
 
-# Gerbera Script
+# Gerbera Script - Спрощує досвід роботи з Windows🌟
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Windows_10_Logo.svg" height="30px"/> &emsp; <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Windows_11_logo.svg" height="30px"/>
 
@@ -26,30 +25,28 @@
 
 ## Про Gerbera Script
 
-PowerShell скрипт для Windows, автоматизуючий встановлення та налаштування програм. Підтримує `Windows 10 x64` і `Windows 11`
+Забезпечує простоту налаштування Windows, автоматизуючи процеси встановлення та налаштування програм. Підтримує `Windows 10 x64` і `Windows 11`
 
 <details>
-  <summary>Програми</summary>
-
-* [Telegram Desktop](https://desktop.telegram.org)
-* [Discord](https://discord.com/download)
-  * [BetterDiscord](https://betterdiscord.app), [плагіни](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L284) і [теми](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L397)
-* [Steam](https://store.steampowered.com/about)
-* [Mozilla Firefox](https://www.mozilla.org/en/firefox/new)
-  * [Кастомізація](https://github.com/lowl1f3/Firefox) використовуючи .css доповнення
-* [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)
-* [Курсор](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)
-* [Notepad++](https://notepad-plus-plus.org/downloads)
-* [GitHub Desktop](https://desktop.github.com)
-* [TeamSpeak 3 Client](https://teamspeak.com/en/downloads)
-* [qBittorrent](https://www.qbittorrent.org/download.php)
-* [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)
-* [Java 8](https://www.java.com/en/download) і [Java 20](https://www.oracle.com/java/technologies/downloads/#jdk20-windows)
-* [WireGuard](https://www.wireguard.com/install)
-* [Налаштовуваний](https://github.com/farag2/Office) Microsoft Office
-  * Word, Excel, PowerPoint, Outlook
-* [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)
-  * [Системні вимоги](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/README_uk-ua.md#системні-вимоги)
+  <summary>Випадаючий список: </summary>
+  
+| Програми                                                                                                                                                                                      |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Telegram Desktop](https://desktop.telegram.org)                                                                                                                                              |
+| [Discord](https://discord.com/download) і [BetterDiscord](https://betterdiscord.app) з [Плагінами і Темами](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Module/Gerbera.psm1#L268) |
+| [Steam](https://store.steampowered.com/about)                                                                                                                                                 |
+| [Mozilla Firefox](https://www.mozilla.org/firefox/new) з [доповненнями](https://github.com/lowl1f3/Firefox)                                                                                   |
+| [NanaZip](https://github.com/M2Team/NanaZip#-nanazip)                                                                                                                                         |
+| [Custom Cursor](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356)                                                                                        |
+| [Notepad++](https://notepad-plus-plus.org/downloads)                                                                                                                                          |
+| [GitHub Desktop](https://desktop.github.com)                                                                                                                                                  |
+| [TeamSpeak 3 Client](https://teamspeak.com/downloads)                                                                                                                                         |
+| [qBittorrent](https://www.qbittorrent.org/download.php)                                                                                                                                       |
+| [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)                                                                                                       |
+| [Java 8](https://www.java.com/download) і [Java 20](https://www.oracle.com/java/technologies/downloads/#jdk20-windows)                                                                        |
+| [WireGuard](https://www.wireguard.com/install)                                                                                                                                                |
+| [Microsoft Office](https://github.com/farag2/Office) з [конфігуруванням](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Office/Configure.ps1)                                       |
+| [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)                                                                                                                          |
 </details>
 
 ## Перед запуском
@@ -99,6 +96,8 @@ Gerbera -Functions delete<TAB>
 Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 ```
 ## Пожертвування
+
+Подумайте про те, щоб підтримати цей проєкт крапелькою радості!🌈🚀
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
 
