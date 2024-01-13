@@ -23,6 +23,8 @@
   [![Discord][discord-badge]][discord-pm]
 </p>
 
+---
+
 ## About Gerbera Script
 
 Brings hassle-free experience to your Windows setup by automating the installation and configuration of programs. Supports `Windows 10 x64` & `Windows 11`
@@ -53,6 +55,8 @@ Brings hassle-free experience to your Windows setup by automating the installati
 
 > [!NOTE]
 > **Note**: To work properly, [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) will be installed
+
+---
 
 ## How to use
 
@@ -96,6 +100,9 @@ Gerbera -Functions delete<TAB>
 
 Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 ```
+
+---
+
 ## Donations
 
 Consider supporting this project with a sprinkle of joy!🌈🚀
