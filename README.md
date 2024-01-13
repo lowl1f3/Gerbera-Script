@@ -51,6 +51,7 @@ Brings hassle-free experience to your Windows setup by automating the installati
 
 ## Before running
 
+> [!NOTE]
 > **Note**: To work properly, [winget](https://github.com/microsoft/winget-cli) and [Windows Terminal](https://github.com/microsoft/terminal) will be installed
 
 ## How to use
