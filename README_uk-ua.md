@@ -102,6 +102,13 @@ Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 
 ---
 
+## З'вязатись зі мною
+
+[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/lowlif3)
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/users/330825971835863042)
+
+---
+
 ## Пожертвування
 
 Подумайте про те, щоб підтримати цей проєкт крапелькою радості!🌈🚀
