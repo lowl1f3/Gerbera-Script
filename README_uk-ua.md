@@ -46,8 +46,7 @@
 | [qBittorrent](https://www.qbittorrent.org/download.php)                                                                                                                                       |
 | [Adobe Creative Cloud](https://creativecloud.adobe.com/en/apps/download/creative-cloud)                                                                                                       |
 | [Java 8](https://www.java.com/download) і [Java 21](https://www.oracle.com/java/technologies/downloads/#jdk21-windows)                                                                        |
-| [WireGuard](https://www.wireguard.com/install)                                                                                                                                                |
-| [Microsoft Office](https://github.com/farag2/Office) з [конфігуруванням](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Office/Configure.ps1)                                       |
+| [Microsoft Office](https://github.com/farag2/Office) з [конфігуруванням](https://github.com/lowl1f3/Gerbera-Script/blob/main/src/Office/Configure.ps1)                                        |
 | [Sophia Script](https://github.com/farag2/Sophia-Script-for-Windows)                                                                                                                          |
 </details>
 
@@ -107,6 +106,7 @@ Gerbera -Functions TelegramDesktop, DeleteInstallationFiles
 
 Подумайте про те, щоб підтримати цей проєкт крапелькою радості!🌈🚀
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lowlife)
-
-[![Monobank](https://www.monobank.ua/resources/1.0.22.1-1684902721000/img/favicon/apple/apple-touch-icon-152x152.png)](https://send.monobank.ua/jar/2niEmTngoi)
+<a href="https://send.monobank.ua/jar/2niEmTngoi"><img src="https://www.monobank.ua/resources/1.0.22.1-1684902721000/img/favicon/apple/apple-touch-icon-152x152.png" height="152px"></a>
+⠀
+⠀
+<a href="https://ko-fi.com/lowlife"><img src="https://storage.ko-fi.com/cdn/generated/zfskfgqnf/rest-d30761e860c553134d017c78c754b0d9-bulajus2.jpg" height="152px"></a>
